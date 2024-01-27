@@ -9,7 +9,7 @@ This is a PBL5 project of our university course. We develop a web app for managi
 
 - [@Qtie](https://github.com/JustQtie)
 - [@JITMinh37](https://github.com/JITMinh37)
-- [@VanThao](https://github.com/JITMinh37)
+- [@VanThao](https://github.com/HoVanThao)
 
 
 ## Tech Stack
