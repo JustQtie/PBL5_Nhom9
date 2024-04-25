@@ -16,9 +16,9 @@ const Widget = ({ type }) => {
     switch (type) {
         case "user":
             data = {
-                title: "USERS",
+                title: "Người dùng",
                 isMoney: false,
-                link: "See all users",
+                link: "Xem tất cả",
                 icon: (
                     <PersonOutlineOutlinedIcon
                         className="icon"
@@ -32,9 +32,9 @@ const Widget = ({ type }) => {
             break;
         case "order":
             data = {
-                title: "ORDER",
+                title: "Đơn hàng",
                 isMoney: false,
-                link: "View all orders",
+                link: "Xem tất cả đơn hàng",
                 icon: (
                     <ShoppingCartOutlinedIcon
                         className="icon"
@@ -46,9 +46,9 @@ const Widget = ({ type }) => {
             break;
         case "earning":
             data = {
-                title: "EARNING",
+                title: "Doanh thu",
                 isMoney: false,
-                link: "view all earning",
+                link: "Xem tất cả",
                 icon: (
                     <MonetizationOnOutlinedIcon
                         className="icon"
@@ -62,9 +62,9 @@ const Widget = ({ type }) => {
             break;
         case "balance":
             data = {
-                title: "BALANCE",
+                title: "Bảng cân đối",
                 isMoney: true,
-                link: "See details",
+                link: "Xem thêm",
                 icon: (
                     <AccountBalanceWalletOutlinedIcon
                         className="icon"

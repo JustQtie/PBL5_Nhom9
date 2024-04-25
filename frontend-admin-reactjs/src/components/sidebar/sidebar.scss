@@ -1,9 +1,10 @@
 .sidebar {
-    // background-color: lightcoral;
     flex: 1;
     border-right: 0.5px solid rgb(230, 227, 227);
     min-height: 100vh;
     background-color: white;
+    // -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    // box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
 
     .top {
         height: 50px;
@@ -15,7 +16,7 @@
     .logo {
         font-size: 20px;
         font-weight: bold;
-        color: #6439ff;
+        color: #2F80ED;
     }
 
     hr {
@@ -46,12 +47,12 @@
                 cursor: pointer;
 
                 &:hover {
-                    background-color: #ece8ff;
+                    background-color: #EBF3FE;
                 }
 
                 .icon {
                     font-size: 18xp;
-                    color: #7451f8;
+                    color: #2F80ED;
                 }
 
                 .span {
@@ -73,7 +74,7 @@
             width: 20px;
             height: 20px;
             border-radius: 5px;
-            border: 1px solid #7451f8;
+            border: 1px solid #2F80ED;
             cursor: pointer;
             margin: 5px;
 
