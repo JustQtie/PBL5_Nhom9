@@ -1,4 +1,5 @@
 import "./login.scss"
+import { Link } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 const Login = () => {
@@ -19,8 +20,9 @@ const Login = () => {
                         <label><input type="checkbox" /> Duy trì đăng nhập </label>
                         <a href="#">Quên mật khẩu?</a>
                     </div>
-                    <button type="submit">Đăng nhập</button>
-
+                    <Link to="/" style={{ textDecoration: "none" }}>
+                        <button type="submit">Đăng nhập</button>
+                    </Link>
                 </form>
 
             </div>

@@ -1,7 +1,9 @@
 import "./single.scss"
 import Sidebar from "../../components/sidebar/Sidebar"
 import Navbar from "../../components/navbar/Navbar"
-import Chart from "../../components/chart/Chart"
+// import Chart from "../../components/chart/Chart"
+// import Chart from "../../components/chart2/Chart2"
+import Chart from "../../components/chart3/Chart3"
 import List from "../../components/table/Table"
 
 
@@ -37,7 +39,9 @@ const Single = () => {
 
                     </div>
                     <div className="right">
-                        <Chart aspect={3 / 1} title="Mức chi tiêu của người dùng trong 6 tháng qua" />
+                        {/* <Chart aspect={3 / 1} title="Mức chi tiêu của người dùng trong 6 tháng qua" /> */}
+                        {/* <Chart aspect={3 / 1} title="Biểu đồ hoạt động của người dùng trong 6 tháng qua" /> */}
+                        <Chart aspect={3 / 1} title="Biểu đồ thống kê số lượng giao dịch trong 6 tháng qua" />
                     </div>
                 </div>
                 <div className="bottom">

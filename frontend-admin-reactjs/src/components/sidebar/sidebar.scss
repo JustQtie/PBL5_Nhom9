@@ -11,13 +11,24 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2F80ED;
+        }
+
+        .iconlogo {
+            margin-top: 10px;
+            width: 50px;
+            /* Độ rộng của biểu tượng */
+            height: auto;
+            /* Chiều cao tự động điều chỉnh để giữ tỉ lệ */
+            margin-right: 10px;
+            /* Khoảng cách giữa biểu tượng và văn bản */
+        }
     }
 
-    .logo {
-        font-size: 20px;
-        font-weight: bold;
-        color: #2F80ED;
-    }
 
     hr {
         height: 0;

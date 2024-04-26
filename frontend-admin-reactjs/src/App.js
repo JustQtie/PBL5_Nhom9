@@ -1,6 +1,9 @@
-import Home from "./pages/home/Home";
+import Bangdieukhien from "./pages/bangdieukhien/Bangdieukhien";
 import Login from "./pages/login/Login";
-import List from "./pages/list/List"
+import Qlnguoidung from "./pages/qlnguoidung/Qlnguoidung"
+import Qlgiaotrinh from "./pages/qlgiaotrinh/Qlgiaotrinh";
+import Thongkegiaodich from "./pages/thongkegiaodich/Thongkegiaodich";
+import Hoso from "./pages/hoso/Hoso";
 import Single from "./pages/single/Single"
 import New from "./pages/new/New"
 import {
@@ -20,17 +23,21 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route index element={<Home />} />
+            <Route index element={<Bangdieukhien />} />
             <Route path="login" element={<Login />} />
-            <Route path="users">
-              <Route index element={<List />} />
+            <Route path="qlnguoidung">
+              <Route index element={<Qlnguoidung />} />
               <Route path=":userId" element={<Single />} />
               <Route path="new" element={<New inputs={userInputs} title="Thêm Mới Người Dùng" />} />
             </Route>
-            <Route path="products">
-              <Route index element={<List />} />
-              <Route path=":productId" element={<Single />} />
-              <Route path="new" element={<New inputs={productInputs} title="Thêm Mới Giáo Trình" />} />
+            <Route path="qlgiaotrinh">
+              <Route index element={<Qlgiaotrinh />} />
+            </Route>
+            <Route path="thongkegiaodich">
+              <Route index element={<Thongkegiaodich />} />
+            </Route>
+            <Route path="hoso">
+              <Route index element={<Hoso />} />
             </Route>
           </Route>
         </Routes>

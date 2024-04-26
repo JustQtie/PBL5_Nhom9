@@ -14,10 +14,10 @@ const Datatable = () => {
         field: "action", headerName: "Action", width: 170, renderCell: (params) => {
             return (
                 <div className="cellAction">
-                    <Link to="/users/test" style={{ textDecoration: "none" }}>
+                    <Link to="/qlnguoidung/test" style={{ textDecoration: "none" }}>
                         <button className="viewButton">View</button>
                     </Link>
-                    <button className="deleteButton" onClick={() => handleDelete(params.row.id)}>Delete</button>
+                    <button className="deleteButton" onClick={() => handleDelete(params.row.id)}>Ban</button>
 
                 </div>
             );
@@ -28,7 +28,7 @@ const Datatable = () => {
         <div className="datatable">
             <div className="datatableTitle">
                 Quản Lý Người Dùng
-                <Link to="/users/new" style={{ textDecoration: "none" }} className="link">
+                <Link to="/qlnguoidung/new" style={{ textDecoration: "none" }} className="link">
                     Thêm mới
                 </Link>
             </div>
