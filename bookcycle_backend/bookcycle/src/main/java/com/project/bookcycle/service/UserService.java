@@ -1,6 +1,7 @@
 package com.project.bookcycle.service;
 
 import com.project.bookcycle.components.JwtTokenUtil;
+import com.project.bookcycle.dto.UserChangePassDTO;
 import com.project.bookcycle.dto.UserDTO;
 import com.project.bookcycle.exceptions.DataNotFoundException;
 import com.project.bookcycle.exceptions.PermissionDenyException;
@@ -70,4 +71,52 @@ public class UserService implements IUserService{
                 .role(role.getName())
                 .build();
     }
+
+    @Override
+    public User getUser(Long id) throws DataNotFoundException {
+        return userRepository.findById(id)
+                .orElseThrow(()-> new DataNotFoundException("Cannot find user with id " + id));
+    }
+
+    @Override
+    public void deleteUser(Long id) throws DataNotFoundException{
+        User existsUser = getUser(id);
+        if(existsUser != null){
+            existsUser.setActive(false);
+            userRepository.save(existsUser);
+        }
+    }
+
+    @Override
+    public String changePassword(Long id, UserChangePassDTO userChangePassDTO) throws DataNotFoundException {
+        User existUser = getUser(id);
+        if(existUser != null){
+            if(existUser.getPassword().equals(userChangePassDTO.getOldPass())){
+                existUser.setPassword(userChangePassDTO.getNewPass());
+                userRepository.save(existUser);
+                return "Change password complete";
+            }else{
+                return "The old password entered is invalid";
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User updateUser(Long id, UserDTO userDTO) throws DataNotFoundException {
+        User existsUser = getUser(id);
+        if(existsUser != null){
+            userDTO.setPassword(existsUser.getPassword());
+            existsUser.setFullname(userDTO.getFullName());
+            existsUser.setPhoneNumber(userDTO.getPhoneNumber());
+            existsUser.setDateOfBirth(userDTO.getDateOfBirth());
+            existsUser.setGender(userDTO.isGender());
+            existsUser.setAddress(userDTO.getAddress());
+            existsUser.setPassword(existsUser.getPassword());
+            return userRepository.save(existsUser);
+        }
+        return null;
+    }
+
+
 }
