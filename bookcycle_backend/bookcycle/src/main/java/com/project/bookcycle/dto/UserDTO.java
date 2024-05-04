@@ -38,7 +38,6 @@ public class UserDTO {
     @JsonProperty("gender")
     private boolean gender;
 
-    @NotNull(message = "Role Id is required")
     @JsonProperty("role_id")
     private Long roleId;
 }
