@@ -7,7 +7,6 @@
     -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
     box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
     border-radius: 10px;
-    height: 100px;
 
     .left,
     .right {
@@ -15,14 +14,14 @@
         flex-direction: column;
         justify-content: space-between;
 
-        .title {
+        .title-widget {
             font-size: 14px;
             font-weight: bold;
             color: rgb(160, 169, 169);
         }
 
         .counter {
-            font-size: 28px;
+            font-size: 40px;
             font-weight: 300;
         }
 
@@ -47,7 +46,7 @@
         }
 
         .icon {
-            font-size: 18px;
+            font-size: 35px;
             padding: 5px;
             border-radius: 5px;
             align-self: flex-end;

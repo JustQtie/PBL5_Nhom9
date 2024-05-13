@@ -1,8 +1,13 @@
-.datatable {
+.datatable-qlgt {
     height: 600px;
     padding: 20px;
 
-    .datatableTitle {
+    .datagrid-qldt {
+        width: auto;
+        height: auto;
+    }
+
+    .datatableTitle-qlgt {
         width: 100%;
         font-size: 24px;
         color: gray;
@@ -56,26 +61,19 @@
         }
     }
 
-    .cellAction {
+    .cellAction-Datatable-qlgt {
         display: flex;
         align-items: center;
         gap: 15px;
 
-        .viewButton {
-            padding: 2px 5px;
+        .viewButton-Datatable-qlgt {
+            // padding: 2px 5px;
             border-radius: 5px;
-            margin-top: 15px;
+            margin-top: 10px;
             color: darkblue;
             border: 1px dotted rgba(0, 0, 139, 0.596);
             cursor: pointer;
-        }
-
-        .deleteButton {
-            padding: 2px 5px;
-            border-radius: 5px;
-            color: crimson;
-            border: 1px dotted rgba(220, 20, 60, 0.6);
-            cursor: pointer;
+            height: 30px;
         }
 
     }

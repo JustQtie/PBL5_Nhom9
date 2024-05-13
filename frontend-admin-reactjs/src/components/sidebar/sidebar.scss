@@ -6,27 +6,28 @@
     // -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
     // box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
 
-    .top {
+    .sidebar-top {
+        padding-top: 15px;
         height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
 
-        .logo {
-            font-size: 30px;
+        .sidebar-logo {
+            font-size: 40px;
             font-weight: bold;
             color: #2F80ED;
         }
 
-        .iconlogo {
-            margin-top: 10px;
-            width: 50px;
-            /* Độ rộng của biểu tượng */
-            height: auto;
-            /* Chiều cao tự động điều chỉnh để giữ tỉ lệ */
-            margin-right: 10px;
-            /* Khoảng cách giữa biểu tượng và văn bản */
-        }
+        // .sidebar-iconlogo {
+        //     margin-top: 10px;
+        //     width: 50px;
+        //     /* Độ rộng của biểu tượng */
+        //     height: auto;
+        //     /* Chiều cao tự động điều chỉnh để giữ tỉ lệ */
+        //     margin-right: 10px;
+        //     /* Khoảng cách giữa biểu tượng và văn bản */
+        // }
     }
 
 
@@ -35,7 +36,7 @@
         border: 0.5px solid rgb(230, 227, 227);
     }
 
-    .center {
+    .sidebar-center {
         padding-left: 10px;
 
         ul {
@@ -43,7 +44,7 @@
             margin: 0;
             padding: 0;
 
-            .title {
+            .sidebar-title {
                 font-size: 10px;
                 font-weight: bold;
                 color: #999;
@@ -61,12 +62,12 @@
                     background-color: #EBF3FE;
                 }
 
-                .icon {
+                .sidebar-icon {
                     font-size: 18xp;
                     color: #2F80ED;
                 }
 
-                .span {
+                .sidebar-span {
                     font-size: 13px;
                     font-weight: 600;
                     color: #888;
@@ -76,12 +77,12 @@
         }
     }
 
-    .bottom {
+    .sidebar-bottom {
         display: flex;
         align-items: center;
         margin: 10px;
 
-        .colorOption {
+        .sidebar-colorOption {
             width: 20px;
             height: 20px;
             border-radius: 5px;

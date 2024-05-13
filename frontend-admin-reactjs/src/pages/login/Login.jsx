@@ -1,28 +1,81 @@
 import "./login.scss"
-import { Link } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { postLogin } from '../../services/apiServices';
+import { toast } from 'react-toastify';
+
+
 const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    useEffect(() => {
+        let token = localStorage.getItem("token");
+        if (token) {
+            navigate('/bangdieukhien')
+        }
+    }, []);
+
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const callAPI = async () => {
+            try {
+
+                const data = await postLogin(username, password);
+                console.log("check res", data);
+                if (data && data.EC === 0) {
+                    localStorage.setItem("token", data.token)
+                    localStorage.setItem("userData", JSON.stringify(data.user));
+                    toast.success(data.message);
+                    setTimeout(() => (
+                        navigate('/bangdieukhien')
+                    ), 1000)
+                }
+                if (data && data.EC !== 0) {
+                    toast.error(data.message);
+                }
+
+            }
+            catch (e) {
+                toast.error('Login failed');
+            }
+            finally {
+            }
+        };
+        callAPI();
+
+    }
+
+
     return (
-        <div className="tongquat">
-            <div className="wrapper">
+        <div className="login">
+            <div className="login-wrapper">
                 <form action="">
                     <h1>Login</h1>
-                    <div className="input-box">
-                        <input type="text" placeholder="Username" required />
-                        <PersonIcon className="icon" />
+                    <div className="login-input-box">
+                        {/* <input type="text" placeholder="Username" required /> */}
+                        <input type="text" required value={username} onChange={(event) => setUsername(event.target.value)} />
+                        <span htmlFor="">Username</span>
+                        <PersonIcon className="login-icon" />
                     </div>
-                    <div className="input-box">
-                        <input type="password" placeholder="Password" required />
-                        <LockIcon className="icon" />
+                    <div className="login-input-box">
+                        <input type="password" required value={password} onChange={(event) => setPassword(event.target.value)} />
+                        <span htmlFor="">Password</span>
+                        <LockIcon className="login-icon" />
                     </div>
-                    <div className="remember-forgot">
+                    <div className="login-remember-forgot">
                         <label><input type="checkbox" /> Duy trì đăng nhập </label>
                         <a href="#">Quên mật khẩu?</a>
                     </div>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                        <button type="submit">Đăng nhập</button>
-                    </Link>
+                    {/* <Link to="/bangdieukhien" style={{ textDecoration: "none" }}>
+                        
+                    </Link> */}
+
+                    <button type="submit" onClick={handleLogin}>Đăng nhập</button>
+
                 </form>
 
             </div>
