@@ -1,12 +1,12 @@
-.hoso-list {
-    display: flex;
+.single-giaotrinh {
     width: 100%;
+    display: flex;
 
-    .hoso-listContainer {
+    .single-giaotrinhContainer {
         flex: 6;
 
-        .hoso-top,
-        .hoso-bottom {
+        .single-giaotrinhtop,
+        .single-giaotrinhbottom {
             -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
             box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
             padding: 10px;
@@ -19,11 +19,11 @@
                 font-size: 20px;
             }
 
-            .hoso-left {
+            .single-giaotrinhleft {
                 flex: 1;
                 text-align: center;
 
-                .img {
+                .single-giaotrinhimg {
                     width: 200px;
                     height: 260px;
                     border-radius: 2%;
@@ -32,34 +32,15 @@
                 }
             }
 
-            .hoso-right {
+            .single-giaotrinhright {
                 flex: 2;
 
-
-                display: flex;
-                flex-wrap: wrap;
-                gap: 30px;
-                justify-content: space-around;
-
-
-
-                label {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-
-                    .icon {
-                        cursor: pointer;
-                    }
+                .single-giaotrinh-fill {
+                    margin-bottom: 10px;
+                    display: flex; // Sử dụng flexbox để căn chỉnh phần tử trên cùng một hàng
+                    flex-wrap: wrap;
+                    gap: 100px;
                 }
-
-                input {
-                    width: 100%;
-                    padding: 5px;
-                    border: none;
-                    border-bottom: 1px solid gray;
-                }
-
 
                 button {
                     width: 150px;

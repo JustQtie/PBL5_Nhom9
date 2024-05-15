@@ -44,10 +44,10 @@ const data = [
   },
 
 ]
-const Chart = ({ aspect, title }) => {
+const Chart3 = ({ aspect, title }) => {
   return (
-    <div className="chart">
-      <div className="title">{title}</div>
+    <div className="chart3">
+      <div className="title-chart3">{title}</div>
       <ResponsiveContainer width="100%" aspect={aspect}>
         <AreaChart width={730} height={250} data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -66,7 +66,7 @@ const Chart = ({ aspect, title }) => {
           <CartesianGrid
             strokeDasharray="3 3"
             stroke="gray"
-            className="chatGrid" />
+            className="chatGrid-chart3" />
           <Tooltip />
           <Area type="monotone" dataKey="Thành công" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
           <Area type="monotone" dataKey="Thất bại" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
@@ -76,4 +76,4 @@ const Chart = ({ aspect, title }) => {
   );
 };
 
-export default Chart;
+export default Chart3;

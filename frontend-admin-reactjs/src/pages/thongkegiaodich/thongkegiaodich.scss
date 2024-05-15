@@ -1,8 +1,43 @@
-.list {
+.thongkegiaodich {
     display: flex;
-    width: 100%;
 
-    .listContainer {
+    .thongkegiaodichContainer {
+        // background-color: lightblue;
         flex: 6;
+
+        .thongkegiaodichTitle {
+            padding: 20px;
+            width: 100%;
+            font-size: 24px;
+            color: gray;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widgets-thongkegiaodich {
+            display: flex;
+            padding-left: 120px;
+            padding-right: 120px;
+            gap: 200px;
+        }
+
+        .charts-thongkegiaodich {
+            padding: 5px 20px;
+        }
+
+        .listContainer-thongkegiaodich {
+            -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .listTitle-thongkegiaodich {
+            font-weight: 500;
+            color: gray;
+            margin-bottom: 15px;
+        }
     }
 }

@@ -7,15 +7,16 @@
     color: #555;
 
 
-    .wrapper {
+    .navbar-wrapper {
         width: 100%;
-        padding: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
 
 
-        .search {
+        .navbar-search {
             display: flex;
             align-items: center;
             border: 0.5px solid lightgray;
@@ -32,28 +33,28 @@
             }
         }
 
-        .item {
+        .navbar-item-to {
             display: flex;
             align-items: center;
 
-            .item {
+            .navbar-item {
                 display: flex;
                 align-items: center;
                 margin-right: 20px;
                 position: relative;
 
-                .icon {
+                .navbar-icon {
                     font-size: 20px;
 
                 }
 
-                .avatar {
+                .navbar-avatar {
                     width: 30px;
                     height: 30px;
                     border-radius: 50%;
                 }
 
-                .couter {
+                .navbar-couter {
                     width: 15px;
                     height: 15px;
                     background-color: red;

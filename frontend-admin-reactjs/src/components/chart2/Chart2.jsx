@@ -51,8 +51,8 @@ const data = [
 ];
 const Chart = ({ aspect, title }) => {
   return (
-    <div className="chart">
-      <div className="title">{title}</div>
+    <div className="chart2">
+      <div className="title-chart2">{title}</div>
       <ResponsiveContainer width="100%" aspect={aspect}>
         <BarChart
           width={730}
@@ -63,7 +63,7 @@ const Chart = ({ aspect, title }) => {
           <CartesianGrid
             strokeDasharray="3 3"
             stroke="gray"
-            className="chatGrid"
+            className="chatGrid-chart2"
           />
           <XAxis dataKey="name" />
 
