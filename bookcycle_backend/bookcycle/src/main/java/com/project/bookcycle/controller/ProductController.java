@@ -11,9 +11,6 @@ import com.project.bookcycle.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -147,10 +144,7 @@ public class ProductController {
             @RequestParam(value = "keyword", defaultValue = "")  String keyword,
             @RequestParam(value = "category_id", defaultValue = "0")  Long categoryId
     ) {
-
         List<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId);
-
-
         return ResponseEntity.ok(ProductListResponse
                 .builder()
                 .productResponseList(productPage)

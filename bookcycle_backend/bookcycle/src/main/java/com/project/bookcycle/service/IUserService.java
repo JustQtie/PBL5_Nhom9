@@ -6,6 +6,9 @@ import com.project.bookcycle.exceptions.DataNotFoundException;
 import com.project.bookcycle.exceptions.PermissionDenyException;
 import com.project.bookcycle.model.User;
 import com.project.bookcycle.response.LoginResponse;
+import com.project.bookcycle.response.UserResponse;
+
+import java.util.List;
 
 public interface IUserService {
     User createUser(UserDTO userDTO) throws DataNotFoundException, PermissionDenyException;
@@ -14,4 +17,7 @@ public interface IUserService {
     User getUser(Long id) throws DataNotFoundException;
     void deleteUser(Long id) throws DataNotFoundException;
     String changePassword(Long id, UserChangePassDTO userChangePassDTO) throws DataNotFoundException;
+    List<UserResponse> getAll() throws DataNotFoundException;
+    User updateImage(Long id, String urlFile) throws DataNotFoundException;
+    List<UserResponse> banUser(Long id, boolean isActive) throws DataNotFoundException;
 }

@@ -1,4 +1,4 @@
-package com.project.shopapp.configuration;
+package com.project.bookcycle.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

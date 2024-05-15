@@ -17,16 +17,12 @@ public class UserDTO {
     @JsonProperty("fullname")
     private String fullName;
 
-    @JsonProperty("username")
-    private String username;
-
     @NotBlank(message = "Phone number is required")
     @JsonProperty("phone_number")
     private String phoneNumber;
 
     private String address;
 
-    @NotBlank(message = "Password is required")
     private String password;
 
     @JsonProperty("retype_password")

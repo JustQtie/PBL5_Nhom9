@@ -2,6 +2,7 @@ package com.project.bookcycle.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.bookcycle.model.Product;
+import com.project.bookcycle.model.User;
 import lombok.*;
 
 @Data
@@ -11,12 +12,13 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ProductResponse extends BaseResponse{
+    private Long id;
     private String name;
     private Float price;
     private String description;
     private int quantity;
     private String status;
-    private float point;
+    private User user;
     private String thumbnail;
 
     @JsonProperty("category_id")
@@ -24,12 +26,13 @@ public class ProductResponse extends BaseResponse{
 
     public static ProductResponse convertToProductResponse(Product product){
         ProductResponse productResponse = ProductResponse.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
                 .description(product.getDescription())
                 .quantity(product.getQuantity())
                 .status(product.getStatus())
-                .point(product.getPoint())
+                .user(product.getUser())
                 .thumbnail(product.getThumbnail())
                 .categoryId(product.getCategory().getId())
                 .build();

@@ -32,6 +32,9 @@ public class ProductDTO {
     @NotBlank(message = "Quantity is required")
     private int quantity;
 
+    @JsonProperty("user_id") //Thuộc tính được chuyển đổi thành category_id khi chuyển về dữ liệu Json.
+    private long userId;
+
     @JsonProperty("category_id") //Thuộc tính được chuyển đổi thành category_id khi chuyển về dữ liệu Json.
     private long categoryId;
 }

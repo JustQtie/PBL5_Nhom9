@@ -10,6 +10,7 @@ import com.project.bookcycle.model.User;
 import com.project.bookcycle.repository.RoleRepository;
 import com.project.bookcycle.repository.UserRepository;
 import com.project.bookcycle.response.LoginResponse;
+import com.project.bookcycle.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,13 +39,12 @@ public class UserService implements IUserService{
         if(userRepository.existsByPhoneNumber(phoneNumber)){
             throw new DataIntegrityViolationException("Phone number already exists");
         }
-        Role role = roleRepository.findById(1L)
+        Role role = roleRepository.findById(2L)
                 .orElseThrow(()-> new DataNotFoundException("Role not found!"));
         if(role.getName().toUpperCase().equals("ADMIN")){
             throw new PermissionDenyException("Admin cannot create account");
         }
         User newUser = User.builder()
-                .username(userDTO.getUsername())
                 .fullname(userDTO.getFullName())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .password(userDTO.getPassword())
@@ -69,6 +74,7 @@ public class UserService implements IUserService{
         // Authentication sẽ chứa thông tin người dùng được xác thực. Phương thức getPrincipal() trả về đối tượng chính của người dùng đã được xác thực.
         return LoginResponse.builder().token(jwtTokenUtil.generateToken(principal))
                 .role(role.getName())
+                .user(principal)
                 .build();
     }
 
@@ -103,20 +109,50 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public List<UserResponse> getAll() throws DataNotFoundException {
+        Role role = roleRepository.findById(2L)
+                .orElseThrow(()->new DataNotFoundException("Cannot find user with role user"));
+        return userRepository.getAllByRoleId(role.getId())
+                .stream()
+                .map(UserResponse::convertToUserResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public User updateImage(Long id, String urlFile) throws DataNotFoundException {
+        User user = getUser(id);
+        user.setThumbnail(urlFile);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public List<UserResponse> banUser(Long id, boolean isActive) throws DataNotFoundException {
+        userRepository.updateIsActiveById(isActive, id);
+        Role role = roleRepository.findById(2L)
+                .orElseThrow(()->new DataNotFoundException("Cannot find user with role user"));
+        return userRepository.getAllByRoleId(role.getId())
+                .stream()
+                .map(UserResponse::convertToUserResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public User updateUser(Long id, UserDTO userDTO) throws DataNotFoundException {
         User existsUser = getUser(id);
+        String phoneNumber = userDTO.getPhoneNumber();
+        if(userRepository.existsByPhoneNumber(phoneNumber)){
+            throw new DataIntegrityViolationException("Phone number already exists");
+        }
         if(existsUser != null){
-            userDTO.setPassword(existsUser.getPassword());
             existsUser.setFullname(userDTO.getFullName());
             existsUser.setPhoneNumber(userDTO.getPhoneNumber());
-            existsUser.setDateOfBirth(userDTO.getDateOfBirth());
             existsUser.setGender(userDTO.isGender());
+            existsUser.setDateOfBirth(userDTO.getDateOfBirth());
             existsUser.setAddress(userDTO.getAddress());
-            existsUser.setPassword(existsUser.getPassword());
+            existsUser.setUpdateAt(LocalDateTime.now());
             return userRepository.save(existsUser);
         }
         return null;
     }
-
-
 }
