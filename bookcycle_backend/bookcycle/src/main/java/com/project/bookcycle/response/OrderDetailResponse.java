@@ -1,9 +1,8 @@
-package com.project.shopapp.response;
+package com.project.bookcycle.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.shopapp.model.OrderDetail;
+import com.project.bookcycle.model.OrderDetail;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Data
@@ -34,10 +33,8 @@ public class OrderDetailResponse {
         return OrderDetailResponse.builder()
                 .orderId(orderDetail.getOrder().getId())
                 .productId(orderDetail.getProduct().getId())
-                .price(orderDetail.getPrice())
                 .numberOfProduct(orderDetail.getNumberOfProducts())
                 .totalMoney(orderDetail.getTotalMoney())
-                .color(orderDetail.getColor())
                 .build();
     }
 }

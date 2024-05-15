@@ -1,4 +1,4 @@
-package com.project.shopapp.response;
+package com.project.bookcycle.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.MappedSuperclass;

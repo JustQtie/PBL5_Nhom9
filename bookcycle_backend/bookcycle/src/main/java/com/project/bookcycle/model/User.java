@@ -27,9 +27,6 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", length = 255)
-    private String username;
-
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
@@ -50,6 +47,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "gender")
     private boolean gender;
+
+    @Column(name = "thumbnail")
+    private String thumbnail;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
