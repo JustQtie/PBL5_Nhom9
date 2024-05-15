@@ -3,7 +3,6 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 
 
 const Widget = ({ type }) => {
@@ -17,7 +16,6 @@ const Widget = ({ type }) => {
         case "user":
             data = {
                 title: "Người dùng",
-                isMoney: false,
                 link: "Xem tất cả",
                 icon: (
                     <PersonOutlineOutlinedIcon
@@ -32,9 +30,8 @@ const Widget = ({ type }) => {
             break;
         case "order":
             data = {
-                title: "Đơn hàng",
-                isMoney: false,
-                link: "Xem tất cả đơn hàng",
+                title: "Tổng giao dịch thành công",
+                link: "Xem tất cả",
                 icon: (
                     <ShoppingCartOutlinedIcon
                         className="icon"
@@ -44,27 +41,10 @@ const Widget = ({ type }) => {
                         }} />),
             };
             break;
-        case "earning":
-            data = {
-                title: "Doanh thu",
-                isMoney: false,
-                link: "Xem tất cả",
-                icon: (
-                    <MonetizationOnOutlinedIcon
-                        className="icon"
-                        style={{
-                            color: "green",
-                            backgroundColor: "rgba(0, 128, 0, 0.2)",
-                        }}
-                    />
-                ),
-            };
-            break;
         case "balance":
             data = {
-                title: "Bảng cân đối",
-                isMoney: true,
-                link: "Xem thêm",
+                title: "Tổng giao dịch thất bại",
+                link: "Xem tất cả",
                 icon: (
                     <AccountBalanceWalletOutlinedIcon
                         className="icon"
@@ -87,14 +67,13 @@ const Widget = ({ type }) => {
     return (
         <div className="widget">
             <div className="left">
-                <span className="title">{data.title}</span>
-                <span className="counter">{data.isMoney && "$"}{amount}</span>
+                <span className="title-widget">{data.title}</span>
+                <span className="counter">{amount}</span>
                 <span className="link">{data.link}</span>
             </div>
             <div className="right">
                 <div className="percentage positive">
                     <KeyboardArrowUpOutlinedIcon />
-                    {diff} %
                 </div>
                 {data.icon}
             </div>

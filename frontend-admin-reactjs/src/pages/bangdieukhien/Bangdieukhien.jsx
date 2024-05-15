@@ -3,29 +3,28 @@ import Navbar from "../../components/navbar/Navbar";
 import Widget from "../../components/widgets/Widget";
 import "./bangdieukhien.scss"
 import Featured from "../../components/featured/Featured";
-import Chart from "../../components/chart/Chart";
+import Chart3 from "../../components/chart3/Chart3";
 import Table from "../../components/table/Table";
 
 
 const Bangdieukhien = () => {
     return (
-        <div className="home">
+        <div className="bangdieukhien">
             <Sidebar />
-            <div className="homeContainer">
+            <div className="bangdieukhien-Container">
                 <Navbar />
-                <div className="widgets">
+                <div className="bangdieukhien-widgets">
                     <Widget type="user" />
                     <Widget type="order" />
-                    <Widget type="earning" />
                     <Widget type="balance" />
                 </div>
 
-                <div className="charts">
+                <div className="bangdieukhien-charts">
                     <Featured />
-                    <Chart title="Lịch sử giao dịch trong 6 tháng qua" aspect={2 / 1} />
+                    <Chart3 title="Lịch sử giao dịch trong 6 tháng qua" aspect={2 / 1} />
                 </div>
-                <div className="listContainer">
-                    <div className="listTitle">Giao dịch mới nhất</div>
+                <div className="bangdieukhien-listContainer">
+                    <div className="bangdieukhien-listTitle">Giao dịch mới nhất</div>
                     <Table />
                 </div>
 

@@ -1,16 +1,16 @@
 import "./qlnguoidung.scss"
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import Datatable from "../../components/datatable/Datatable";
+import Datatable_qlnd from "../../components/datatable/Datatable_qlnd";
 
 
 const Qlnguoidung = () => {
     return (
-        <div className="list">
+        <div className="list-qlnguoidung">
             <Sidebar />
-            <div className="listContainer">
+            <div className="listContainer-qlnguoidung">
                 <Navbar />
-                <Datatable />
+                <Datatable_qlnd />
             </div>
         </div>
     );

@@ -18,42 +18,42 @@ const Navbar = () => {
 
     return (
         <div className="navbar">
-            <div className="wrapper">
-                <div className="search">
+            <div className="navbar-wrapper">
+                <div className="navbar-search">
                     <input type="text" placeholder="Search..." />
                     <SearchOutlinedIcon />
                 </div>
-                <div className="item">
-                    <div className="item">
-                        <LanguageOutlinedIcon className="icon" />
+                <div className="navbar-item-to">
+                    <div className="navbar-item">
+                        <LanguageOutlinedIcon className="navbar-icon" />
                         Vietnamese
                     </div>
-                    <div className="item">
+                    <div className="navbar-item">
                         <Switch
                             style={{ color: "#2F80ED" }}
-                            className="icon"
+                            className="navbar-icon"
                             onClick={() => dispatch({ type: "TOGGLE" })}
                         />
                     </div>
-                    <div className="item">
-                        <FullscreenExitOutlinedIcon className="icon" />
+                    <div className="navbar-item">
+                        <FullscreenExitOutlinedIcon className="navbar-icon" />
                     </div>
-                    <div className="item">
-                        <NotificationsNoneOutlinedIcon className="icon" />
-                        <div className="couter">2</div>
+                    <div className="navbar-item">
+                        <NotificationsNoneOutlinedIcon className="navbar-icon" />
+                        <div className="navbar-couter">2</div>
                     </div>
-                    <div className="item">
-                        <ChatBubbleOutlineOutlinedIcon className="icon" />
-                        <div className="couter">1</div>
+                    <div className="navbar-item">
+                        <ChatBubbleOutlineOutlinedIcon className="navbar-icon" />
+                        <div className="navbar-couter">1</div>
                     </div>
-                    <div className="item">
-                        <ListOutlinedIcon className="icon" />
+                    <div className="navbar-item">
+                        <ListOutlinedIcon className="navbar-icon" />
                     </div>
-                    <div className="item">
+                    <div className="navbar-item">
                         <img
                             src="https://i.imgur.com/1nORATT.png"
                             alt=""
-                            className="avatar"
+                            className="navbar-avatar"
                         />
                     </div>
                 </div>

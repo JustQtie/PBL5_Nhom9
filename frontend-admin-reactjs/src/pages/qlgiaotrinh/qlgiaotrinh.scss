@@ -1,8 +1,45 @@
-.list {
+.list-qlgiaotrinh {
     display: flex;
     width: 100%;
 
-    .listContainer {
+    .listContainer-qlgiaotrinh {
         flex: 6;
+
+        .input-group {
+            position: relative;
+            margin: 20px 0;
+
+            label {
+                position: absolute;
+                top: 50%;
+                left: 5px;
+                transform: translateY(-50%);
+                font-size: 16px;
+                color: #7f8fa6;
+                padding: 0 5px;
+                pointer-events: none;
+                transition: .5s;
+            }
+
+            input {
+                width: 320px;
+                height: 40px;
+                font-size: 16px;
+                color: #0a0a0a;
+                padding: 0 10px;
+                background: transparent;
+                border: 1.2px solid #7f8fa6;
+                outline: none;
+                border-radius: 5px;
+
+                &:focus~label,
+                &:valid~label {
+                    top: 0;
+                    font-size: 12px;
+                    background: #f1f1f5;
+                }
+            }
+        }
+
     }
 }
