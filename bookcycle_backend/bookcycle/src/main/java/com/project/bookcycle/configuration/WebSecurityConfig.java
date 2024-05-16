@@ -46,9 +46,9 @@ public class WebSecurityConfig {
                         .hasRole("ADMIN")
                         .requestMatchers(PUT, String.format("%s/users/{id}", apiPrefix))
                         .hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(POST, String.format("%s/users/images/*", apiPrefix))
-                        .hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(POST, String.format("%s/users/*", apiPrefix))
+                        .requestMatchers(GET, String.format("%s/users/images/*", apiPrefix))
+                        .permitAll()
+                        .requestMatchers(POST, String.format("%s/users/{id}", apiPrefix))
                         .hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated());
 

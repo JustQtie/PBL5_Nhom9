@@ -141,7 +141,8 @@ public class UserService implements IUserService{
     public User updateUser(Long id, UserDTO userDTO) throws DataNotFoundException {
         User existsUser = getUser(id);
         String phoneNumber = userDTO.getPhoneNumber();
-        if(userRepository.existsByPhoneNumber(phoneNumber)){
+        String phoneNumber1 = existsUser.getPhoneNumber();
+        if(!phoneNumber.equals(phoneNumber1) && userRepository.existsByPhoneNumber(phoneNumber)){
             throw new DataIntegrityViolationException("Phone number already exists");
         }
         if(existsUser != null){

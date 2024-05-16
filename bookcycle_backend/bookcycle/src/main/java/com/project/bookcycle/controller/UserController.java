@@ -97,14 +97,22 @@ public class UserController {
         try{
 
             User user = userService.getUser(id);
-
-            JSONObject responseJson = new JSONObject();
-            responseJson.put("user", user);
-            responseJson.put("EC", 0);
-            return ResponseEntity.ok().body(responseJson.toString());
-        } catch (DataNotFoundException | JSONException e) {
+            UserResponse userResponse = UserResponse.builder()
+                    .id(user.getId())
+                    .password(user.getPassword())
+                    .fullname(user.getFullname())
+                    .phoneNumber(user.getPhoneNumber())
+                    .address(user.getAddress())
+                    .active(user.isActive())
+                    .dateOfBirth(user.getDateOfBirth())
+                    .gender(user.isGender())
+                    .role(user.getRole())
+                    .ec(0)
+                    .build();
+            return ResponseEntity.ok().body(userResponse);
+        } catch (DataNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(UserResponse.builder().ec(-1));
+            return ResponseEntity.badRequest().body(UserResponse.builder().ec(-1).build());
         }
     }
 
@@ -116,9 +124,26 @@ public class UserController {
     ) throws Exception{
         try {
             User updateUser = userService.updateUser(id, userDTO);
-            return ResponseEntity.ok(updateUser);
+            UserResponse userResponse = UserResponse.builder()
+                    .id(updateUser.getId())
+                    .password(updateUser.getPassword())
+                    .fullname(updateUser.getFullname())
+                    .phoneNumber(updateUser.getPhoneNumber())
+                    .address(updateUser.getAddress())
+                    .active(updateUser.isActive())
+                    .dateOfBirth(updateUser.getDateOfBirth())
+                    .gender(updateUser.isGender())
+                    .role(updateUser.getRole())
+                    .ec(0)
+                    .message("Update successfully!")
+                    .build();
+            return ResponseEntity.ok(userResponse);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(UserResponse.builder()
+                    .ec(-1)
+                    .message("Update error!")
+                    .build()
+            );
         }
     }
     @DeleteMapping("/{id}")
