@@ -15,4 +15,7 @@ public class RegisterResponse {
 
     @JsonProperty("user")
     private User user;
+
+    @JsonProperty("EC")
+    private String ec;
 }

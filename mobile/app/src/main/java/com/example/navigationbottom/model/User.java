@@ -6,6 +6,7 @@ import java.util.Date;
 public class User implements Serializable {
     private Long id;
     private String password;
+    private String retype_password;
     private String fullname;
     private String phone_number;
     private String address;
@@ -86,6 +87,14 @@ public class User implements Serializable {
         this.thumbnail = thumbnail;
     }
     public User() {
+    }
+
+    public String getRetype_password() {
+        return retype_password;
+    }
+
+    public void setRetype_password(String retype_password) {
+        this.retype_password = retype_password;
     }
 
     public User(Long id, String password, String fullname, String phoneNumber, String address, String active, Date dateOfBirth, String gender, String thumbnail) {

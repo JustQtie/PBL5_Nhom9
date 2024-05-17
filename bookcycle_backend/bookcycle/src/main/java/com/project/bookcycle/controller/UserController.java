@@ -53,14 +53,17 @@ public class UserController {
                         .map(FieldError::getDefaultMessage)
                         .toList();
                 registerResponse.setMessage(messageError.toString());
+                registerResponse.setEc("-1");
                 return ResponseEntity.badRequest().body(registerResponse);
             }
             if(!userDTO.getPassword().equals(userDTO.getRetypePassword())){
                 registerResponse.setMessage("Re-entered password is incorrect!");
+                registerResponse.setEc("-1");
                 return ResponseEntity.badRequest().body(registerResponse);
             }
             User user = userService.createUser(userDTO);
             registerResponse.setUser(user);
+            registerResponse.setEc("0");
             return ResponseEntity.ok().body(registerResponse);
         }catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
