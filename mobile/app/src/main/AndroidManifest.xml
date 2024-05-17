@@ -29,6 +29,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="29">
         <activity
+            android:name=".activity.DetailsHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditBookActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.AddBookActivity"
             android:exported="false" />
         <activity
