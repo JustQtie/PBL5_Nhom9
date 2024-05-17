@@ -23,7 +23,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="780dp"
+                android:layout_height="847dp"
                 android:background="@drawable/background_2_intro">
 
                 <ImageView
