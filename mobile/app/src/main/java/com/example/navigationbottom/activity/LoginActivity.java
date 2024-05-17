@@ -69,6 +69,12 @@ public class LoginActivity extends AppCompatActivity {
         User user = new User();
         user.setPhoneNumber(edtTaiKhoan.getText().toString().trim());
         user.setPassword(edtMauKhau.getText().toString().trim());
+
+//        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//        cua thao de test giao dien k can goi API
+
+
+
         userApiService = new UserApiService(this);
         userApiService.postUserLogin(user).enqueue(new Callback<LoginResponse>() {
             @Override
