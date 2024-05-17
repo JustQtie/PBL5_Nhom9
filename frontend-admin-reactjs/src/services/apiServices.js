@@ -55,17 +55,17 @@ const getUserById = (id, token) => {
 }
 
 const putUpdateUser = (id, fullname, phone_number, address, gender, token) => {
-    const data = new FormData();
-    data.append('fullname', fullname);
-    data.append('phone_number', phone_number);
-    data.append('address', address);
-    data.append('gender', gender);
-
-
+    const data = {
+        fullname: fullname,
+        phone_number: phone_number,
+        address: address,
+        gender: gender
+    };
 
     return axios.put(`api/v1/users/${id}`, data, {
         headers: {
-            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+            Authorization: `Bearer ${token}`, // Đính kèm token vào header Authorization
+            'Content-Type': 'application/json' // Đảm bảo kiểu nội dung là JSON
         }
     });
 }

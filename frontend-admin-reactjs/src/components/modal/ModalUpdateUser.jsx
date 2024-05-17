@@ -51,17 +51,23 @@ const ModalUpdateUser = (props) => {
 
         console.log("check", id, fullname, phoneNumber, address, gender, token);
 
-        let data = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
+        let response = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
 
-        console.log("check", 2);
-
-        if (data && data.EC === 0) {
-            toast.success(data.EM);
+        if (response && response.EC === 0) { // Điều chỉnh cho cấu trúc dữ liệu đúng
+            toast.success(response.EM); // Đảm bảo bạn đang truy cập phản hồi đúng cách
             handleClose();
             await fetchUser();
         } else {
-            toast.error(data.EM);
+            toast.error(response.EM); // Đảm bảo bạn đang truy cập thông báo lỗi đúng cách
         }
+
+        // try {
+
+        // } catch (error) {
+        //     console.error(error);
+        //     toast.error("Đã xảy ra lỗi khi cập nhật người dùng");
+        // }
+
     };
 
     return (

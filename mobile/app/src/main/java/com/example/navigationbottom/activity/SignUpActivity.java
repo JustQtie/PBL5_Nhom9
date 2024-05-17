@@ -4,27 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.navigationbottom.R;
-import com.google.gson.JsonObject;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText edt_username, edt_pass, edt_name, edt_phone, edt_email, edt_address;
+    private EditText edt_username, edt_pass, edt_pass_confi, edt_phone;
     private Button btn_register;
     private TextView txt_login;
 
@@ -33,8 +22,8 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        txt_login = findViewById(R.id.textView2);
-        btn_register = findViewById(R.id.btn_register);
+        txt_login = findViewById(R.id.tv_chuyenlogin);
+        btn_register = findViewById(R.id.btn_sigup);
         txt_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,18 +42,16 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void SignUp() {
         edt_username = findViewById(R.id.edtlayout_taikhoan);
-        edt_pass = findViewById(R.id.edtlayout_matkhau);
-        edt_name = findViewById(R.id.edtlayout_name);
-        edt_phone = findViewById(R.id.edtlayout_phone);
-        edt_email = findViewById(R.id.edtlayout_email);
-        edt_address = findViewById(R.id.edtlayout_address);
+        edt_pass = findViewById(R.id.edtlayout_password);
+        edt_pass_confi = findViewById(R.id.edtlayout_confirmPassword);
+        edt_phone = findViewById(R.id.edtlayout_phonenumber);
+
 
         String username = edt_username.getText().toString();
         String password = edt_pass.getText().toString();
-        String name = edt_name.getText().toString();
+
         String phone = edt_phone.getText().toString();
-        String email = edt_email.getText().toString();
-        String address = edt_address.getText().toString();
+
 
 
 
