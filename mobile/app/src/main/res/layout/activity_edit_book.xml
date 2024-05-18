@@ -5,17 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AddBookActivity">
+    tools:context=".activity.EditBookActivity">
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarAddBookActivity"
+        android:id="@+id/toolbarEditBookActivity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/background_navigation_toolbar"
         android:elevation="2dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:title="Add Book"
+        app:title="Edit Book"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarAddBookActivity">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarEditBookActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,82 +36,56 @@
             android:orientation="vertical"
             >
 
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_AddBookActivity"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="#15B3A4"-->
-<!--                android:minHeight="200dp"-->
-<!--                />-->
 
-
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/imageView"-->
-<!--                    android:layout_width="280dp"-->
-<!--                    android:layout_height="250dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginBottom="5dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:srcCompat="@drawable/rectangle_gredient" />-->
-
-<!--                <com.google.android.material.imageview.ShapeableImageView-->
-<!--                    android:id="@+id/iv_AddBookActivity1"-->
-<!--                    android:layout_width="260dp"-->
-<!--                    android:layout_height="240dp"-->
-<!--                    android:layout_margin="8dp"-->
-<!--                    android:scaleType="centerCrop"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@+id/imageView"-->
-<!--                    app:layout_constraintEnd_toEndOf="@+id/imageView"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/imageView"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/imageView"-->
-
-<!--                    app:srcCompat="@drawable/baseline_wallpaper_24"-->
-<!--                    app:strokeWidth="1dp" />-->
-
-
-            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-            <com.smarteist.autoimageslider.SliderView
-                android:id="@+id/slider"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_centerInParent="true"
-                app:sliderAnimationDuration="600"
-                app:sliderAutoCycleDirection="back_and_forth"
-                app:sliderIndicatorAnimationDuration="600"
-                app:sliderIndicatorEnabled="true"
-                app:sliderIndicatorGravity="center_horizontal|bottom"
-                app:sliderIndicatorMargin="15dp"
-                app:sliderIndicatorOrientation="horizontal"
-                app:sliderIndicatorPadding="3dp"
-                app:sliderIndicatorRadius="2dp"
-                app:sliderIndicatorSelectedColor="#5A5A5A"
-                app:sliderIndicatorUnselectedColor="#FFF"
-                app:sliderScrollTimeInSec="1" >
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/imageView77"
+                    android:layout_width="380dp"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/rectangle_gredient" />
 
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_EditBookActivity"
+                    android:layout_width="360dp"
+                    android:layout_height="230dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView77"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView77"
+                    app:layout_constraintStart_toStartOf="@+id/imageView77"
+                    app:layout_constraintTop_toTopOf="@+id/imageView77"
 
+                    app:srcCompat="@drawable/baseline_wallpaper_24"
+
+                    />
+                <!--                app:strokeWidth="1dp"-->
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/btn_camera_AddBookActivity"
-                    android:layout_width="420dp"
+                    android:id="@+id/btn_camera_EditBookActivity"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#B4B4BC"
                     android:clickable="true"
                     android:contentDescription="TODO"
                     android:focusable="true"
                     android:tint="@color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_AddBookActivity"
-                    app:layout_constraintEnd_toEndOf="@+id/iv_AddBookActivity"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_EditBookActivity"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_EditBookActivity"
                     app:srcCompat="@drawable/baseline_photo_camera_24" />
-            </com.smarteist.autoimageslider.SliderView>
 
 
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,7 +96,7 @@
                 android:paddingBottom="10dp"
                 >
                 <TextView
-                    android:id="@+id/textv1"
+                    android:id="@+id/textv14"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="10dp"
@@ -132,7 +106,7 @@
 
 
                 <EditText
-                    android:id="@+id/edt_Title_AddBookActivity"
+                    android:id="@+id/edt_Title_EditBookActivity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/editextstyle"
@@ -151,7 +125,7 @@
                 android:orientation="horizontal"
                 >
                 <TextView
-                    android:id="@+id/textv2"
+                    android:id="@+id/textv22"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="10dp"
@@ -161,7 +135,7 @@
 
 
                 <EditText
-                    android:id="@+id/edt_tacgia_AddBookActivity"
+                    android:id="@+id/edt_tacgia_EditBookActivity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/editextstyle"
@@ -180,7 +154,7 @@
                 android:orientation="horizontal"
                 >
                 <TextView
-                    android:id="@+id/textv3"
+                    android:id="@+id/textv33"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="10dp"
@@ -189,18 +163,17 @@
                     />
 
 
-                <NumberPicker
-                    android:id="@+id/number_so_luong"
+                <EditText
+                    android:id="@+id/edt_Soluong_EditBookActivity"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:padding="10dp"
                     android:textSize="18dp"
-                    android:background="@drawable/editextstyle"/>
+                    android:background="@drawable/editextstyle"
+                    android:padding="10dp"
+                    />
 
                 <TextView
-                    android:id="@+id/textv4"
+                    android:id="@+id/textv44"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="10dp"
@@ -210,9 +183,9 @@
 
 
                 <EditText
-                    android:id="@+id/edt_gia_AddBookActivity"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/edt_gia_EditBookActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:textSize="18dp"
                     android:background="@drawable/editextstyle"
                     android:padding="10dp"
@@ -229,7 +202,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/textv5"
+                    android:id="@+id/textv55"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -238,12 +211,12 @@
                     />
 
                 <Spinner
-                    android:id="@+id/spinner_book_category"
+                    android:id="@+id/spinner_book_category_EditBookActivity"
                     android:layout_width="match_parent"
-                    android:layout_marginRight="10dp"
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:background="@drawable/editextstyle"
+                    android:layout_marginRight="10dp"
                     />
 
 
@@ -257,7 +230,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/textv6"
+                    android:id="@+id/textv66"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -266,17 +239,17 @@
                     />
 
                 <Spinner
-                    android:id="@+id/spinner_book_status"
+                    android:id="@+id/spinner_book_status_EditBookActivity"
                     android:layout_width="match_parent"
-                    android:layout_marginRight="10dp"
                     android:layout_height="match_parent"
                     android:padding="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/editextstyle"
                     />
             </LinearLayout>
 
             <EditText
-                android:id="@+id/edt_mota_AddBookActivity"
+                android:id="@+id/edt_mota_EditBookActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -291,15 +264,36 @@
                 />
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_upload_AddBookActivity"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/background_login_btn3"
-                android:text="Upload"
-                android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:layout_margin="2dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_upload_EditBookActivity"
+                    android:layout_width="182dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_login_btn3"
+                    android:text="Upload"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_Delete_EditBookActivity"
+                    android:layout_width="182dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_login_btn5"
+                    android:text="Delete"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
@@ -308,3 +302,6 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
