@@ -7,9 +7,11 @@ import com.project.bookcycle.exceptions.InvalidParamException;
 import com.project.bookcycle.model.Category;
 import com.project.bookcycle.model.Product;
 import com.project.bookcycle.model.ProductImage;
+import com.project.bookcycle.model.User;
 import com.project.bookcycle.repository.CategoryRepository;
 import com.project.bookcycle.repository.ProductImageRepository;
 import com.project.bookcycle.repository.ProductRepository;
+import com.project.bookcycle.repository.UserRepository;
 import com.project.bookcycle.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class ProductService implements IProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
@@ -32,15 +35,21 @@ public class ProductService implements IProductService{
                 .orElseThrow(() ->
                         new DataNotFoundException(
                                 "Cannot find category with id: "+productDTO.getCategoryId()));
+        User existingUser = userRepository
+                .findById(productDTO.getUserId())
+                .orElseThrow(()->
+                        new DataNotFoundException("Cannot find user with id: "+productDTO.getUserId()));
 
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
+                .author(productDTO.getAuthor())
                 .price(productDTO.getPrice())
                 .quantity(productDTO.getQuantity())
                 .status(productDTO.getStatus())
                 .thumbnail(productDTO.getThumbnail())
                 .description(productDTO.getDescription())
                 .category(existingCategory)
+                .user(existingUser)
                 .build();
         return productRepository.save(newProduct);
     }
@@ -56,6 +65,14 @@ public class ProductService implements IProductService{
     public List<ProductResponse> getAllProducts(String keyword, Long categoryId) {
         return productRepository
                 .searchProducts(keyword, categoryId)
+                .stream()
+                .map(ProductResponse::convertToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getProductByUserId(Long userId) {
+        return productRepository.findByUserId(userId)
                 .stream()
                 .map(ProductResponse::convertToProductResponse)
                 .collect(Collectors.toList());

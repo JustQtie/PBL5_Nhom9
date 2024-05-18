@@ -4,6 +4,7 @@ import com.project.bookcycle.dto.ProductDTO;
 import com.project.bookcycle.dto.ProductImageDTO;
 import com.project.bookcycle.model.Product;
 import com.project.bookcycle.model.ProductImage;
+import com.project.bookcycle.response.ProductImageResponse;
 import com.project.bookcycle.response.ProductListResponse;
 import com.project.bookcycle.response.ProductResponse;
 import com.project.bookcycle.service.IProductService;
@@ -35,7 +36,6 @@ import java.util.UUID;
 public class ProductController {
     private final IProductService productService;
     @PostMapping("")
-    //POST http://localhost:8088/v1/api/products
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
             BindingResult result
@@ -94,9 +94,11 @@ public class ProductController {
             }
             String imgUrl = productImages.get(0).getImageUrl();
             productService.updateThumbnail(productId, imgUrl);
-            return ResponseEntity.ok().body(productImages);
+            ProductImageResponse productImageResponse = ProductImageResponse.builder().ec("0").build();
+            return ResponseEntity.ok().body(productImageResponse);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            ProductImageResponse productImageResponse = ProductImageResponse.builder().ec("-1").build();
+            return ResponseEntity.badRequest().body(productImageResponse);
         }
     }
     @GetMapping("/images/{imageName}")
@@ -144,11 +146,36 @@ public class ProductController {
             @RequestParam(value = "keyword", defaultValue = "")  String keyword,
             @RequestParam(value = "category_id", defaultValue = "0")  Long categoryId
     ) {
-        List<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId);
-        return ResponseEntity.ok(ProductListResponse
-                .builder()
-                .productResponseList(productPage)
-                .build());
+        try {
+            List<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId);
+            return ResponseEntity.ok(ProductListResponse
+                    .builder()
+                    .productResponseList(productPage)
+                    .ec("0")
+                    .build());
+        }catch(Exception e){
+            return ResponseEntity.ok(ProductListResponse
+                    .builder()
+                    .ec("-1")
+                    .build());
+        }
+    }
+    @PostMapping("/byuser/{id}")
+    public ResponseEntity<ProductListResponse> getProductsByUserId(
+            @PathVariable("id") Long userId
+    ){
+        try {
+            List<ProductResponse> productResponses = productService.getProductByUserId(userId);
+            return ResponseEntity.ok(ProductListResponse.builder()
+                        .productResponseList(productResponses)
+                        .ec("0").build());
+        }catch (Exception e){
+
+            return ResponseEntity.badRequest().body(ProductListResponse.builder()
+                    .ec("-1").build());
+        }
+
+
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(
@@ -156,9 +183,11 @@ public class ProductController {
     ) {
         try {
             Product existingProduct = productService.getProduct(productId);
-            return ResponseEntity.ok(ProductResponse.convertToProductResponse(existingProduct));
+            ProductResponse productResponse = ProductResponse.convertToProductResponse(existingProduct);
+            productResponse.setEc("0");
+            return ResponseEntity.ok(productResponse);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(ProductResponse.builder().ec("-1").build());
         }
     }
     @DeleteMapping("/{id}")

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddBookActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarAddBookActivity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_navigation_toolbar"
+        android:elevation="2dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:title="Add Book"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/white"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarAddBookActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:orientation="vertical"
+            >
+
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_centerInParent="true"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorEnabled="true"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1" >
+
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_camera_AddBookActivity"
+                    android:layout_width="420dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#B4B4BC"
+                    android:clickable="true"
+                    android:contentDescription="TODO"
+                    android:focusable="true"
+                    android:tint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_AddBookActivity"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_AddBookActivity"
+                    app:srcCompat="@drawable/baseline_photo_camera_24" />
+            </com.smarteist.autoimageslider.SliderView>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                >
+                <TextView
+                    android:id="@+id/textv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textSize="18dp"
+                    android:text="Tiêu đề:"
+                    />
+
+
+                <EditText
+                    android:id="@+id/edt_Title_AddBookActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/editextstyle"
+                    android:hint="Nhập tiêu đề"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:layout_marginEnd="10dp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/textv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textSize="18dp"
+                    android:text="Tác giả:"
+                    />
+
+
+                <EditText
+                    android:id="@+id/edt_tacgia_AddBookActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/editextstyle"
+                    android:hint="Nhập tác giả"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:layout_marginEnd="10dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:id="@+id/textv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textSize="18dp"
+                    android:text="Số lượng:"
+                    />
+
+
+                <NumberPicker
+                    android:id="@+id/number_so_luong"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textSize="18dp"
+                    android:background="@drawable/editextstyle"/>
+
+                <TextView
+                    android:id="@+id/textv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textSize="18dp"
+                    android:text="Giá:"
+                    />
+
+
+                <EditText
+                    android:id="@+id/edt_gia_AddBookActivity"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:background="@drawable/editextstyle"
+                    android:padding="10dp"
+                    android:layout_marginEnd="10dp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="18dp"
+                    android:text="Loại sách:"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinner_book_category"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:background="@drawable/editextstyle"
+                    />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textv6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="18dp"
+                    android:text="Trạng thái:"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinner_book_status"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:background="@drawable/editextstyle"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edt_mota_AddBookActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:hint="Enter description"
+                android:inputType="textCapSentences|textMultiLine"
+                android:minHeight="120dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="start"
+                android:singleLine="true"
+                android:background="@drawable/editextstyle"
+                />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_upload_AddBookActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_login_btn3"
+                android:text="Upload"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
