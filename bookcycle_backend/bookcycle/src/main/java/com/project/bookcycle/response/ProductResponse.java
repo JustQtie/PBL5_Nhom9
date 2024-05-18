@@ -16,14 +16,17 @@ public class ProductResponse extends BaseResponse{
     private String name;
     private String author;
     private Float price;
+    private Float point;
     private String description;
     private int quantity;
     private String status;
-    private User user;
+
     private String thumbnail;
     @JsonProperty("EC")
     private String ec;
 
+    @JsonProperty("user_id")
+    private long userId;
     @JsonProperty("category_id")
     private long categoryId;
 
@@ -33,10 +36,11 @@ public class ProductResponse extends BaseResponse{
                 .name(product.getName())
                 .author(product.getAuthor())
                 .price(product.getPrice())
+                .point(product.getPoint())
                 .description(product.getDescription())
                 .quantity(product.getQuantity())
                 .status(product.getStatus())
-                .user(product.getUser())
+                .userId(product.getUser().getId())
                 .thumbnail(product.getThumbnail())
                 .categoryId(product.getCategory().getId())
                 .build();

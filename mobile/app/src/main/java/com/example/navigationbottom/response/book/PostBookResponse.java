@@ -34,7 +34,8 @@ public class PostBookResponse {
     @SerializedName("category")
     private Category category;
 
-
+    @SerializedName("EC")
+    private String ec;
 
     public Long getId() {
         return id;

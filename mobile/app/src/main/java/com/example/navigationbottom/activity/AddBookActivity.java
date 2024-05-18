@@ -246,10 +246,11 @@ public class AddBookActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.show();
 
-
                 if(imageUris == null){
                     Toast.makeText(AddBookActivity.this, "Please upload photos before posting books for sale", Toast.LENGTH_SHORT).show();
-                }else if(TextUtils.isEmpty(edtTacgia.toString().trim()) || TextUtils.isEmpty(edtTieude.toString().trim()) || TextUtils.isEmpty(edtGia.toString().trim())){
+                } else if (imageUris.size()>5) {
+                    Toast.makeText(AddBookActivity.this, "Only a maximum of 5 photos can be selected", Toast.LENGTH_SHORT).show();
+                } else if(TextUtils.isEmpty(edtTacgia.toString().trim()) || TextUtils.isEmpty(edtTieude.toString().trim()) || TextUtils.isEmpty(edtGia.toString().trim())){
                     Toast.makeText(AddBookActivity.this, "Please upload photos before posting books for sale", Toast.LENGTH_SHORT).show();
                 }else {
                     User user = UserDataSingleton.getInstance().getUser();

@@ -36,46 +36,6 @@
             android:orientation="vertical"
             >
 
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_AddBookActivity"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="#15B3A4"-->
-<!--                android:minHeight="200dp"-->
-<!--                />-->
-
-
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/imageView"-->
-<!--                    android:layout_width="280dp"-->
-<!--                    android:layout_height="250dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginBottom="5dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:srcCompat="@drawable/rectangle_gredient" />-->
-
-<!--                <com.google.android.material.imageview.ShapeableImageView-->
-<!--                    android:id="@+id/iv_AddBookActivity1"-->
-<!--                    android:layout_width="260dp"-->
-<!--                    android:layout_height="240dp"-->
-<!--                    android:layout_margin="8dp"-->
-<!--                    android:scaleType="centerCrop"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@+id/imageView"-->
-<!--                    app:layout_constraintEnd_toEndOf="@+id/imageView"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/imageView"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/imageView"-->
-
-<!--                    app:srcCompat="@drawable/baseline_wallpaper_24"-->
-<!--                    app:strokeWidth="1dp" />-->
-
-
-            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/slider"

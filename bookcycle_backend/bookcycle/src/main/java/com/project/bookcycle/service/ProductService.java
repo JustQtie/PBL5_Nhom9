@@ -71,6 +71,14 @@ public class ProductService implements IProductService{
     }
 
     @Override
+    public List<ProductResponse> getProductByUserId(Long userId) {
+        return productRepository.findByUserId(userId)
+                .stream()
+                .map(ProductResponse::convertToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Product updateProduct(long id, ProductDTO productDTO) throws DataNotFoundException {
         Product existingProduct = getProduct(id);
         if(existingProduct != null) {

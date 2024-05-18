@@ -3,6 +3,7 @@ package com.example.navigationbottom.viewmodel;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.category.GetCategoryResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
@@ -55,4 +56,8 @@ public class CategoryApiService {
     public Call<GetCategoryResponse> getListCategory(){
         return api.getListCategory();
     }
+    public Call<Category> getCategoriesById(Long id){
+        return api.getCategoryById(id);
+    }
+
 }

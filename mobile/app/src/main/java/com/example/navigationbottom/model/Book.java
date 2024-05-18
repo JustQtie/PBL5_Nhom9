@@ -1,14 +1,20 @@
 package com.example.navigationbottom.model;
 
 
-public class Book {
+import com.google.gson.annotations.SerializedName;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class Book {
+    private Long id;
     private String name;
     private String author;
 
     private Float price;
     private String thumbnail;
 
+    private Float point;
     private String status;
     private String description;
 
@@ -17,6 +23,19 @@ public class Book {
     private long user_id;
 
     private long category_id;
+    private List<Integer> created_at;  // Thay đổi từ Object sang List<Integer>
+    private List<Integer> updated_at;
+
+    @SerializedName("EC")
+    private String ec;
+
+    public String getEc() {
+        return ec;
+    }
+
+    public void setEc(String ec) {
+        this.ec = ec;
+    }
 
     public String getName() {
         return name;
@@ -90,7 +109,51 @@ public class Book {
         this.author = author;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Float getPoint() {
+        return point;
+    }
+
+    public void setPoint(Float point) {
+        this.point = point;
+    }
+
+    public List<Integer> getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(List<Integer> created_at) {
+        this.created_at = created_at;
+    }
+
+    public List<Integer> getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(List<Integer> updated_at) {
+        this.updated_at = updated_at;
+    }
+
     public Book() {
 
+    }
+
+    public Book(Long id, String name, String author, Float price, String thumbnail, Float point, String status, String description, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.price = price;
+        this.thumbnail = thumbnail;
+        this.point = point;
+        this.status = status;
+        this.description = description;
+        this.quantity = quantity;
     }
 }

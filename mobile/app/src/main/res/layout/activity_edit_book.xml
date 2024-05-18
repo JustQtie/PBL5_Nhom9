@@ -37,55 +37,39 @@
             >
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="150dp"
+                android:layout_centerInParent="true"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorEnabled="true"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1" >
 
-                <ImageView
-                    android:id="@+id/imageView77"
-                    android:layout_width="380dp"
-                    android:layout_height="250dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/rectangle_gredient" />
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_EditBookActivity"
-                    android:layout_width="360dp"
-                    android:layout_height="230dp"
-                    android:layout_margin="8dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView77"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView77"
-                    app:layout_constraintStart_toStartOf="@+id/imageView77"
-                    app:layout_constraintTop_toTopOf="@+id/imageView77"
 
-                    app:srcCompat="@drawable/baseline_wallpaper_24"
-
-                    />
-                <!--                app:strokeWidth="1dp"-->
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btn_camera_EditBookActivity"
-                    android:layout_width="wrap_content"
+                    android:layout_width="420dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#B4B4BC"
                     android:clickable="true"
                     android:contentDescription="TODO"
                     android:focusable="true"
                     android:tint="@color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_EditBookActivity"
-                    app:layout_constraintEnd_toEndOf="@+id/iv_EditBookActivity"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_AddBookActivity"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_AddBookActivity"
                     app:srcCompat="@drawable/baseline_photo_camera_24" />
-
-
-
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.smarteist.autoimageslider.SliderView>
 
             <LinearLayout
                 android:layout_width="match_parent"
