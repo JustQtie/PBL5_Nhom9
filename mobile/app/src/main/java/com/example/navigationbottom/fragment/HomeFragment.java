@@ -12,15 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.navigationbottom.R;
-import com.example.navigationbottom.adaper.BooksAdapter;
+import com.example.navigationbottom.adaper.BooksAdapterForHome;
 import com.example.navigationbottom.model.Book;
-import com.example.navigationbottom.model.User;
 
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
     private RecyclerView rvBooks;
-    private BooksAdapter booksAdapter;
+    private BooksAdapterForHome booksAdapter;
     private ArrayList<Book> books;
     private View mView;
     public HomeFragment() {
@@ -65,7 +64,7 @@ public class HomeFragment extends Fragment {
 
     private void getAllBook() {
 
-        booksAdapter = new BooksAdapter(books, getActivity());
+        booksAdapter = new BooksAdapterForHome(books, getActivity());
         rvBooks.setAdapter(booksAdapter);
     }
 
