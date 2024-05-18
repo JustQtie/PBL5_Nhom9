@@ -1,22 +1,14 @@
-package com.example.navigationbottom.response;
+package com.example.navigationbottom.response.user;
 
 import com.example.navigationbottom.model.User;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+public class RegisterResponse {
     @SerializedName("message")
     private String message;
-
-    @SerializedName("token")
-    private String token;
-
-    @SerializedName("role")
-    private String role;
-
     @SerializedName("user")
     private User user;
-
-    @SerializedName("EC")
+    @SerializedName("ec")
     private String ec;
 
     public String getMessage() {
@@ -25,22 +17,6 @@ public class LoginResponse {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public User getUser() {

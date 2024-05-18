@@ -14,12 +14,15 @@ import lombok.*;
 public class ProductResponse extends BaseResponse{
     private Long id;
     private String name;
+    private String author;
     private Float price;
     private String description;
     private int quantity;
     private String status;
     private User user;
     private String thumbnail;
+    @JsonProperty("EC")
+    private String ec;
 
     @JsonProperty("category_id")
     private long categoryId;
@@ -28,6 +31,7 @@ public class ProductResponse extends BaseResponse{
         ProductResponse productResponse = ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
+                .author(product.getAuthor())
                 .price(product.getPrice())
                 .description(product.getDescription())
                 .quantity(product.getQuantity())

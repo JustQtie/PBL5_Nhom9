@@ -1,8 +1,8 @@
 package com.example.navigationbottom.viewmodel;
 
 import com.example.navigationbottom.model.User;
-import com.example.navigationbottom.response.LoginResponse;
-import com.example.navigationbottom.response.RegisterResponse;
+import com.example.navigationbottom.response.user.LoginResponse;
+import com.example.navigationbottom.response.user.RegisterResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

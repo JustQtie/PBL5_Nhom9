@@ -9,6 +9,8 @@ import android.view.MenuItem;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.MyViewPagerAdapter;
+import com.example.navigationbottom.fragment.SellFragment;
+import com.example.navigationbottom.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -22,6 +24,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras.containsKey("dataFromAddBookActivity")) {
+                // Sau đó, chuyển đến SellFragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.rv_sell_fragment, new SellFragment())
+                        .commit();
+            }
+        }
 
         mViewPager2 = findViewById(R.id.view_pager_2);
         mbottomNavigationView = findViewById(R.id.bottom_navigation);

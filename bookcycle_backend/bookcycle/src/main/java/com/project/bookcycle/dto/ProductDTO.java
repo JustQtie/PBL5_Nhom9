@@ -18,6 +18,9 @@ public class ProductDTO {
     @Size(min = 3, max = 200, message="Title must be between 3 and 200 character")
     private String name;
 
+    @Size(min = 10, max = 100, message="Title must be between 10 and 100 character")
+    private String author;
+
     @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Max(value = 10000000, message = "Price must be less than or equal to 10,000,000")
     private Float price;
@@ -29,10 +32,9 @@ public class ProductDTO {
     private String description;
 
     @Min(value = 0, message = "Quantity must be greater than or equal to 0")
-    @NotBlank(message = "Quantity is required")
     private int quantity;
 
-    @JsonProperty("user_id") //Thuộc tính được chuyển đổi thành category_id khi chuyển về dữ liệu Json.
+    @JsonProperty("user_id")
     private long userId;
 
     @JsonProperty("category_id") //Thuộc tính được chuyển đổi thành category_id khi chuyển về dữ liệu Json.
