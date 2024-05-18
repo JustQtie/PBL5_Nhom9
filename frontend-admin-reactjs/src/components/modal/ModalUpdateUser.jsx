@@ -8,18 +8,10 @@ import _ from 'lodash';
 import "./modalUpdateUser.scss"
 
 const ModalUpdateUser = (props) => {
-    const { show, setShow, userData } = props;
+    const { show, setShow, userData, fetchUser } = props;
 
     const handleClose = () => {
         setShow(false);
-        // setId("");
-        // setFullName("");
-        // setPhoneNumber("");
-        // setAddress("");
-        // setGender("");
-        // setPreviewImage("");
-        // resetUpdateData();
-
     };
 
     const [id, setId] = useState("");
@@ -34,53 +26,49 @@ const ModalUpdateUser = (props) => {
         if (!_.isEmpty(userData)) {
             setId(userData.id);
             setFullName(userData.fullname);
-            setPhoneNumber(userData.phoneNumber);
+            setPhoneNumber(userData.phone_number);
             setAddress(userData.address);
             setGender(userData.gender);
             if (userData.image) {
                 setPreviewImage(`data:image/jpeg;base64,${userData.image}`);
             }
-
         }
-    }, [userData])
+    }, [userData]);
 
     const handleUploadImage = (event) => {
         if (event.target && event.target.files && event.target.files[0]) {
             setPreviewImage(URL.createObjectURL(event.target.files[0]));
             setImage(event.target.files[0]);
-        } else {
-            // setPreviewImage("");
         }
+    };
 
-    }
-
-
-    const handSubmitCreateUser = async () => {
-        // alert(gender);
-
-        // Lấy token từ localStorage
+    const handSubmitUpdateUser = async () => {
         const token = localStorage.getItem("token");
-
-        // Nếu không có token, không gọi API và kết thúc hàm
         if (!token) {
-            toast.error("Token not found");
+            toast.error("Token không được tìm thấy");
             return;
         }
-        // // call API
-        console.log("check>>>", 1);
-        let data = await putUpdateUser(userData.id, fullname, phoneNumber, address, gender, token);
 
-        if (data && data.EC === 0) {
-            toast.success(data.EM);
-            handleClose();
-            // await props.fetchUsers();
-        }
-        if (data && data.EC !== 0) {
-            toast.error(data.EM);
-            handleClose();
-        }
-    }
+        console.log("check", id, fullname, phoneNumber, address, gender, token);
 
+        let response = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
+
+        if (response && response.EC === 0) { // Điều chỉnh cho cấu trúc dữ liệu đúng
+            toast.success(response.EM); // Đảm bảo bạn đang truy cập phản hồi đúng cách
+            handleClose();
+            await fetchUser();
+        } else {
+            toast.error(response.EM); // Đảm bảo bạn đang truy cập thông báo lỗi đúng cách
+        }
+
+        // try {
+
+        // } catch (error) {
+        //     console.error(error);
+        //     toast.error("Đã xảy ra lỗi khi cập nhật người dùng");
+        // }
+
+    };
 
     return (
         <>
@@ -92,36 +80,33 @@ const ModalUpdateUser = (props) => {
                     <form className="row g-3">
                         <div className="col-md-6">
                             <label className="form-label">ID</label>
-                            <input type="text" disabled className="form-control" value={id} onChange={(event) => setId(event.target.value)} />
+                            <input type="text" disabled className="form-control" value={id} />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Full Name</label>
+                            <label className="form-label">Họ và tên</label>
                             <input type="text" className="form-control" value={fullname} onChange={(event) => setFullName(event.target.value)} />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Phone Number</label>
+                            <label className="form-label">Số điện thoại</label>
                             <input type="text" className="form-control" value={phoneNumber} onChange={(event) => setPhoneNumber(event.target.value)} />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Address</label>
+                            <label className="form-label">Địa chỉ</label>
                             <input type="text" className="form-control" value={address} onChange={(event) => setAddress(event.target.value)} />
                         </div>
-
                         <div className="col-md-6">
-                            <label className="form-label">Gender</label>
+                            <label className="form-label">Giới tính</label>
                             <select className="form-select" value={gender} onChange={(event) => setGender(event.target.value)}>
-                                <option value="true" >Nam</option>
+                                <option value="true">Nam</option>
                                 <option value="false">Nữ</option>
                             </select>
                         </div>
                         <div className='col-md-12'>
-                            <label className="form-label label-upload" htmlFor='labelUpload' > <FcPlus /> Upload File Image</label>
-                            <input type='file' id='labelUpload' hidden onChange={(event) => handleUploadImage(event)} />
+                            <label className="form-label label-upload" htmlFor='labelUpload'><FcPlus /> Upload File Image</label>
+                            <input type='file' id='labelUpload' hidden onChange={handleUploadImage} />
                         </div>
-
                         <div className='col-md-12 img-preview'>
-                            {previewImage ? <img src={previewImage} /> : <span >preview img</span>}
-
+                            {previewImage ? <img src={previewImage} alt="preview" /> : <span>Preview Image</span>}
                         </div>
                     </form>
                 </Modal.Body>
@@ -129,13 +114,13 @@ const ModalUpdateUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Đóng
                     </Button>
-                    <Button variant="primary" onClick={handSubmitCreateUser}>
+                    <Button variant="primary" onClick={handSubmitUpdateUser}>
                         Lưu thông tin
                     </Button>
                 </Modal.Footer>
             </Modal>
         </>
     );
-}
+};
 
 export default ModalUpdateUser;

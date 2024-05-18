@@ -61,7 +61,7 @@ public class JwtTokenFilter extends OncePerRequestFilter { // //Lớp OncePerReq
     private boolean isPassToken(@NonNull HttpServletRequest request){
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
                 Pair.of(String.format("%s/products", apiPrefix), "GET"),
-                //Pair.of(String.format("%s/categories", apiPrefix), "GET"),
+                Pair.of(String.format("%s/categories", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST")
         ); // Tạo danh sách các api được lọc qua mà không cần token hay đăng nhập, đăng ký.

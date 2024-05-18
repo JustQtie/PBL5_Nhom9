@@ -1,6 +1,7 @@
 package com.project.bookcycle.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.bookcycle.model.Role;
 import com.project.bookcycle.model.User;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.sql.Date;
 @Builder
 public class UserResponse extends BaseResponse{
     private Long id;
+    private String password;
     private String fullname;
     @JsonProperty("phone_number")
     private String phoneNumber;
@@ -23,8 +25,11 @@ public class UserResponse extends BaseResponse{
     private Date dateOfBirth;
     private boolean gender;
     private String thumbnail;
+    private Role role;
     @JsonProperty("EC")
     private int ec;
+    @JsonProperty("EM")
+    private String message;
 
     public static UserResponse convertToUserResponse(User user){
         UserResponse userResponse = UserResponse.builder()

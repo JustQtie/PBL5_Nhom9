@@ -1,40 +1,15 @@
-import "./hoso.scss"
+import "./hoso.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useEffect, useState } from "react";
-import _ from 'lodash';
 import ModalUpdateUser from "../../components/modal/ModalUpdateUser";
-import { putUpdateUser } from "../../services/apiServices";
+import { getUserById } from "../../services/apiServices";
+import { toast } from 'react-toastify';
 
 const Hoso = () => {
-
     const [showModalUpdateuser, setShowModalUpdate] = useState(false);
-    // const [dataUpdate, setDataUpdate] = useState({});
     const [userData, setUserData] = useState({});
-    const [listUsers, setListUsers] = useState([]);
-
-    useEffect(() => {
-        // fetchUsers();
-        const userDataString = localStorage.getItem("userData");
-        if (userDataString) {
-            // const userData = JSON.parse(userDataString);
-            setUserData(JSON.parse(userDataString));
-
-        }
-    }, []);
-
-    // const fetchUsers = async () => {
-    //     let res = await getAllUsers();
-    //     if (res.EC === 0) {
-    //         setListUsers(res.DT)
-    //     }
-    // }
-
-
-    const handClickBtnUpdate = () => {
-        setShowModalUpdate(true);
-        // setDataUpdate(user);
-    }
+    const [userId, setUserId] = useState("");
 
     const [id, setId] = useState("");
     const [fullname, setFullName] = useState("");
@@ -43,6 +18,51 @@ const Hoso = () => {
     const [gender, setGender] = useState("");
     const [previewImage, setPreviewImage] = useState("");
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            toast.error("Token không được tìm thấy");
+            return;
+        }
+
+        const userDataString = localStorage.getItem("userData");
+        if (userDataString) {
+            const userDataObject = JSON.parse(userDataString);
+            setUserId(userDataObject.id);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (userId) {
+            fetchUser();
+        }
+    }, [userId]);
+
+    const fetchUser = async () => {
+        const token = localStorage.getItem("token");
+        try {
+            const res = await getUserById(userId, token);
+            if (res.EC === 0) {
+                const user = res;
+                setUserData(user);
+                setId(user.id);
+                setFullName(user.fullname);
+                setPhoneNumber(user.phone_number);
+                setAddress(user.address);
+                setGender(user.gender);
+                setPreviewImage(user.image ? `data:image/jpeg;base64,${user.image}` : "");
+            } else {
+                toast.error("Không thể lấy dữ liệu người dùng");
+            }
+        } catch (error) {
+            console.error("Fetch user error:", error);
+            toast.error("Có lỗi xảy ra khi lấy dữ liệu người dùng");
+        }
+    }
+
+    const handClickBtnUpdate = () => {
+        setShowModalUpdate(true);
+    }
 
     return (
         <div className="hoso-list">
@@ -54,37 +74,31 @@ const Hoso = () => {
                 </div>
                 <div className="hoso-bottom">
                     <div className="hoso-left">
-                        {previewImage ? <img className="hoso-img" src={previewImage} /> : <img className="hoso-img" src={"https://i.imgur.com/2zLfMh6.jpeg"} />}
+                        <img className="hoso-img" src={previewImage || "https://i.imgur.com/2zLfMh6.jpeg"} alt="profile" />
                     </div>
                     <div className="hoso-right">
-
                         <div className="col-md-6">
                             <label className="form-label">ID</label>
-                            <input type="text" disabled className="form-control" value={userData.id} onChange={(event) => setId(event.target.value)} />
+                            <input type="text" disabled className="form-control" value={id} />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Full Name</label>
-                            <input type="text" disabled className="form-control" value={userData.fullname} onChange={(event) => setFullName(event.target.value)} />
+                            <label className="form-label">Họ và tên</label>
+                            <input type="text" disabled className="form-control" value={fullname} />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Phone Number</label>
-                            <input type="text" disabled className="form-control" value={userData.phoneNumber} onChange={(event) => setPhoneNumber(event.target.value)} />
+                            <label className="form-label">Số điện thoại</label>
+                            <input type="text" disabled className="form-control" value={phoneNumber} />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Address</label>
-                            <input type="text" disabled className="form-control" value={userData.address} onChange={(event) => setAddress(event.target.value)} />
+                            <label className="form-label">Địa chỉ</label>
+                            <input type="text" disabled className="form-control" value={address} />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Gender</label>
-                            <input type="text" disabled className="form-control" value={userData.gender ? "Nam" : "Nữ"} onChange={(event) => setGender(event.target.value)} />
+                            <label className="form-label">Giới tính</label>
+                            <input type="text" disabled className="form-control" value={gender ? "Nam" : "Nữ"} />
                         </div>
                         <div className="col-md-6 d-flex justify-content-center">
-                            <button
-
-                                onClick={() => {
-                                    handClickBtnUpdate();
-                                }}
-                            >
+                            <button onClick={handClickBtnUpdate}>
                                 Chỉnh sửa
                             </button>
                         </div>
@@ -92,11 +106,8 @@ const Hoso = () => {
                             show={showModalUpdateuser}
                             setShow={setShowModalUpdate}
                             userData={userData}
-                        // fetchUsers={fetchUsers}
-
-
+                            fetchUser={fetchUser}
                         />
-
                     </div>
                 </div>
             </div>

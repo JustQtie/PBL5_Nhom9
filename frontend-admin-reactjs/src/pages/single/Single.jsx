@@ -5,11 +5,22 @@ import Chart from "../../components/chart/Chart"
 import Chart2 from "../../components/chart2/Chart2"
 // import Chart3 from "../../components/chart3/Chart3"
 import Widget from "../../components/widgets/Widget"
-import List from "../../components/table/Table"
+import { useLocation } from "react-router-dom";
+
 
 
 const Single = () => {
+    const location = useLocation();
+    const userDetail = location.state?.user;
+    if (!userDetail) {
+        return <div>No user data available</div>;
+    }
+
+
+
+
     return (
+
         <div className="single">
             <Sidebar />
             <div className="singleContainer">
@@ -21,18 +32,23 @@ const Single = () => {
                         <div className="item">
                             <img src="https://i.imgur.com/1nORATT.png" alt="" className="itemImg" />
                             <div className="details">
-                                <h1 className="itemTitle">Hồ Văn Thảo</h1>
+                                <h1 className="itemTitle">{userDetail.phone_number}</h1>
+
                                 <div className="detailItem">
-                                    <span className="itemKey">Email:</span>
-                                    <span className="itemValue">hovanthao0611@gmail.com</span>
+                                    <span className="itemKey">Trạng thái:</span>
+                                    <span className="itemValue">{userDetail.active ? "Hoạt động" : "Cấm hoạt động"}</span>
                                 </div>
                                 <div className="detailItem">
                                     <span className="itemKey">Số điện thoại:</span>
-                                    <span className="itemValue">0369276372</span>
+                                    <span className="itemValue">{userDetail.phone_number}</span>
+                                </div>
+                                <div className="detailItem">
+                                    <span className="itemKey">Giới tính:</span>
+                                    <span className="itemValue">{userDetail.gender ? "Nam" : "Nữ"}</span>
                                 </div>
                                 <div className="detailItem">
                                     <span className="itemKey">Địa chỉ:</span>
-                                    <span className="itemValue">Gia lai</span>
+                                    <span className="itemValue">{userDetail.address}</span>
                                 </div>
 
                             </div>
