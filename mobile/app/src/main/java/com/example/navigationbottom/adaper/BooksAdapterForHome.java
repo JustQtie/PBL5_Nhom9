@@ -10,24 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
-import com.example.navigationbottom.activity.AddBookActivity;
 import com.example.navigationbottom.activity.DetailsHomeActivity;
-import com.example.navigationbottom.activity.EditBookActivity;
 import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.viewmodel.ApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -35,18 +30,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import java.util.logging.LogRecord;
-
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapter.BookViewHolder>{
+public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHome.BookViewHolder>{
     private Context mContext;
     public static ArrayList<Book> books;
+
     private ExecutorService executorService;
     private Handler mainHandler;
-    public BooksForSellAdapter(ArrayList<Book> books, Context mContext) {
+    public BooksAdapterForHome(ArrayList<Book> books, Context mContext) {
         this.books = books;
         this.mContext = mContext;
         this.executorService = Executors.newSingleThreadExecutor();
@@ -55,19 +48,21 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
 
     @NonNull
     @Override
-    public BooksForSellAdapter.BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BooksAdapterForHome.BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_item, parent, false);
 
         return new BookViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BooksForSellAdapter.BookViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BooksAdapterForHome.BookViewHolder holder, int position) {
+
         Book book = books.get(position);
         if(book == null){
             return;
         }
-        // Call API to get Category by ID in a separate thread
+
+// Call API to get Category by ID in a separate thread
         Callable<Category> callable = new Callable<Category>() {
             @Override
             public Category call() throws Exception {
@@ -107,8 +102,6 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
             }
         });
 
-
-
         try {
             String imageUrl = ApiService.BASE_URL + "api/v1/products/images/" + book.getThumbnail();
             Log.d("url_img", imageUrl);
@@ -129,9 +122,6 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
                     .into(holder.ivItem);
         }
 
-
-
-
         holder.tvGia.setText(book.getPrice() + "VND");
         holder.tvNguoiBan.setText(book.getAuthor());
         holder.tvSoLuong.setText( "SL: " + book.getQuantity());
@@ -141,8 +131,8 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
             @Override
             public void onClick(View v) {
                 // nho chuyen id qua de goi API
-                Intent intent = new Intent(mContext, EditBookActivity.class);
-                intent.putExtra("book", book.getId());
+                Intent intent = new Intent(mContext, DetailsHomeActivity.class);
+                //intent.putExtra("book", book);
                 mContext.startActivity(intent);
 
             }

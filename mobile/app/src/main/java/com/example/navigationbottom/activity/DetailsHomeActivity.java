@@ -35,11 +35,11 @@ public class DetailsHomeActivity extends AppCompatActivity {
 
         if (book != null) {
             // Use the book object
-            tvTieude.setText(book.getTieuDe());
-            tvNguoiban.setText(book.getTacGia());
-            tvLoai.setText(book.getLoai());
-            tvMota.setText(book.getMoTa());
-            tvGia.setText(book.getGia() + "VND");
+//            tvTieude.setText(book.getTieuDe());
+//            tvNguoiban.setText(book.getTacGia());
+//            tvLoai.setText(book.getLoai());
+//            tvMota.setText(book.getMoTa());
+//            tvGia.setText(book.getGia() + "VND");
             Glide.with(this)
                     .load(R.drawable.baseline_menu_book_24)
                     .into(anhLon);

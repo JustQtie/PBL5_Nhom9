@@ -6,6 +6,7 @@ import com.project.bookcycle.response.CategoryResponse;
 import com.project.bookcycle.service.ICategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -43,6 +44,14 @@ public class CategoryController {
         List<Category> categories = categoryService.getAllCategories();
         CategoryResponse response = new CategoryResponse(categories);
         return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Category> getCategoryByid(
+            @PathVariable Long id
+    ){
+            Category categories = categoryService.getCategoryById(id);
+            return ResponseEntity.ok().body(categories);
     }
 
 

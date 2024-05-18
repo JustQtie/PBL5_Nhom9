@@ -18,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAll();
 
+    List<Product> findByUserId(Long userId);
+
     @Modifying
     @Query("UPDATE Product p SET p.thumbnail = :thumbnailUrl where p.id = :id")
     void updateThumbnail(@Param("id") long productId, @Param("thumbnailUrl") String thumbnail);
