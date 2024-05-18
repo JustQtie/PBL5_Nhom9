@@ -15,11 +15,13 @@ import android.widget.Toast;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.BooksAdapterForHome;
+
 import com.example.navigationbottom.adaper.BooksForSellAdapter;
 import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.response.book.GetBookResponse;
 import com.example.navigationbottom.viewmodel.BookApiService;
 import com.google.gson.Gson;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -111,6 +113,7 @@ public class HomeFragment extends Fragment {
 
 
         return mView;
+
     }
 
 

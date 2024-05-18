@@ -2,9 +2,11 @@ package com.example.navigationbottom.adaper;
 
 import android.content.Context;
 import android.content.Intent;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.activity.DetailsHomeActivity;
 import com.example.navigationbottom.model.Book;
+
 import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.viewmodel.ApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
@@ -33,9 +36,11 @@ import java.util.concurrent.Future;
 import retrofit2.Call;
 import retrofit2.Response;
 
+
 public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHome.BookViewHolder>{
     private Context mContext;
     public static ArrayList<Book> books;
+
 
     private ExecutorService executorService;
     private Handler mainHandler;
@@ -61,6 +66,7 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
         if(book == null){
             return;
         }
+
 
 // Call API to get Category by ID in a separate thread
         Callable<Category> callable = new Callable<Category>() {
@@ -122,6 +128,7 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
                     .into(holder.ivItem);
         }
 
+
         holder.tvGia.setText(book.getPrice() + "VND");
         holder.tvNguoiBan.setText(book.getAuthor());
         holder.tvSoLuong.setText( "SL: " + book.getQuantity());
@@ -132,7 +139,9 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
             public void onClick(View v) {
                 // nho chuyen id qua de goi API
                 Intent intent = new Intent(mContext, DetailsHomeActivity.class);
+
                 //intent.putExtra("book", book);
+
                 mContext.startActivity(intent);
 
             }
