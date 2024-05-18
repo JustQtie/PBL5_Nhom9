@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.category.GetCategoryResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
-import com.example.navigationbottom.response.user.RegisterResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -21,13 +21,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 
-public class UserApiService {
-
-    private UserApi api;
+public class CategoryApiService {
+    private CategoryApi api;
 
     private String authToken;
 
-    public UserApiService(Context context){
+    public CategoryApiService(Context context){
         authToken = SessionManager.getInstance(context).getToken();
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
@@ -50,16 +49,10 @@ public class UserApiService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()
-                .create(UserApi.class);
+                .create(CategoryApi.class);
     }
 
-    public Call<LoginResponse> postUserLogin(@Body User requestData){
-        Log.d("RequestData", new Gson().toJson(requestData));
-        return api.postUserLogin(requestData);
+    public Call<GetCategoryResponse> getListCategory(){
+        return api.getListCategory();
     }
-    public Call<RegisterResponse> signUpUser(@Body User requestData){
-        Log.d("RequestData", new Gson().toJson(requestData));
-        return api.signUpUser(requestData);
-    }
-
 }

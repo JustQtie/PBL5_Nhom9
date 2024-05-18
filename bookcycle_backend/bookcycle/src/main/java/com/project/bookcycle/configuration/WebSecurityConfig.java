@@ -38,18 +38,23 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(String.format("%s/users/register", apiPrefix),
-                                String.format("%s/users/login", apiPrefix))
-                        .permitAll()
+                                String.format("%s/users/login", apiPrefix)).permitAll()
                         .requestMatchers(GET,
                                 String.format("%s/products**", apiPrefix)).permitAll()
-                        .requestMatchers(POST, String.format("%s/users**", apiPrefix))
-                        .hasRole("ADMIN")
-                        .requestMatchers(PUT, String.format("%s/users/{id}", apiPrefix))
-                        .hasAnyRole("ADMIN", "USER")
-                        .requestMatchers(GET, String.format("%s/users/images/*", apiPrefix))
-                        .permitAll()
-                        .requestMatchers(POST, String.format("%s/users/{id}", apiPrefix))
-                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(POST,
+                                String.format("%s/products/**", apiPrefix)).hasRole("USER")
+                        .requestMatchers(POST,
+                                String.format("%s/users**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(PUT,
+                                String.format("%s/users/{id}", apiPrefix)).hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(GET,
+                                String.format("%s/users/images/*", apiPrefix)).permitAll()
+                        .requestMatchers(POST,
+                                String.format("%s/users/{id}", apiPrefix)).hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(POST,
+                                String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(GET,
+                                String.format("%s/categories**", apiPrefix)).permitAll()
                         .anyRequest().authenticated());
 
         httpSecurity.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
