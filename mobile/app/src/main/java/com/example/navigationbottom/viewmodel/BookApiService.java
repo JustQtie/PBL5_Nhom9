@@ -3,31 +3,34 @@ package com.example.navigationbottom.viewmodel;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.book.BookImageResponse;
+import com.example.navigationbottom.response.book.PostBookResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
-import com.example.navigationbottom.response.user.RegisterResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.List;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 
-public class UserApiService {
-
-    private UserApi api;
-
+public class BookApiService {
+    private BookApi api;
     private String authToken;
 
-    public UserApiService(Context context){
+    public BookApiService(Context context){
         authToken = SessionManager.getInstance(context).getToken();
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
@@ -50,16 +53,16 @@ public class UserApiService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()
-                .create(UserApi.class);
+                .create(BookApi.class);
     }
 
-    public Call<LoginResponse> postUserLogin(@Body User requestData){
+    public Call<PostBookResponse> postBook(@Body Book requestData){
         Log.d("RequestData", new Gson().toJson(requestData));
-        return api.postUserLogin(requestData);
-    }
-    public Call<RegisterResponse> signUpUser(@Body User requestData){
-        Log.d("RequestData", new Gson().toJson(requestData));
-        return api.signUpUser(requestData);
+        return api.postBook(requestData);
     }
 
+    public Call<BookImageResponse> uploadFileImage(Long id, List<MultipartBody.Part> files){
+        Log.d("RequestData", files.toString());
+        return api.uploadFiles(id, files);
+    }
 }

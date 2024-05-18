@@ -1,93 +1,96 @@
 package com.example.navigationbottom.model;
 
-import java.io.Serializable;
 
-public class Book implements Serializable {
-    private String id;
-    private String tieuDe;
-    private String tacGia;
-    private String loai;
-    private String soLuong;
-    private String moTa;
-    private String gia;
-    private String img;
+public class Book {
+
+    private String name;
+    private String author;
+
+    private Float price;
+    private String thumbnail;
+
+    private String status;
+    private String description;
+
+    private int quantity;
+
+    private long user_id;
+
+    private long category_id;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
+    }
+
+    public long getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(long category_id) {
+        this.category_id = category_id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public Book() {
 
-    }
-
-    public Book(String id, String tieuDe, String tacGia, String loai, String soLuong, String moTa, String gia, String img) {
-        this.id = id;
-        this.tieuDe = tieuDe;
-        this.tacGia = tacGia;
-        this.loai = loai;
-        this.soLuong = soLuong;
-        this.moTa = moTa;
-        this.gia = gia;
-        this.img = img;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTieuDe() {
-        return tieuDe;
-    }
-
-    public void setTieuDe(String tieuDe) {
-        this.tieuDe = tieuDe;
-    }
-
-    public String getTacGia() {
-        return tacGia;
-    }
-
-    public void setTacGia(String tacGia) {
-        this.tacGia = tacGia;
-    }
-
-    public String getLoai() {
-        return loai;
-    }
-
-    public void setLoai(String loai) {
-        this.loai = loai;
-    }
-
-    public String getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(String soLuong) {
-        this.soLuong = soLuong;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
-
-    public String getGia() {
-        return gia;
-    }
-
-    public void setGia(String gia) {
-        this.gia = gia;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 }

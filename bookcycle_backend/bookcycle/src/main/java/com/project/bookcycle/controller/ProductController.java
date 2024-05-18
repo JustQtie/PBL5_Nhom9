@@ -4,6 +4,7 @@ import com.project.bookcycle.dto.ProductDTO;
 import com.project.bookcycle.dto.ProductImageDTO;
 import com.project.bookcycle.model.Product;
 import com.project.bookcycle.model.ProductImage;
+import com.project.bookcycle.response.ProductImageResponse;
 import com.project.bookcycle.response.ProductListResponse;
 import com.project.bookcycle.response.ProductResponse;
 import com.project.bookcycle.service.IProductService;
@@ -35,7 +36,6 @@ import java.util.UUID;
 public class ProductController {
     private final IProductService productService;
     @PostMapping("")
-    //POST http://localhost:8088/v1/api/products
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
             BindingResult result
@@ -94,9 +94,11 @@ public class ProductController {
             }
             String imgUrl = productImages.get(0).getImageUrl();
             productService.updateThumbnail(productId, imgUrl);
-            return ResponseEntity.ok().body(productImages);
+            ProductImageResponse productImageResponse = ProductImageResponse.builder().ec("0").build();
+            return ResponseEntity.ok().body(productImageResponse);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            ProductImageResponse productImageResponse = ProductImageResponse.builder().ec("-1").build();
+            return ResponseEntity.badRequest().body(productImageResponse);
         }
     }
     @GetMapping("/images/{imageName}")

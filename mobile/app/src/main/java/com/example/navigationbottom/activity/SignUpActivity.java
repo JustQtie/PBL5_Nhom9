@@ -14,10 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.navigationbottom.R;
-import com.example.navigationbottom.adaper.UserDataSingleton;
 import com.example.navigationbottom.model.User;
-import com.example.navigationbottom.response.RegisterResponse;
-import com.example.navigationbottom.viewmodel.SessionManager;
+import com.example.navigationbottom.response.user.RegisterResponse;
 import com.example.navigationbottom.viewmodel.UserApiService;
 import com.google.gson.Gson;
 
