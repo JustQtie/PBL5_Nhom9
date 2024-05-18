@@ -20,13 +20,11 @@ import android.view.ViewGroup;
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.activity.AddBookActivity;
 import com.example.navigationbottom.activity.MainActivity;
-import com.example.navigationbottom.adaper.BooksAdapter;
 import com.example.navigationbottom.adaper.BooksForSellAdapter;
 import com.example.navigationbottom.model.Book;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SellFragment extends Fragment {
 

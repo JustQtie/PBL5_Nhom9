@@ -2,14 +2,11 @@ package com.example.navigationbottom.adaper;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,29 +15,28 @@ import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.activity.DetailsHomeActivity;
 import com.example.navigationbottom.model.Book;
-import com.example.navigationbottom.model.User;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
-public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHolder>{
+public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHome.BookViewHolder>{
     private Context mContext;
     public static ArrayList<Book> books;
-    public BooksAdapter(ArrayList<Book> books, Context mContext) {
+    public BooksAdapterForHome(ArrayList<Book> books, Context mContext) {
         this.books = books;
         this.mContext = mContext;
     }
 
     @NonNull
     @Override
-    public BooksAdapter.BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BooksAdapterForHome.BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_item, parent, false);
 
         return new BookViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BooksAdapter.BookViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BooksAdapterForHome.BookViewHolder holder, int position) {
 
         Book book = books.get(position);
         if(book == null){

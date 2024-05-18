@@ -29,6 +29,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="29">
         <activity
+            android:name=".activity.DetailsCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailHistoryProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailSettingProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.DetailsHomeActivity"
             android:exported="false" />
         <activity
