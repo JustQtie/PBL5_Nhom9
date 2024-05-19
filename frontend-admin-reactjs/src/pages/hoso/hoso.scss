@@ -4,80 +4,117 @@
 
     .hoso-listContainer {
         flex: 6;
+        display: flex;
+        flex-direction: column;
 
-        .hoso-top,
-        .hoso-bottom {
-            -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
-            padding: 10px;
+
+        .hoso-top {
+            background: linear-gradient(to right, #9ad3bc, #c0c5e4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
             margin: 20px;
-            display: flex;
+            border-radius: 10px;
+            color: #333;
+        }
 
+
+        .hoso-bottom {
+            background: linear-gradient(to right, #9ad3bc, #c0c5e4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            color: #333;
 
             h1 {
-                color: lightgray;
-                font-size: 20px;
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #555;
             }
 
             .hoso-left {
                 flex: 1;
                 text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
-                .img {
-                    width: 200px;
-                    height: 260px;
-                    border-radius: 2%;
-                    border: 2px solid gray;
+                .hoso-img {
+                    width: 180px;
+                    height: 180px;
+                    border-radius: 50%;
+                    border: 5px solid #17cada;
                     object-fit: cover;
+                    transition: transform 0.3s ease;
+
+                    &:hover {
+                        transform: scale(1.05);
+                    }
                 }
             }
 
             .hoso-right {
                 flex: 2;
-
-
                 display: flex;
                 flex-wrap: wrap;
-                gap: 30px;
-                justify-content: space-around;
+                gap: 15px;
+                justify-content: space-between;
 
-
-
-                label {
+                .col-md-6 {
+                    width: calc(50% - 10px);
                     display: flex;
+                    flex-direction: column;
+
+                    .form-label {
+                        font-weight: bold;
+                        margin-bottom: 8px;
+                        color: #555;
+                    }
+
+                    .form-control {
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        background: #fff;
+                        transition: background 0.3s ease;
+
+                        &:disabled {
+                            background: #f0f0f0;
+                        }
+                    }
+                }
+
+                .d-flex {
+                    display: flex;
+                    justify-content: center;
                     align-items: center;
-                    gap: 10px;
-
-                    .icon {
-                        cursor: pointer;
-                    }
-                }
-
-                input {
                     width: 100%;
-                    padding: 5px;
-                    border: none;
-                    border-bottom: 1px solid gray;
-                }
 
+                    button {
+                        width: 130px;
+                        padding: 12px;
+                        border: none;
+                        border-radius: 6px;
+                        background-color: #009688;
+                        color: #fff;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease, transform 0.3s ease;
 
-                button {
-                    width: 150px;
-                    padding: 10px;
-                    border: none;
-                    border-radius: 2%;
-                    background-color: teal;
-                    color: white;
-                    font-weight: bold;
-                    cursor: pointer;
-                    margin-top: 10px;
-
-                    &:hover {
-                        background-color: rgb(13, 185, 185);
+                        &:hover {
+                            background-color: #00796b;
+                            transform: translateY(-2px);
+                        }
                     }
                 }
-
             }
         }
+
+        .hoso-bottom {
+            margin-bottom: 0;
+        }
     }
+
+
 }

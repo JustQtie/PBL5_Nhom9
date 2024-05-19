@@ -27,12 +27,16 @@ const Login = () => {
                 const data = await postLogin(username, password);
                 console.log("check res", data);
                 if (data && data.EC === 0) {
-                    localStorage.setItem("token", data.token)
-                    localStorage.setItem("userData", JSON.stringify(data.user));
-                    toast.success(data.message);
-                    setTimeout(() => (
-                        navigate('/bangdieukhien')
-                    ), 1000)
+                    if (data.role === "Admin") {
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("userData", JSON.stringify(data.user));
+                        toast.success(data.message);
+                        setTimeout(() => {
+                            navigate('/bangdieukhien');
+                        }, 1000);
+                    } else {
+                        toast.error("Bạn không có quyền truy cập.");
+                    }
                 }
                 if (data && data.EC !== 0) {
                     toast.error(data.message);

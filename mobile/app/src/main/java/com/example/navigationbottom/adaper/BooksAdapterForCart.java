@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
-import com.example.navigationbottom.activity.DetailsCartActivity;
-import com.example.navigationbottom.activity.DetailsHomeActivity;
-import com.example.navigationbottom.activity.EditBookActivity;
+import com.example.navigationbottom.activity.DetailsCartPayActivity;
 import com.example.navigationbottom.model.Book;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -57,18 +55,26 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
 
 
 
+
 //        holder.tvGia.setText(book.getGia() + "VND");
 //        holder.tvLoai.setText(book.getLoai());
 //        holder.tvNguoiBan.setText(book.getTacGia());
 //        holder.tvSoLuong.setText( "SL: " + book.getSoLuong());
 //        holder.tvTieude.setText(book.getTieuDe());
 
+
+//
+//
+//
+
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // chuyển màn hình và gửi dữ liệu đi cùng dưới dạng object
+
                 Intent intent = new Intent(mContext, DetailsCartActivity.class);
                 //intent.putExtra("book", book);
+
                 mContext.startActivity(intent);
             }
         });
