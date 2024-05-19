@@ -52,6 +52,10 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
 //                    .load(R.drawable.baseline_menu_book_24)
 //                    .into(holder.ivItem);
 //        }
+
+
+
+
 //        holder.tvGia.setText(book.getGia() + "VND");
 //        holder.tvLoai.setText(book.getLoai());
 //        holder.tvNguoiBan.setText(book.getTacGia());
@@ -59,14 +63,19 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
 //        holder.tvTieude.setText(book.getTieuDe());
 
 
+//
+//
+//
+
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // chuyển màn hình và gửi dữ liệu đi cùng dưới dạng object
+
                 Intent intent = new Intent(mContext, DetailsCartActivity.class);
                 //intent.putExtra("book", book);
 
                 mContext.startActivity(intent);
-
             }
         });
 
