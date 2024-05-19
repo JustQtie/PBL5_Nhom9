@@ -14,4 +14,7 @@ import lombok.*;
 public class ProductImageResponse {
     @JsonProperty("EC")
     private String ec;
+
+    @JsonProperty("message")
+    private String message;
 }

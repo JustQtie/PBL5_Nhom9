@@ -1,13 +1,11 @@
 package com.project.bookcycle.controller;
 
 import com.project.bookcycle.model.ProductImage;
+import com.project.bookcycle.response.ProductImageResponse;
 import com.project.bookcycle.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +29,18 @@ public class ProductImageController {
             return ResponseEntity.ok().body(listThumbnails);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("thumbnails/{id}")
+    public ResponseEntity<?> deleteProductImage(
+            @PathVariable Long id
+    ){
+        try {
+            productImageService.deleteProductId(id);
+            return ResponseEntity.ok().body(ProductImageResponse.builder().ec("0").build());
+        }catch (Exception e){
+            return ResponseEntity.ok().body(ProductImageResponse.builder().ec("-1").message(e.getMessage()).build());
         }
     }
 }

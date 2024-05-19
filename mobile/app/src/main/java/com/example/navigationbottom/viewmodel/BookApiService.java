@@ -4,11 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.navigationbottom.model.Book;
-import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.book.BookImageResponse;
 import com.example.navigationbottom.response.book.GetBookResponse;
-import com.example.navigationbottom.response.book.PostBookResponse;
-import com.example.navigationbottom.response.user.LoginResponse;
+import com.example.navigationbottom.response.book.BookResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -57,7 +55,7 @@ public class BookApiService {
                 .create(BookApi.class);
     }
 
-    public Call<PostBookResponse> postBook(@Body Book requestData){
+    public Call<BookResponse> postBook(@Body Book requestData){
         Log.d("RequestData", new Gson().toJson(requestData));
         return api.postBook(requestData);
     }
@@ -78,4 +76,18 @@ public class BookApiService {
     public Call<Book> getBookById(Long id){
         return api.getBookById(id);
     }
+
+    public Call<ResponseBody> deleteBook(Long id){
+        return api.deleteBook(id);
+    }
+
+    public Call<BookResponse> updateBook(Long id, @Body Book requestData){
+        Log.d("RequestData", new Gson().toJson(requestData));
+        return api.updateBook(id, requestData);
+    }
+
+    public Call<ResponseBody> deleteBookThumbnail(Long id){
+        return api.deleteBookImgae(id);
+    }
+
 }

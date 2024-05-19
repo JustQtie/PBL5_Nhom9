@@ -147,14 +147,15 @@
                     />
 
 
-                <EditText
-                    android:id="@+id/edt_Soluong_EditBookActivity"
+                <NumberPicker
+                    android:id="@+id/number_so_luong"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:textSize="18dp"
-                    android:background="@drawable/editextstyle"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
                     android:padding="10dp"
-                    />
+                    android:textSize="18dp"
+                    android:background="@drawable/editextstyle"/>
 
                 <TextView
                     android:id="@+id/textv44"
@@ -168,8 +169,8 @@
 
                 <EditText
                     android:id="@+id/edt_gia_EditBookActivity"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
                     android:textSize="18dp"
                     android:background="@drawable/editextstyle"
                     android:padding="10dp"

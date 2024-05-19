@@ -3,10 +3,11 @@ package com.example.navigationbottom.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Book {
+public class Book implements Serializable {
     private Long id;
     private String name;
     private String author;

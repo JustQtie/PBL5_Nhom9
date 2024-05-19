@@ -46,11 +46,21 @@ public class WebSecurityConfig {
                         .requestMatchers(GET,
                                 String.format("%s/products/images/*", apiPrefix)).permitAll()
                         .requestMatchers(POST,
-                                String.format("%s/products/**", apiPrefix)).hasRole("USER")
+                                String.format("%s/products", apiPrefix)).hasRole("USER")
                         .requestMatchers(POST,
                                 String.format("%s/products/byuser/{id}", apiPrefix)).hasRole("USER")
+                        .requestMatchers(DELETE,
+                                String.format("%s/products/{id}", apiPrefix)).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(PUT,
+                                String.format("%s/products/{id}", apiPrefix)).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(POST,
+                                String.format("%s/products/get_list", apiPrefix)).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(DELETE,
+                                String.format("%s/products/thumbnails/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(GET,
                                 String.format("%s/productimages/thumbnails/*", apiPrefix)).permitAll()
+                        .requestMatchers(DELETE,
+                                String.format("%s/productimages/thumbnails/*", apiPrefix)).hasRole("USER")
                         .requestMatchers(POST,
                                 String.format("%s/users**", apiPrefix)).hasRole("ADMIN")
                         .requestMatchers(PUT,

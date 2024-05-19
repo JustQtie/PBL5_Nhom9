@@ -2,8 +2,11 @@ package com.example.navigationbottom.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -25,15 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras.containsKey("dataFromAddBookActivity")) {
-                // Sau đó, chuyển đến SellFragment
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.rv_sell_fragment, new SellFragment())
-                        .commit();
-            }
-        }
+
 
         mViewPager2 = findViewById(R.id.view_pager_2);
         mbottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -96,5 +91,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        // Check for the intent data and navigate to the correct fragment
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("dataFromActivity")) {
+            String fragmentName = intent.getStringExtra("dataFromActivity");
+            if ("fromAddBook".equals(fragmentName) || "fromEditBook".equals(fragmentName)) {
+                mViewPager2.setCurrentItem(2); // Navigate to the SellFragment page
+            }
+        }
     }
 }

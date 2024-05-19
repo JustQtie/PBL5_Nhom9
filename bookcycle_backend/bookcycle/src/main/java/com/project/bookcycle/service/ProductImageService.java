@@ -17,4 +17,10 @@ public class ProductImageService implements IProductImageService{
     public List<ProductImage> getThumbnailByProductId(Long productId) {
         return productImageRepository.findByProductId(productId);
     }
+
+    @Override
+    public void deleteProductId(Long productId) {
+        productImageRepository.deleteByProductId(productId);
+    }
+
 }
