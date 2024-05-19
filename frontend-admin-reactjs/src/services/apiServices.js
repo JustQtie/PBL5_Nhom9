@@ -16,12 +16,14 @@ const getAllUsers = (token) => {
 
 const getAllProducts = (token) => {
 
-    return axios.post('api/v1/products', {}, {
+    return axios.post('api/v1/products/get_list', {}, {
         headers: {
             Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
 
         }
     });
+
+    // return axios.get('api/v1/products/get_list');
 
 }
 

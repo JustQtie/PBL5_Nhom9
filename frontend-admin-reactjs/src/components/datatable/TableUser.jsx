@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 import { getAllUsers } from "../../services/apiServices";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import ModalBanUser from "../modal/ModalBanUser";
 import ModalUnbanUser from "../modal/ModalUnbanUser";
-
+import "./tableUser.scss";
 
 const TableUser = () => {
     const [listUsers, setListUsers] = useState([]);
@@ -34,9 +41,9 @@ const TableUser = () => {
 
             const res = await getAllUsers(token);
 
-            console.log("check>>> res", res);
+            console.log("API Response:", res);
 
-            if (res.EC === 0) {
+            if (res && res.EC === 0) {
                 setListUsers(res.userResponseList);
             }
         } catch (error) {
@@ -62,44 +69,57 @@ const TableUser = () => {
 
     return (
         <>
-            <table className="table table-light table-striped table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Active</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {listUsers && listUsers.length > 0 &&
-                        listUsers.map((item, index) => {
-                            return (
-                                <tr key={`table-users-${index}`}>
-                                    <td>{index + 1}</td>
-                                    <td>{item.phone_number}</td>
-                                    <td>{item.address}</td>
-                                    <td>{item.gender ? "Nam" : "Nữ"}</td>
-                                    <td>{item.phone_number}</td>
-                                    <td>{item.active ? "Hoạt động" : "Cấm hoạt động"}</td>
-                                    <td>
-                                        <button className="btn btn-success" onClick={() => handleBtnSuccess(item)} >View</button>
-                                        {item.active ? (
-                                            <button className="btn btn-danger mx-3" onClick={() => handleBtnBan(item)}>Ban</button>
-                                        ) : (
-                                            <button className="btn btn-warning mx-3" onClick={() => handleBtnUnban(item)}>Unban</button>
-                                        )}
-                                    </td>
-                                </tr>
-                            )
-                        })
-                    }
-                    {listUsers && listUsers.length === 0 && <tr><td colSpan={'7'}>Not found data</td></tr>}
-                </tbody>
-            </table>
+
+            <TableContainer component={Paper} className="table-user">
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell className="tableCell">STT</TableCell>
+                            <TableCell className="tableCell">Username</TableCell>
+                            <TableCell className="tableCell">Address</TableCell>
+                            <TableCell className="tableCell">Gender</TableCell>
+                            <TableCell className="tableCell">Phone Number</TableCell>
+                            <TableCell className="tableCell">Active</TableCell>
+                            <TableCell className="tableCell">Action</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {listUsers && listUsers.length > 0 &&
+                            listUsers.map((item, index) => {
+                                return (
+                                    <TableRow key={`table-users-${index}`}>
+                                        <TableCell className="tableCell">{index + 1}</TableCell>
+                                        <TableCell className="tableCell">
+                                            <div className="cellWrapper-user">
+                                                <img src={item.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${item.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="User" className="image" />
+                                                {item.phone_number}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="tableCell">{item.address}</TableCell>
+                                        <TableCell className="tableCell">{item.gender ? "Nam" : "Nữ"}</TableCell>
+                                        <TableCell className="tableCell">{item.phone_number}</TableCell>
+                                        <TableCell className="tableCell">
+                                            <span className={`status ${item.active}`}>{item.active ? "Hoạt động" : "Cấm hoạt động"}</span>
+                                        </TableCell>
+                                        <TableCell className="tableCell">
+                                            <button className="btn btn-success btn-sm" onClick={() => handleBtnSuccess(item)} >View</button>
+                                            {item.active ? (
+                                                <button className="btn btn-danger btn-sm mx-3" onClick={() => handleBtnBan(item)}>Ban</button>
+                                            ) : (
+                                                <button className="btn btn-warning btn-sm mx-3" onClick={() => handleBtnUnban(item)}>Unban</button>
+                                            )}
+
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })
+                        }
+                        {listUsers && listUsers.length === 0 && <TableRow><TableCell colSpan={'7'}>Not found data</TableCell></TableRow>}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+
 
             <ModalBanUser
                 show={showModalBanuser}

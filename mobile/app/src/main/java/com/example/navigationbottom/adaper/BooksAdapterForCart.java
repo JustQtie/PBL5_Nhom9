@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
-import com.example.navigationbottom.activity.DetailsCartActivity;
-import com.example.navigationbottom.activity.DetailsHomeActivity;
-import com.example.navigationbottom.activity.EditBookActivity;
+import com.example.navigationbottom.activity.DetailsCartPayActivity;
 import com.example.navigationbottom.model.Book;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -45,30 +43,32 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
             return;
         }
 
-        try{
-            Glide.with(holder.itemView.getContext())
-                    .load(book.getImg() != null ? book.getImg() : R.drawable.baseline_menu_book_24)
-                    .into(holder.ivItem);
-        }catch (Exception e){
-            Glide.with(holder.itemView.getContext())
-                    .load(R.drawable.baseline_menu_book_24)
-                    .into(holder.ivItem);
-        }
-
-
-
-        holder.tvGia.setText(book.getGia() + "VND");
-        holder.tvLoai.setText(book.getLoai());
-        holder.tvNguoiBan.setText(book.getTacGia());
-        holder.tvSoLuong.setText( "SL: " + book.getSoLuong());
-        holder.tvTieude.setText(book.getTieuDe());
-
+//        try{
+//            Glide.with(holder.itemView.getContext())
+//                    .load(book.getImg() != null ? book.getImg() : R.drawable.baseline_menu_book_24)
+//                    .into(holder.ivItem);
+//        }catch (Exception e){
+//            Glide.with(holder.itemView.getContext())
+//                    .load(R.drawable.baseline_menu_book_24)
+//                    .into(holder.ivItem);
+//        }
+//
+//
+//
+        Glide.with(holder.itemView.getContext())
+                .load(R.drawable.baseline_menu_book_24)
+                .into(holder.ivItem);
+        holder.tvGia.setText(book.getPrice() + "VND");
+        holder.tvNguoiBan.setText(book.getAuthor());
+        holder.tvSoLuong.setText( "SL: " + book.getQuantity());
+        holder.tvTieude.setText(book.getName());
+//
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // chuyển màn hình và gửi dữ liệu đi cùng dưới dạng object
-                Intent intent = new Intent(mContext, DetailsCartActivity.class);
-                intent.putExtra("book", book);
+                Intent intent = new Intent(mContext, DetailsCartPayActivity.class);
+//                intent.putExtra("book", book);
                 mContext.startActivity(intent);
             }
         });

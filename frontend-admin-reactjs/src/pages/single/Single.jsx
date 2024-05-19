@@ -27,10 +27,11 @@ const Single = () => {
                 <Navbar />
                 <div className="top">
                     <div className="left">
-                        <div className="editButton">Chỉnh sửa</div>
+                        {/* <div className="editButton">Chỉnh sửa</div> */}
                         <h1 className="title">Thông tin</h1>
                         <div className="item">
-                            <img src="https://i.imgur.com/1nORATT.png" alt="" className="itemImg" />
+                            <img src={userDetail.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${userDetail.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="users" className="itemImg" />
+
                             <div className="details">
                                 <h1 className="itemTitle">{userDetail.phone_number}</h1>
 
