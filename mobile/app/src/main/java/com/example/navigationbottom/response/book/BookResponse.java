@@ -4,9 +4,7 @@ import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.model.User;
 import com.google.gson.annotations.SerializedName;
 
-import java.time.LocalDateTime;
-
-public class PostBookResponse {
+public class BookResponse {
 
     @SerializedName("id")
     private Long id;

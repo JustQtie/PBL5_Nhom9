@@ -1,5 +1,6 @@
 package com.example.navigationbottom.adaper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -46,6 +47,7 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
     public static ArrayList<Book> books;
     private ExecutorService executorService;
     private Handler mainHandler;
+    private Book book;
     public BooksForSellAdapter(ArrayList<Book> books, Context mContext) {
         this.books = books;
         this.mContext = mContext;
@@ -62,8 +64,8 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BooksForSellAdapter.BookViewHolder holder, int position) {
-        Book book = books.get(position);
+    public void onBindViewHolder(@NonNull BooksForSellAdapter.BookViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        book = books.get(position);
         if(book == null){
             return;
         }
@@ -142,7 +144,7 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
             public void onClick(View v) {
                 // nho chuyen id qua de goi API
                 Intent intent = new Intent(mContext, EditBookActivity.class);
-                intent.putExtra("book", book.getId());
+                intent.putExtra("book", books.get(position));
                 mContext.startActivity(intent);
 
             }

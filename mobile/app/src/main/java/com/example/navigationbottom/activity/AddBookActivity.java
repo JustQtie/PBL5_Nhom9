@@ -11,9 +11,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -45,11 +43,12 @@ import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.model.SliderData;
 import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.book.BookImageResponse;
-import com.example.navigationbottom.response.book.PostBookResponse;
+import com.example.navigationbottom.response.book.BookResponse;
 import com.example.navigationbottom.response.category.GetCategoryResponse;
 import com.example.navigationbottom.utils.Status;
 import com.example.navigationbottom.viewmodel.BookApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
+import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.smarteist.autoimageslider.SliderView;
@@ -62,7 +61,6 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -251,9 +249,9 @@ public class AddBookActivity extends AppCompatActivity {
                 } else if (imageUris.size()>5) {
                     Toast.makeText(AddBookActivity.this, "Only a maximum of 5 photos can be selected", Toast.LENGTH_SHORT).show();
                 } else if(TextUtils.isEmpty(edtTacgia.toString().trim()) || TextUtils.isEmpty(edtTieude.toString().trim()) || TextUtils.isEmpty(edtGia.toString().trim())){
-                    Toast.makeText(AddBookActivity.this, "Please upload photos before posting books for sale", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBookActivity.this, "Please fill in the blank fields", Toast.LENGTH_SHORT).show();
                 }else {
-                    User user = UserDataSingleton.getInstance().getUser();
+                    User user = UserPreferences.getUser(getApplicationContext());
                     Book book = new Book();
                     book.setName(edtTieude.getText().toString().trim());
                     book.setAuthor(edtTacgia.getText().toString().trim());
@@ -263,29 +261,28 @@ public class AddBookActivity extends AppCompatActivity {
                     book.setCategory_id(categoryId);
                     book.setStatus(selectedStatus);
                     book.setUser_id(user.getId());
-                    bookApiService.postBook(book).enqueue(new Callback<PostBookResponse>() {
+                    bookApiService.postBook(book).enqueue(new Callback<BookResponse>() {
                         @Override
-                        public void onResponse(Call<PostBookResponse> call, Response<PostBookResponse> response) {
-                            PostBookResponse postBookResponse = response.body();
-                            if(postBookResponse!=null){
-                                progressDialog.dismiss();
-                                Log.d("RequestData1", new Gson().toJson(postBookResponse));
-                                if(postBookResponse.getUser()!=null){
+                        public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
+                            BookResponse bookResponse = response.body();
+                            if(bookResponse !=null){
+                                Log.d("RequestData1", new Gson().toJson(bookResponse));
+                                if(bookResponse.getUser()!=null){
                                     Log.d("RequestData1", "Success post my book");
-                                    idBookPost = postBookResponse.getId();
+                                    idBookPost = bookResponse.getId();
 
                                     bookApiService.uploadFileImage(idBookPost, prepareFileParts("files", imageUris)).enqueue(new Callback<BookImageResponse>() {
                                         @Override
                                         public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
                                             BookImageResponse responseBody = response.body();
                                             if(responseBody!=null){
-                                                progressDialog.dismiss();
 
                                                 if(responseBody.getEc().equals("0")){
+                                                    progressDialog.dismiss();
                                                     Log.d("RequestData1", new Gson().toJson(responseBody));
                                                     Toast.makeText(AddBookActivity.this, "Post my book success!!", Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(AddBookActivity.this, MainActivity.class);
-                                                    intent.putExtra("dataFromAddBookActivity", "fromAddBook");
+                                                    intent.putExtra("dataFromActivity", "fromAddBook");
                                                     startActivity(intent);
                                                     finish();
                                                 }
@@ -304,12 +301,14 @@ public class AddBookActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onFailure(Call<BookImageResponse> call, Throwable t) {
+                                            progressDialog.dismiss();
                                             String errorMessage = t.getMessage();
                                             Toast.makeText(AddBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
                                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                         }
                                     });
                                 }else {
+                                    progressDialog.dismiss();
                                     Toast.makeText(AddBookActivity.this, "Post my book not success", Toast.LENGTH_SHORT).show();
                                 }
                             }else{
@@ -319,7 +318,8 @@ public class AddBookActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<PostBookResponse> call, Throwable t) {
+                        public void onFailure(Call<BookResponse> call, Throwable t) {
+                            progressDialog.dismiss();
                             String errorMessage = t.getMessage();
                             Toast.makeText(AddBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));

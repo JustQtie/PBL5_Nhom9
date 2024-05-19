@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IProductImageService {
     List<ProductImage> getThumbnailByProductId(Long productId);
+    void deleteProductId(Long productId);
 }
