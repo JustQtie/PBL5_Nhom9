@@ -104,7 +104,7 @@
                     <LinearLayout
                         android:id="@+id/linearLayout2"
                         android:layout_width="match_parent"
-                        android:layout_height="294dp"
+                        android:layout_height="304dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="24dp"

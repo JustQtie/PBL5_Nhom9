@@ -48,9 +48,12 @@ public class CartFragment extends Fragment {
 
         rvBooks.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
+
 //        books = new ArrayList<>();
 //        books.add(new Book("1", "Lập Trình Java", "Nguyễn Văn A", "Programming", "1", "Sách hướng dẫn lập trình Java cơ bản", "50000", ""));
 //        books.add(new Book("2", "Học Python", "Trần Văn B", "Programming", "1", "Sách hướng dẫn lập trình Python", "60000", ""));
+
+
         getBooks();
 
         return mView;

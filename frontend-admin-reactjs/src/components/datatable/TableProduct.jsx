@@ -31,14 +31,18 @@ const TableProduct = () => {
 
             const res = await getAllProducts(token);
 
-            console.log("check>>> res", res);
+            // console.log("API Response:", res.EC);
 
-            if (res.EC === 0) {
-                setListProducts(res.userResponseList); ///cho nay can sua
+            if (res && res.EC === "0") {
+                setListProducts(res.productResponseList); ///cho nay can sua
 
+            }
+            else {
+                toast.error("Error fetching list of products");
             }
         } catch (error) {
             toast.error("Error fetching list of products", error);
+            console.error(error);
         }
     }
 
@@ -55,10 +59,9 @@ const TableProduct = () => {
                         <th scope="col">STT</th>
                         <th scope="col">Mã giáo trình</th>
                         <th scope="col">Tiêu đề</th>
-                        <th scope="col">Loại</th>
                         <th scope="col">Giá</th>
-                        <th scope="col">Người bán</th>
                         <th scope="col">Trạng thái</th>
+                        <th scope="col">Số lượng</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -66,13 +69,13 @@ const TableProduct = () => {
                     {listProducts && listProducts.length > 0 &&
                         listProducts.map((item, index) => {
                             return (
-                                <tr key={`table-users-${index}`}>
+                                <tr key={`table-products-${index}`}>
                                     <td>{index + 1}</td>
-                                    <td>{item.phone_number}</td>
-                                    <td>{item.address}</td>
-                                    <td>{item.gender ? "Nam" : "Nữ"}</td>
-                                    <td>{item.phone_number}</td>
-                                    <td>{item.active ? "Hoạt động" : "Cấm hoạt động"}</td>
+                                    <td>{item.id}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.price}</td>
+                                    <td>{item.status}</td>
+                                    <td>{item.quantity}</td>
                                     <td>
                                         <button className="btn btn-success" onClick={() => handleBtnView(item)} >View</button>
                                     </td>
@@ -81,7 +84,7 @@ const TableProduct = () => {
                             )
                         })
                     }
-                    {listProducts && listProducts.length === 0 && <tr><td colSpan={'8'}>Not found data</td></tr>}
+                    {listProducts && listProducts.length === 0 && <tr><td colSpan={'7'}>Not found data</td></tr>}
                 </tbody>
             </table>
 

@@ -44,13 +44,14 @@ const Hoso = () => {
             const res = await getUserById(userId, token);
             if (res.EC === 0) {
                 const user = res;
+
                 setUserData(user);
                 setId(user.id);
                 setFullName(user.fullname);
                 setPhoneNumber(user.phone_number);
                 setAddress(user.address);
                 setGender(user.gender);
-                setPreviewImage(user.image ? `data:image/jpeg;base64,${user.image}` : "");
+                setPreviewImage(user.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${user.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg");
             } else {
                 toast.error("Không thể lấy dữ liệu người dùng");
             }

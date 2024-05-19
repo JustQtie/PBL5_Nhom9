@@ -30,7 +30,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="29">
         <activity
-            android:name=".activity.DetailsCartActivity"
+            android:name=".activity.DetailsCartPayActivity"
             android:exported="false" />
         <activity
             android:name=".activity.DetailHistoryProfileActivity"
