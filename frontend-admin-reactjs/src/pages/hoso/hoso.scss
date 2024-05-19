@@ -11,10 +11,17 @@
         .hoso-top {
             background: linear-gradient(to right, #9ad3bc, #c0c5e4);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
+            font-size: 24px;
             margin: 20px;
+            padding: 10px;
             border-radius: 10px;
             color: #333;
+            display: flex;
+            /* Thêm dòng này */
+            justify-content: center;
+            /* Thêm dòng này */
+            align-items: center;
+            /* Thêm dòng này */
         }
 
 
@@ -22,7 +29,7 @@
             background: linear-gradient(to right, #9ad3bc, #c0c5e4);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin: 20px;
+            margin: 0 20px 20px 20px;
             border-radius: 10px;
             color: #333;
 
@@ -39,10 +46,11 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                margin-bottom: 40px;
 
                 .hoso-img {
-                    width: 180px;
-                    height: 180px;
+                    width: 200px;
+                    height: 200px;
                     border-radius: 50%;
                     border: 5px solid #17cada;
                     object-fit: cover;

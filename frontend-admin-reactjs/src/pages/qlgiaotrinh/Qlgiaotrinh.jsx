@@ -11,7 +11,7 @@ const Qlgiaotrinh = () => {
             <div className="listContainer-qlgiaotrinh">
                 <Navbar />
                 <Datatable_qlgt />
-                {/* <Table /> */}
+
             </div>
         </div>
     );

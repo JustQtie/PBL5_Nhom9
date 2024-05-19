@@ -1,6 +1,7 @@
 import "./login.scss"
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
+import RotateIcon from '@mui/icons-material/RotateRight';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/apiServices';
@@ -10,6 +11,7 @@ import { toast } from 'react-toastify';
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         let token = localStorage.getItem("token");
@@ -21,6 +23,7 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
+        setIsLoading(true); // Kích hoạt hiệu ứng xoay khi bắt đầu gọi API
         const callAPI = async () => {
             try {
 
@@ -32,21 +35,26 @@ const Login = () => {
                         localStorage.setItem("userData", JSON.stringify(data.user));
                         toast.success(data.message);
                         setTimeout(() => {
+                            setIsLoading(false);
                             navigate('/bangdieukhien');
-                        }, 1000);
+                        }, 500);
                     } else {
                         toast.error("Bạn không có quyền truy cập.");
+                        setIsLoading(false);
                     }
                 }
                 if (data && data.EC !== 0) {
                     toast.error(data.message);
+                    setIsLoading(false);
                 }
 
             }
             catch (e) {
                 toast.error('Login failed');
+                setIsLoading(false);
             }
             finally {
+                setIsLoading(false); // Tắt hiệu ứng xoay khi kết thúc gọi API
             }
         };
         callAPI();
@@ -78,8 +86,10 @@ const Login = () => {
                         
                     </Link> */}
 
-                    <button type="submit" onClick={handleLogin}>Đăng nhập</button>
-
+                    <button type="submit" onClick={handleLogin}>
+                        <span>Đăng nhập</span>
+                        <RotateIcon className={`login-icon ${isLoading ? 'rotate-icon' : ''}`} /> {/* Thêm icon mới và class */}
+                    </button>
                 </form>
 
             </div>

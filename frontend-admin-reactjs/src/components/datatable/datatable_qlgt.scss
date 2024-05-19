@@ -8,13 +8,23 @@
     }
 
     .datatableTitle-qlgt {
-        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
         font-size: 24px;
-        color: gray;
-        margin-bottom: 10px;
         display: flex;
+        font-size: 24px;
+        color: #333;
+        /* Thêm dòng này */
+        justify-content: center;
+        /* Thêm dòng này */
         align-items: center;
-        justify-content: space-between;
+        /* Thêm dòng này */
+        padding: 10px;
+        width: 100%;
+
+        margin-bottom: 20px;
+        align-items: center;
+
 
         .link {
             text-decoration: none;

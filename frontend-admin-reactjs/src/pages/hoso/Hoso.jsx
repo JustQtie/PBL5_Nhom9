@@ -71,7 +71,7 @@ const Hoso = () => {
             <div className="hoso-listContainer">
                 <Navbar />
                 <div className="hoso-top">
-                    <h1>Hồ sơ cá nhân</h1>
+                    Hồ sơ cá nhân
                 </div>
                 <div className="hoso-bottom">
                     <div className="hoso-left">
