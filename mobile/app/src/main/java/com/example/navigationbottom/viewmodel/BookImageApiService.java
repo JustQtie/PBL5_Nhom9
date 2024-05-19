@@ -3,6 +3,8 @@ package com.example.navigationbottom.viewmodel;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.navigationbottom.response.book.BookImageResponse;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -49,5 +51,9 @@ public class BookImageApiService {
 
     public Call<List<String>> getThumbnailsByProductId(Long productId){
         return api.getThumbnailsByProductId(productId);
+    }
+
+    public Call<BookImageResponse> deleteThumbnails(Long productId){
+        return api.deleteThumbnails(productId);
     }
 }

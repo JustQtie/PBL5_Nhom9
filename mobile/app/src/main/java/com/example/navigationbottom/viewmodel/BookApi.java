@@ -3,7 +3,7 @@ package com.example.navigationbottom.viewmodel;
 import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.response.book.BookImageResponse;
 import com.example.navigationbottom.response.book.GetBookResponse;
-import com.example.navigationbottom.response.book.PostBookResponse;
+import com.example.navigationbottom.response.book.BookResponse;
 
 import java.util.List;
 
@@ -11,15 +11,17 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface BookApi {
     @POST("api/v1/products")
-    Call<PostBookResponse> postBook(@Body Book requestData);
+    Call<BookResponse> postBook(@Body Book requestData);
 
     @Multipart
     @POST("api/v1/products/uploads/{id}")
@@ -36,4 +38,13 @@ public interface BookApi {
 
     @GET("api/v1/products/{id}")
     Call<Book> getBookById(@Path("id") Long id);
+
+    @DELETE("api/v1/products/{id}")
+    Call<ResponseBody> deleteBook(@Path("id") Long id);
+
+    @PUT("api/v1/products/{id}")
+    Call<BookResponse> updateBook(@Path("id") Long id, @Body Book requestData);
+
+    @DELETE("api/v1/products/thumbnails/{id}")
+    Call<ResponseBody> deleteBookImgae(@Path("id") Long id);
 }

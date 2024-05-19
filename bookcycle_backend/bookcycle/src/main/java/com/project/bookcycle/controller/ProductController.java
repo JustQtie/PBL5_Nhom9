@@ -7,6 +7,7 @@ import com.project.bookcycle.model.ProductImage;
 import com.project.bookcycle.response.ProductImageResponse;
 import com.project.bookcycle.response.ProductListResponse;
 import com.project.bookcycle.response.ProductResponse;
+import com.project.bookcycle.service.IProductImageService;
 import com.project.bookcycle.service.IProductService;
 import com.project.bookcycle.utils.MessageKeys;
 import jakarta.validation.Valid;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
     private final IProductService productService;
+    private final IProductImageService productImageService;
     @PostMapping("")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
@@ -81,8 +84,8 @@ public class ProductController {
                     return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                             .body(MessageKeys.UPLOAD_IMAGES_FILE_MUST_BE_IMAGE);
                 }
-                // Lưu file và cập nhật thumbnail trong DTO
-                String filename = storeFile(file); // Thay thế hàm này với code của bạn để lưu file
+                // Lưu file và cập nhật thumbnail
+                String filename = storeFile(file);
                 //lưu vào đối tượng product trong DB
                 ProductImage productImage = productService.createProductImage(
                         existingProduct.getId(),
@@ -97,7 +100,7 @@ public class ProductController {
             ProductImageResponse productImageResponse = ProductImageResponse.builder().ec("0").build();
             return ResponseEntity.ok().body(productImageResponse);
         } catch (Exception e) {
-            ProductImageResponse productImageResponse = ProductImageResponse.builder().ec("-1").build();
+            ProductImageResponse productImageResponse = ProductImageResponse.builder().ec("-1").message(e.getMessage()).build();
             return ResponseEntity.badRequest().body(productImageResponse);
         }
     }
@@ -118,6 +121,42 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/thumbnails/{id}")
+    public ResponseEntity<?> deleteImage(
+            @PathVariable Long id
+    ){
+        try {
+            List<ProductImage> productImageList = productImageService.getThumbnailByProductId(id);
+            ArrayList<String> listThumbnails = new ArrayList<>();
+            for(ProductImage productImage : productImageList){
+                listThumbnails.add(productImage.getImageUrl());
+            }
+
+            deleteImages(listThumbnails);
+
+            return ResponseEntity.ok().body("Deleted thumbnails");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public void deleteImages(List<String> imagePaths) {
+        for (String imagePath : imagePaths) {
+            try {
+                Path path = Paths.get("uploads", imagePath);
+                if (Files.exists(path)) {
+                    Files.delete(path);
+                } else {
+                    System.out.println("File not found: " + path);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     private String storeFile(MultipartFile file) throws IOException {
         if (!isImageFile(file) || file.getOriginalFilename() == null) {
             throw new IOException("Invalid image format");
@@ -141,6 +180,7 @@ public class ProductController {
         String contentType = file.getContentType();
         return contentType != null && contentType.startsWith("image/");
     }
+
     @GetMapping("")
     public ResponseEntity<ProductListResponse> getProducts(
             @RequestParam(value = "keyword", defaultValue = "")  String keyword,
@@ -160,6 +200,23 @@ public class ProductController {
                     .build());
         }
     }
+    @PostMapping("/get_list")
+    public ResponseEntity<ProductListResponse> getListProduct(){
+        try {
+            List<ProductResponse> productPage = productService.getListProduct();
+            return ResponseEntity.ok(ProductListResponse
+                    .builder()
+                    .productResponseList(productPage)
+                    .ec("0")
+                    .build());
+        }catch(Exception e){
+            return ResponseEntity.ok(ProductListResponse
+                    .builder()
+                    .ec("-1")
+                    .build());
+        }
+    }
+
     @PostMapping("/byuser/{id}")
     public ResponseEntity<ProductListResponse> getProductsByUserId(
             @PathVariable("id") Long userId
@@ -194,7 +251,7 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable long id) {
         try {
             productService.deleteProduct(id);
-            return ResponseEntity.ok(String.format("Product with id = %d deleted successfully", id));
+            return ResponseEntity.ok("Delete success!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

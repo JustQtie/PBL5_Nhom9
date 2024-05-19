@@ -36,6 +36,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +64,11 @@ public class SellFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_sell, container, false);
+
         btn_fab = mView.findViewById(R.id.btn_fab_Sell);
+        rvBooks = mView.findViewById(R.id.rv_sell_fragment);
+
+
         return mView;
     }
     @Override
@@ -71,7 +76,7 @@ public class SellFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setFragmentToolbar(view);
 
-        rvBooks = mView.findViewById(R.id.rv_sell_fragment);
+
         progressDialog = new ProgressDialog(getActivity());
 
         rvBooks.setHasFixedSize(true);

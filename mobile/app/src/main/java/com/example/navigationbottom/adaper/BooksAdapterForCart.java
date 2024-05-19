@@ -45,30 +45,30 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
             return;
         }
 
-        try{
-            Glide.with(holder.itemView.getContext())
-                    .load(book.getImg() != null ? book.getImg() : R.drawable.baseline_menu_book_24)
-                    .into(holder.ivItem);
-        }catch (Exception e){
-            Glide.with(holder.itemView.getContext())
-                    .load(R.drawable.baseline_menu_book_24)
-                    .into(holder.ivItem);
-        }
+//        try{
+//            Glide.with(holder.itemView.getContext())
+//                    .load(book.getImg() != null ? book.getImg() : R.drawable.baseline_menu_book_24)
+//                    .into(holder.ivItem);
+//        }catch (Exception e){
+//            Glide.with(holder.itemView.getContext())
+//                    .load(R.drawable.baseline_menu_book_24)
+//                    .into(holder.ivItem);
+//        }
 
 
 
-        holder.tvGia.setText(book.getGia() + "VND");
-        holder.tvLoai.setText(book.getLoai());
-        holder.tvNguoiBan.setText(book.getTacGia());
-        holder.tvSoLuong.setText( "SL: " + book.getSoLuong());
-        holder.tvTieude.setText(book.getTieuDe());
+//        holder.tvGia.setText(book.getGia() + "VND");
+//        holder.tvLoai.setText(book.getLoai());
+//        holder.tvNguoiBan.setText(book.getTacGia());
+//        holder.tvSoLuong.setText( "SL: " + book.getSoLuong());
+//        holder.tvTieude.setText(book.getTieuDe());
 
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // chuyển màn hình và gửi dữ liệu đi cùng dưới dạng object
                 Intent intent = new Intent(mContext, DetailsCartActivity.class);
-                intent.putExtra("book", book);
+                //intent.putExtra("book", book);
                 mContext.startActivity(intent);
             }
         });

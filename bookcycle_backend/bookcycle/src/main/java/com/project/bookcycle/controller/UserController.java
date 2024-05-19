@@ -98,7 +98,6 @@ public class UserController {
             @PathVariable Long id
     ){
         try{
-
             User user = userService.getUser(id);
             UserResponse userResponse = UserResponse.builder()
                     .id(user.getId())
@@ -107,6 +106,7 @@ public class UserController {
                     .phoneNumber(user.getPhoneNumber())
                     .address(user.getAddress())
                     .active(user.isActive())
+                    .thumbnail(user.getThumbnail())
                     .dateOfBirth(user.getDateOfBirth())
                     .gender(user.isGender())
                     .role(user.getRole())
