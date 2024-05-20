@@ -73,28 +73,23 @@ CREATE TABLE orders(
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    address VARCHAR(255) NOT NULL,
-    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled')
+    product_id INT,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    status ENUM('saving', 'pending', 'delivered')
 COMMENT 'Trạng thái đơn hàng',
+    number_of_product INT,
     total_money FLOAT CHECK (total_money >= 0),
     shipping_address VARCHAR(200),
-    shipping_date DATE,
-    tracking_number VARCHAR(100),
     payment_method VARCHAR(100),
     active TINYINT(1),
 );
 
-
-CREATE TABLE order_details(
+CREATE TABLE Notify(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    order_id INT,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    product_id INT,
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    number_of_product INT CHECK(number_of_product > 0),
-    total_money FLOAT CHECK(total_money>=0),
-);
+    content TEXT DEFAULT '',
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+)
 
 CREATE TABLE Comment(
     id INT PRIMARY KEY AUTO_INCREMENT,

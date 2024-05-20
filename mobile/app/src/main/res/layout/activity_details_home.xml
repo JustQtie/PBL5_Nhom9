@@ -23,50 +23,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_cart_pay4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="270dp"
+                android:layout_centerInParent="true"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorEnabled="true"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1"
+                tools:ignore="MissingConstraints">
 
-                <ImageView
-                    android:id="@+id/iv_anhLon_mapAc"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.1"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/baseline_bienbao"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/si_anhNho_mapAc"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_marginBottom="20dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/baseline_bienbao"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:shapeAppearanceOverlay="@style/roundedImageView" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </com.smarteist.autoimageslider.SliderView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:background="@drawable/bg_shadow"
-                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+                app:layout_constraintBottom_toBottomOf="@+id/slider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -121,14 +104,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="6dp"
-                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
-                app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toStartOf="@+id/slider"
+                app:layout_constraintStart_toEndOf="@+id/slider"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
@@ -170,7 +152,7 @@
                 android:background="@drawable/editextstyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/slider" />
 
             <TextView
                 android:id="@+id/TextView_12"
@@ -183,7 +165,6 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_activitydetail_loai"
                 app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_loai" />
 
-
             <TextView
                 android:id="@+id/tv_activitydetail_tieude"
                 android:layout_width="0dp"
@@ -195,7 +176,6 @@
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_activitydetail_loai"
                 app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_loai" />
-
 
             <TextView
                 android:id="@+id/tv_activitydetail_Gia"
@@ -221,11 +201,83 @@
                 app:layout_constraintTop_toBottomOf="@+id/TextView_12" />
 
             <TextView
+                android:id="@+id/TextView_14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Tác giả:"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/TextView_16"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_16" />
+
+            <TextView
+                android:id="@+id/tv_activitydetail_tacGia"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Nguyễn Văn A"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_14"
+                app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_trangthai" />
+
+            <TextView
+                android:id="@+id/TextView_15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="48dp"
+                android:text="Số lượng:"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_activitydetail_Gia"
+                app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_loai" />
+
+            <TextView
+                android:id="@+id/tv_activitydetail_soluong"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="20dp"
+                android:text="10"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_activitydetail_loai"
+                app:layout_constraintStart_toEndOf="@+id/TextView_15"
+                app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_loai" />
+
+            <TextView
+                android:id="@+id/TextView_16"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Trạng thái:"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/TextView_13"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_13" />
+
+            <TextView
+                android:id="@+id/tv_activitydetail_trangthai"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="10dp"
+                android:text="Còn hàng"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_activitydetail_Gia"
+                app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_Gia" />
+
+            <TextView
                 android:id="@+id/tv_activitydetail_Mota"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="156dp"
+                android:layout_marginTop="194dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="start"
                 android:text="Tài liệu siêu hay siêu khó, không khó không lấy tiền"
@@ -236,65 +288,38 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_loai" />
 
             <TextView
-                android:id="@+id/TextView_14"
+                android:id="@+id/textView_"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="10dp"
                 android:text="Người bán:"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/TextView_12"
-                app:layout_constraintTop_toBottomOf="@+id/TextView_12" />
-
-            <TextView
-                android:id="@+id/tv_activitydetail_ngBan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="104dp"
-                android:layout_marginTop="44dp"
-                android:text="Hồ Văn Thảo"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/TextView_12"
-                app:layout_constraintTop_toBottomOf="@+id/TextView_12" />
-
-            <TextView
-                android:id="@+id/TextView_15"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Mô tả:"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/TextView_14"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_14" />
 
+            <TextView
+                android:id="@+id/tv_activitydetail_ngBan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Hồ Văn Thảo"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/textView_"
+                app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_tacGia" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout6"
                 android:layout_width="match_parent"
-
-                android:layout_height="130dp"
-                android:layout_marginTop="270dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="310dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_activitydetail_Save"
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/background_login_btn4"
-                    android:text="Save"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.164" />
+                app:layout_constraintTop_toBottomOf="@+id/slider"
+                tools:ignore="UnknownIdInLayout">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_activitydetail_Report"
@@ -317,27 +342,23 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_activitydetail_Order"
-                    android:layout_width="match_parent"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="24dp"
                     android:background="@drawable/background_login_btn6"
                     android:text="Order"
                     android:textColor="#000"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </androidx.core.widget.NestedScrollView>
 

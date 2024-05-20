@@ -40,7 +40,7 @@
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="270dp"
                 android:layout_centerInParent="true"
                 app:sliderAnimationDuration="600"
                 app:sliderAutoCycleDirection="back_and_forth"
@@ -53,8 +53,7 @@
                 app:sliderIndicatorRadius="2dp"
                 app:sliderIndicatorSelectedColor="#5A5A5A"
                 app:sliderIndicatorUnselectedColor="#FFF"
-                app:sliderScrollTimeInSec="1" >
-
+                app:sliderScrollTimeInSec="1">
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -149,7 +148,7 @@
                     />
 
 
-                <NumberPicker
+                <EditText
                     android:id="@+id/number_so_luong"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"

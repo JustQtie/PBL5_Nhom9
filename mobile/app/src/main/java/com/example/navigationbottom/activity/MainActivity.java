@@ -14,6 +14,7 @@ import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.MyViewPagerAdapter;
 import com.example.navigationbottom.fragment.SellFragment;
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.viewmodel.WebSocketManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -22,13 +23,15 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 mViewPager2;
     private BottomNavigationView mbottomNavigationView;
+    private WebSocketManager webSocketManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        webSocketManager = WebSocketManager.getInstance();
+        webSocketManager.connect();
 
         mViewPager2 = findViewById(R.id.view_pager_2);
         mbottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -98,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
             String fragmentName = intent.getStringExtra("dataFromActivity");
             if ("fromAddBook".equals(fragmentName) || "fromEditBook".equals(fragmentName)) {
                 mViewPager2.setCurrentItem(2); // Navigate to the SellFragment page
+            }else if("fromDetailHome".equals(fragmentName)){
+                mViewPager2.setCurrentItem(1);
             }
         }
     }

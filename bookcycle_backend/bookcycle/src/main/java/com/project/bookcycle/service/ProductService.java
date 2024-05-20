@@ -88,6 +88,14 @@ public class ProductService implements IProductService{
     }
 
     @Override
+    public List<ProductResponse> getProductNotUserId(Long userId) {
+        return productRepository.findAllByUserIdNot(userId)
+                .stream()
+                .map(ProductResponse::convertToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Product updateProduct(long id, ProductDTO productDTO) throws DataNotFoundException {
         Product existingProduct = getProduct(id);
         if(existingProduct != null) {
@@ -146,4 +154,5 @@ public class ProductService implements IProductService{
         }
         return productImageRepository.save(newProductImage);
     }
+
 }

@@ -4,44 +4,43 @@ import com.project.bookcycle.dto.OrderDTO;
 import com.project.bookcycle.exceptions.DataNotFoundException;
 import com.project.bookcycle.model.Order;
 import com.project.bookcycle.model.OrderStatus;
+import com.project.bookcycle.model.Product;
 import com.project.bookcycle.model.User;
 import com.project.bookcycle.repository.OrderRepository;
+import com.project.bookcycle.repository.ProductRepository;
 import com.project.bookcycle.repository.UserRepository;
+import com.project.bookcycle.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService implements IOrderService{
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
     @Override
     public Order createOrder(OrderDTO orderDTO) {
         try {
             User user = userRepository.findById(orderDTO.getUserId())
                     .orElseThrow(()-> new DataNotFoundException("Cannot find user with id " + orderDTO.getUserId()));
+            Product product = productRepository.findById(orderDTO.getProductId())
+                    .orElseThrow(()-> new DataNotFoundException("Cannot find product with id " + orderDTO.getProductId()));
             // Convert orderDTO => Order
             // dùng thư viện ModelMapper để ánh xạ
-            modelMapper.typeMap(OrderDTO.class, Order.class)
-                    .addMappings(mapper -> mapper.skip(Order::setId));
-            Order order = new Order();
-            modelMapper.map(orderDTO, order);
-            order.setUser(user);
-            order.setOrderDate(LocalDate.now());
-            order.setStatus(OrderStatus.PENDING);
-
-            // Kiểm tra shipping date >= ngày hôm nay
-            LocalDate orderDate = orderDTO.getOrderDate() == null ? LocalDate.now() : orderDTO.getOrderDate();
-            if(orderDate.isBefore(LocalDate.now())){
-                throw new DataNotFoundException("Date must be at least today !");
-            }
-            order.setOrderDate(orderDate);
-            order.setActive(true);
+            Order order = Order.builder()
+                    .product(product)
+                    .user(user)
+                    .status(OrderStatus.SAVING)
+                    .shippingAddress(user.getAddress())
+                    .active(true)
+                    .build();
             orderRepository.save(order);
             return order;
         } catch (DataNotFoundException e) {
@@ -83,5 +82,13 @@ public class OrderService implements IOrderService{
                 .orElseThrow(()->new DataNotFoundException("Cannot find order's with id "+ id));
         order.setActive(false);
         orderRepository.save(order);
+    }
+
+    @Override
+    public List<ProductResponse> findSavingBooks() {
+        return orderRepository.findSavingBooks()
+                .stream()
+                .map(ProductResponse::convertToProductResponse)
+                .collect(Collectors.toList());
     }
 }

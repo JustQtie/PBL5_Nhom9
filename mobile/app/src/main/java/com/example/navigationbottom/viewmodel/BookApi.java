@@ -18,6 +18,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface BookApi {
     @POST("api/v1/products")
@@ -33,8 +34,14 @@ public interface BookApi {
     @POST("api/v1/products/byuser/{id}")
     Call<GetBookResponse> getAllBookByUser(@Path("id") Long userId);
 
+    @POST("api/v1/products/bynotuser/{id}")
+    Call<GetBookResponse> getBooksNotUser(@Path("id") Long userId);
+
     @GET("api/v1/products")
     Call<GetBookResponse> getAllBook();
+
+    @GET("api/v1/products")
+    Call<GetBookResponse> getAllBook(@Query("keyword") String keyword);
 
     @GET("api/v1/products/{id}")
     Call<Book> getBookById(@Path("id") Long id);
