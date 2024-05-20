@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.user.ChangePasswordResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
 import com.example.navigationbottom.response.user.RegisterResponse;
 import com.google.gson.Gson;
@@ -60,6 +61,11 @@ public class UserApiService {
     public Call<RegisterResponse> signUpUser(@Body User requestData){
         Log.d("RequestData", new Gson().toJson(requestData));
         return api.signUpUser(requestData);
+    }
+
+    public Call<ChangePasswordResponse> changePassword(Long id, User requestData) {
+        Log.d("RequestData", new Gson().toJson(requestData));
+        return api.changePassword(id, requestData);
     }
 
 }

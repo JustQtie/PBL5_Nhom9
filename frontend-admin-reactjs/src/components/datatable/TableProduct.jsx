@@ -82,7 +82,7 @@ const TableProduct = () => {
                                         <TableCell className="tableCell">{item.id}</TableCell>
                                         <TableCell className="tableCell">
                                             <div className="cellWrapper-products">
-                                                <img src={item.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${item.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="User" className="image" />
+                                                <img src={item.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/products/images/${item.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="User" className="image" />
                                                 {/* <img src={item.thumbnail ? item.thumbnail : "https://i.imgur.com/2zLfMh6.jpeg"} alt="User" className="image" /> */}
                                                 {item.name}
                                             </div>

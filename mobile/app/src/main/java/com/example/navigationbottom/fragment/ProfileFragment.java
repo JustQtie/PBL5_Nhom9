@@ -1,6 +1,7 @@
 package com.example.navigationbottom.fragment;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,12 +19,20 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.activity.DetailHistoryProfileActivity;
 import com.example.navigationbottom.activity.DetailSettingProfileActivity;
 import com.example.navigationbottom.activity.LoginActivity;
+import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.user.ChangePasswordResponse;
+import com.example.navigationbottom.viewmodel.SessionManager;
+import com.example.navigationbottom.viewmodel.UserApiService;
 import com.google.android.material.imageview.ShapeableImageView;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
     private LinearLayout btnDoiMatKhau, btnDoiThongTin, btnLichSuGiaoDich;
@@ -31,7 +40,7 @@ public class ProfileFragment extends Fragment {
     private AppCompatButton btnLogout;
     private ShapeableImageView imgAnhDaiDien;
     private  Dialog dialog;
-
+    private ProgressDialog progressDialog;
     private View mView;
     public ProfileFragment() {
 
@@ -110,6 +119,7 @@ public class ProfileFragment extends Fragment {
         if(window == null){
             return;
         }
+
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
@@ -127,14 +137,52 @@ public class ProfileFragment extends Fragment {
         btnDoiMatKhau.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // khi nhan thi se lay du lieu do textView để thay đổi mat khau
+                String oldPassword = edtMatKhauCu.getText().toString();
+                String newPassword = edtMatKhauMoi.getText().toString();
+                String confirmPassword = edtNhapLaiMatKhauMoi.getText().toString();
+
+                if (!newPassword.equals(confirmPassword)) {
+                    Toast.makeText(getActivity(), "Mật khẩu mới không khớp!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                User requestData = new User();
+                requestData.setPassword(oldPassword);
+                requestData.setRetype_password(newPassword);
+
+                UserApiService apiService = new UserApiService(getActivity());
+
+                // Giả sử bạn có ID người dùng lưu trữ trong Session hoặc một nơi nào đó
+//                Long userId = SessionManager.getInstance(getActivity()).getUserId();
+
+//                apiService.changePassword(userId, requestData).enqueue(new Callback<ChangePasswordResponse>() {
+//
+//                    @Override
+//                    public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+//                        if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+//                            Toast.makeText(getActivity(), "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+//                            dialog.dismiss();
+//                        } else {
+//                            Toast.makeText(getActivity(), "Đổi mật khẩu thất bại: " + (response.body() != null ? response.body().getMessage() : "Lỗi không xác định"), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+//                        Toast.makeText(getActivity(), "Đổi mật khẩu thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        });
+
+            dialog.show();
+
+
 
             }
         });
 
 
-
-        dialog.show();
 
     }
 }
