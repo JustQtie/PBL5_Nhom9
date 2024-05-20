@@ -17,7 +17,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 public class DetailsHomeActivity extends AppCompatActivity {
 
     private TextView tvTieude, tvGia, tvNguoiban, tvMota, tvLoai;
-    private AppCompatButton btnSave, btnReport, btnOrder;
+    private AppCompatButton  btnReport, btnOrder;
     private ImageView btnBack, anhLon;
     private ShapeableImageView anhNho;
 
@@ -68,7 +68,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
         tvLoai = findViewById(R.id.tv_activitydetail_loai);
         anhLon = findViewById(R.id.iv_anhLon_mapAc);
         anhNho = findViewById(R.id.si_anhNho_mapAc);
-        btnSave = findViewById(R.id.btn_activitydetail_Save);
+
         btnReport = findViewById(R.id.btn_activitydetail_Report);
         btnOrder = findViewById(R.id.btn_activitydetail_Order);
         btnBack = findViewById(R.id.iv_back_mapAc);

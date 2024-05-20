@@ -1,6 +1,6 @@
 import "./chart.scss"
 import { AreaChart, Area, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
+import React, { useState, useEffect } from 'react';
 
 const data = [
     { name: "Tháng 1", "Số lượt giao dịch": 1200 },
@@ -12,6 +12,25 @@ const data = [
 ];
 
 const Chart = ({ aspect, title }) => {
+
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            // try {
+            //     // Gọi API để lấy dữ liệu
+            //     const response = await axios.get('YOUR_API_ENDPOINT');
+            //     // Lấy dữ liệu từ response và cập nhật state
+            //     setChartData(response.data);
+            // } catch (error) {
+            //     console.error('Error fetching chart data:', error);
+            // }
+        };
+
+        fetchData(); // Gọi hàm fetchData khi component mount
+
+    }, []); // Chạy một lần khi component được mount
+
     return (
         <div className="chart">
             <div className="title-chart">{title} </div>

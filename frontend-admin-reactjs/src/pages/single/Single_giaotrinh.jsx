@@ -2,14 +2,31 @@ import "./single_giaotrinh.scss"
 import Sidebar from "../../components/sidebar/Sidebar"
 import Navbar from "../../components/navbar/Navbar"
 import { useLocation } from "react-router-dom";
+import ModalDeleteProduct from "../../components/modal/ModalDeleteProduct";
+import { useState, useEffect } from "react";
 
 const Single = () => {
 
+    const [showModalDeleteProduct, setShowModalDelete] = useState(false);
+    const [dataDelete, setDataDelete] = useState({});
 
     const location = useLocation();
     const productDetail = location.state?.product;
+
+    useEffect(() => {
+        if (productDetail) {
+            setDataDelete(productDetail);
+        }
+    }, [productDetail]);
+
     if (!productDetail) {
         return <div>No user data available</div>;
+    }
+
+
+
+    const handClickBtnDelete = () => {
+        setShowModalDelete(true);
     }
 
     return (
@@ -65,14 +82,21 @@ const Single = () => {
                             </p>
                         </div>
 
-
-
                         <div className="d-flex justify-content-center">
-                            <button>Xóa bài</button>
+                            <button onClick={handClickBtnDelete}>
+                                Xóa bài
+                            </button>
                         </div>
+
                     </div>
                 </div>
             </div>
+
+            <ModalDeleteProduct
+                show={showModalDeleteProduct}
+                setShow={setShowModalDelete}
+                dataDelete={dataDelete}
+            />
         </div>
     )
 };

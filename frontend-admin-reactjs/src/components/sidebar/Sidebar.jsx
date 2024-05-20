@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 
 const Sidebar = () => {
     const { dispatch } = useContext(DarkModeContext)
-    const [activeLink, setActiveLink] = useState("");
+
     const location = useLocation();
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -21,9 +21,7 @@ const Sidebar = () => {
         navigate("/");
         toast.success("Log out success!");
     };
-    const handleMenuClick = (link) => {
-        setActiveLink(link);
-    };
+
     return (
         <div className="sidebar">
             <div className="sidebar-top">
@@ -68,9 +66,7 @@ const Sidebar = () => {
                             <span className="sidebar-span">Hồ sơ</span>
                         </li>
                     </Link>
-                    {/* <Link to="/" style={{ textDecoration: "none" }}>
- 
-                    </Link> */}
+
                     <li onClick={handleLogout}>
                         <ExitToAppOutlinedIcon className="sidebar-icon" />
                         <span className="sidebar-span">Đăng xuất</span>

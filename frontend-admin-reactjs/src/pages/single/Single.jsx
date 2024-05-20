@@ -4,7 +4,7 @@ import Navbar from "../../components/navbar/Navbar"
 import Chart from "../../components/chart/Chart"
 import Chart2 from "../../components/chart2/Chart2"
 // import Chart3 from "../../components/chart3/Chart3"
-import Widget from "../../components/widgets/Widget"
+import WidgetSingle from "../../components/widgets/WidgetSingle"
 import { useLocation } from "react-router-dom";
 
 
@@ -63,8 +63,8 @@ const Single = () => {
                     </div>
                 </div>
                 <div className="widgets-single">
-                    <Widget type="order" />
-                    <Widget type="balance" />
+                    <WidgetSingle type="order" />
+                    <WidgetSingle type="balance" />
                 </div>
 
 

@@ -1,4 +1,4 @@
-.widget {
+.widget-thongke {
     display: flex;
     justify-content: space-between;
     width: 200px;
@@ -8,31 +8,36 @@
     box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
     border-radius: 10px;
 
-    .left,
-    .right {
+    .left-thongke,
+    .right-thongke {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
 
-        .title-widget {
+        .title-widget-thongke {
+            margin-bottom: 5px;
             font-size: 14px;
             font-weight: bold;
-            margin-bottom: 5px;
             color: rgb(160, 169, 169);
         }
 
-        .counter {
+        .counter-thongke {
             font-size: 40px;
             font-weight: 300;
         }
 
+        .link-thongke {
+            width: max-content;
+            font-size: 12px;
+            border-bottom: 1px solid gray;
+        }
 
-        .percentage {
+        .percentage-thongke {
             display: flex;
             align-items: center;
             font-size: 14px;
 
-            &.positive {
+            &.positive-thongke {
                 color: green;
             }
 
@@ -41,7 +46,7 @@
             }
         }
 
-        .icon {
+        .icon-thongke {
             font-size: 35px;
             padding: 5px;
             border-radius: 5px;

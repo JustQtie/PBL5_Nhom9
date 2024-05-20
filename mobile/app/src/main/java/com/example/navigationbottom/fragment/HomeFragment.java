@@ -1,19 +1,30 @@
 package com.example.navigationbottom.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.navigationbottom.R;
+import com.example.navigationbottom.activity.MainActivity;
 import com.example.navigationbottom.adaper.BooksAdapterForHome;
 
 import com.example.navigationbottom.adaper.BooksForSellAdapter;
@@ -44,7 +55,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -116,5 +127,51 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setFragmentToolbar(view);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home_fragment, menu);
+        // su ly tim kiem
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.mi_search_home));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(!TextUtils.isEmpty(query)){
+//                    searchPosts(query);
+                }else{
+//                    loadPosts();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(!TextUtils.isEmpty(newText)){
+//                    searchPosts(newText);
+                }else{
+//                    loadPosts();
+                }
+                return false;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setFragmentToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar_home);
+        ((MainActivity)requireActivity()).setSupportActionBar(toolbar);
+    }
 
 }

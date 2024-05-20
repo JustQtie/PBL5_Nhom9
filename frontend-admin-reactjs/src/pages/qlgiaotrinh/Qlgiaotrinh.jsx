@@ -2,7 +2,6 @@ import "./qlgiaotrinh.scss"
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import Datatable_qlgt from "../../components/datatable/Datatable_qlgt";
-import Table from "../../components/table/Table"
 
 const Qlgiaotrinh = () => {
     return (

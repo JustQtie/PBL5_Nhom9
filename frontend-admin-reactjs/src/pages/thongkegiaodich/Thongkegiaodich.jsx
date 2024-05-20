@@ -1,7 +1,7 @@
 import "./thongkegiaodich.scss"
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import Widget from "../../components/widgets/Widget";
+import WidgetThongKe from "../../components/widgets/WidgetThongKe";
 import Chart3 from "../../components/chart3/Chart3";
 import Table from "../../components/table/Table";
 const Thongkegiaodich = () => {
@@ -14,8 +14,8 @@ const Thongkegiaodich = () => {
                     Thống kê giao dịch
                 </div>
                 <div className="widgets-thongkegiaodich">
-                    <Widget type="order" />
-                    <Widget type="balance" />
+                    <WidgetThongKe type="order" />
+                    <WidgetThongKe type="balance" />
                 </div>
 
                 <div className="charts-thongkegiaodich">

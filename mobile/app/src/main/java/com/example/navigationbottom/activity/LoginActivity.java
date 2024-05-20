@@ -62,47 +62,47 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void clickLogin() {
-
-        progressDialog.show();
-        edtTaiKhoan = findViewById(R.id.edt_taikhoan_login);
-        edtMauKhau = findViewById(R.id.edt_matkhau_login);
-
-        User user = new User();
-        user.setPhoneNumber(edtTaiKhoan.getText().toString().trim());
-        user.setPassword(edtMauKhau.getText().toString().trim());
-
-        userApiService = new UserApiService(this);
-        userApiService.postUserLogin(user).enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                LoginResponse response1 = response.body();
-
-                if(response1 != null){
-                    progressDialog.dismiss();
-                    if(response1.getEc().equals("0")){
-                        UserDataSingleton.getInstance().setUser(response1.getUser());
-                        UserPreferences.saveUser(LoginActivity.this, response1.getUser());
-                        Log.d("RequestData1", new Gson().toJson(response1));
-                        SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
-                        Toast.makeText(LoginActivity.this, "Login success!!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-                    }else{
-                        Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                String errorMessage = t.getMessage();
-                Toast.makeText(LoginActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-            }
-        });
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//        progressDialog.show();
+//        edtTaiKhoan = findViewById(R.id.edt_taikhoan_login);
+//        edtMauKhau = findViewById(R.id.edt_matkhau_login);
+//
+//        User user = new User();
+//        user.setPhoneNumber(edtTaiKhoan.getText().toString().trim());
+//        user.setPassword(edtMauKhau.getText().toString().trim());
+//
+//        userApiService = new UserApiService(this);
+//        userApiService.postUserLogin(user).enqueue(new Callback<LoginResponse>() {
+//            @Override
+//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+//                LoginResponse response1 = response.body();
+//
+//                if(response1 != null){
+//                    progressDialog.dismiss();
+//                    if(response1.getEc().equals("0")){
+//                        UserDataSingleton.getInstance().setUser(response1.getUser());
+//                        UserPreferences.saveUser(LoginActivity.this, response1.getUser());
+//                        Log.d("RequestData1", new Gson().toJson(response1));
+//                        SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
+//                        Toast.makeText(LoginActivity.this, "Login success!!", Toast.LENGTH_SHORT).show();
+//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//
+//                    }else{
+//                        Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
+//                    }
+//                }else{
+//                    progressDialog.dismiss();
+//                    Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<LoginResponse> call, Throwable t) {
+//                String errorMessage = t.getMessage();
+//                Toast.makeText(LoginActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+//                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+//            }
+//        });
 
     }
 }

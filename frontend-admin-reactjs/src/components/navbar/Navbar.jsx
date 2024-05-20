@@ -7,7 +7,7 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import Switch from "@mui/material/Switch";
 import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 
 
 
@@ -15,6 +15,18 @@ import { useContext } from "react";
 
 const Navbar = () => {
     const { dispatch } = useContext(DarkModeContext)
+    const [previewImage, setPreviewImage] = useState("");
+
+
+    useEffect(() => {
+
+        const userDataString = localStorage.getItem("userData");
+        if (userDataString) {
+            const userDataObject = JSON.parse(userDataString);
+            setPreviewImage(userDataObject.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${userDataObject.thumbnail}` : "https://i.imgur.com/1nORATT.png");
+        }
+    }, []);
+
 
     return (
         <div className="navbar">
@@ -50,11 +62,7 @@ const Navbar = () => {
                         <ListOutlinedIcon className="navbar-icon" />
                     </div>
                     <div className="navbar-item">
-                        <img
-                            src="https://i.imgur.com/1nORATT.png"
-                            alt=""
-                            className="navbar-avatar"
-                        />
+                        <img className="navbar-avatar" src={previewImage || "https://i.imgur.com/1nORATT.png"} alt="profile" />
                     </div>
                 </div>
             </div>

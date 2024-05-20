@@ -72,6 +72,24 @@ const putUpdateUser = (id, fullname, phone_number, address, gender, token) => {
     });
 }
 
+const deleteProductById = (id, token) => {
+
+    return axios.delete(`api/v1/products/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
+const deleteProductThumbnailsById = (id, token) => {
+
+    return axios.delete(`api/v1/products/thumbnails/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
 export {
     postLogin,
     getAllUsers,
@@ -80,4 +98,7 @@ export {
     putUnbanUser,
     getAllProducts,
     getUserById,
+    deleteProductById,
+    deleteProductThumbnailsById,
+
 }
