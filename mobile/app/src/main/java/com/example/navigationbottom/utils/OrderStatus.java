@@ -1,4 +1,4 @@
-package com.project.bookcycle.model;
+package com.example.navigationbottom.utils;
 
 public class OrderStatus {
     public static final String SAVING = "saving";

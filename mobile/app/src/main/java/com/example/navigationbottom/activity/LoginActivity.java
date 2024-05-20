@@ -80,12 +80,16 @@ public class LoginActivity extends AppCompatActivity {
                 if(response1 != null){
                     progressDialog.dismiss();
                     if(response1.getEc().equals("0")){
-                        UserDataSingleton.getInstance().setUser(response1.getUser());
-                        UserPreferences.saveUser(LoginActivity.this, response1.getUser());
-                        Log.d("RequestData1", new Gson().toJson(response1));
-                        SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
-                        Toast.makeText(LoginActivity.this, "Login success!!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        if(response1.getUser().getActive()){
+                            UserDataSingleton.getInstance().setUser(response1.getUser());
+                            UserPreferences.saveUser(LoginActivity.this, response1.getUser());
+                            Log.d("RequestData1", new Gson().toJson(response1));
+                            SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
+                            Toast.makeText(LoginActivity.this, "Login success!!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        }else{
+                            Toast.makeText(LoginActivity.this, "Your account has been banned", Toast.LENGTH_SHORT).show();
+                        }
 
                     }else{
                         Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();

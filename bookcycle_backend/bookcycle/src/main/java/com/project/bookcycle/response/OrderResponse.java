@@ -13,30 +13,29 @@ import lombok.*;
 @MappedSuperclass
 @Builder
 public class OrderResponse {
+
+    private Long id;
+
     @JsonProperty("user_id")
     private Long userId;
 
-    @JsonProperty("fullname")
-    private String fullName;
+    @JsonProperty("product_id")
+    private long productId;
 
-    private String email;
+    @JsonProperty("number_of_product")
+    private int numberOfProduct;
 
-    @JsonProperty("phone_number")
-    private String phoneNumber;
+    private String status;
 
-    private String address;
-
-    private String note;
-
-    @Min(value = 0, message = "Total money must be >= 0")
+    @JsonProperty("total_money")
     private float totalMoney;
-
-    @JsonProperty("shipping_method")
-    private String shippingMethod;
 
     @JsonProperty("shipping_address")
     private String shippingAddress;
 
     @JsonProperty("payment_method")
     private String paymentMethod;
+
+    @JsonProperty("EC")
+    private String ec;
 }

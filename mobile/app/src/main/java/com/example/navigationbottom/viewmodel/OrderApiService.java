@@ -3,10 +3,8 @@ package com.example.navigationbottom.viewmodel;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.navigationbottom.model.User;
-import com.example.navigationbottom.response.user.LoginResponse;
-import com.example.navigationbottom.response.user.RegisterResponse;
-import com.google.gson.Gson;
+import com.example.navigationbottom.model.Order;
+import com.example.navigationbottom.response.book.GetBookResponse;
 
 import java.io.IOException;
 
@@ -20,15 +18,12 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
-import retrofit2.http.Path;
 
-public class UserApiService {
-
-    private UserApi api;
-
+public class OrderApiService {
+    private OrderApi api;
     private String authToken;
 
-    public UserApiService(Context context){
+    public OrderApiService(Context context){
         authToken = SessionManager.getInstance(context).getToken();
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
@@ -51,19 +46,14 @@ public class UserApiService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()
-                .create(UserApi.class);
+                .create(OrderApi.class);
+    }
+    public Call<Order> createOrder(@Body Order order){
+       return api.createOrder(order);
     }
 
-    public Call<LoginResponse> postUserLogin(@Body User requestData){
-        Log.d("RequestData", new Gson().toJson(requestData));
-        return api.postUserLogin(requestData);
-    }
-    public Call<RegisterResponse> signUpUser(@Body User requestData){
-        Log.d("RequestData", new Gson().toJson(requestData));
-        return api.signUpUser(requestData);
-    }
-    public Call<User> getUser(@Path("id") Long id){
-        return api.getUser(id);
+    public Call<GetBookResponse> getBookSaving(){
+        return api.getBookSaving();
     }
 
 }
