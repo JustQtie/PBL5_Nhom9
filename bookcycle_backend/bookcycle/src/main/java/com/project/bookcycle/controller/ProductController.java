@@ -231,9 +231,24 @@ public class ProductController {
             return ResponseEntity.badRequest().body(ProductListResponse.builder()
                     .ec("-1").build());
         }
-
-
     }
+
+    @PostMapping("/bynotuser/{id}")
+    public ResponseEntity<ProductListResponse> getProductsNotUserId(
+            @PathVariable("id") Long userId
+    ){
+        try {
+            List<ProductResponse> productResponses = productService.getProductNotUserId(userId);
+            return ResponseEntity.ok(ProductListResponse.builder()
+                    .productResponseList(productResponses)
+                    .ec("0").build());
+        }catch (Exception e){
+
+            return ResponseEntity.badRequest().body(ProductListResponse.builder()
+                    .ec("-1").build());
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(
             @PathVariable("id") Long productId

@@ -17,6 +17,11 @@ public interface UserApi {
     @POST("api/v1/users/register")
     Call<RegisterResponse> signUpUser(@Body User requestData);
 
+
     @POST("api/v1/users/changepass/{id}")
     Call<ChangePasswordResponse> changePassword(@Path("id") Long id, @Body User requestData);
+
+    @POST("api/v1/users/{id}")
+    Call<User> getUser(@Path("id") Long id);
+
 }

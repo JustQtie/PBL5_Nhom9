@@ -23,47 +23,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/slider"
+
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_cart_pay4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="270dp"
+                android:layout_centerInParent="true"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorEnabled="true"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1"
+                tools:ignore="MissingConstraints">
 
-                <ImageView
-                    android:id="@+id/iv_anhLon_mapAc"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.1"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/baseline_bienbao"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/si_anhNho_mapAc"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_marginBottom="20dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/baseline_bienbao"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:shapeAppearanceOverlay="@style/roundedImageView" />
+            </com.smarteist.autoimageslider.SliderView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:background="@drawable/bg_shadow"
-                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+                app:layout_constraintBottom_toBottomOf="@+id/slider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -123,8 +113,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="6dp"
-                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
-                app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toStartOf="@+id/slider"
+                app:layout_constraintStart_toEndOf="@+id/slider"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
@@ -166,7 +156,7 @@
                 android:background="@drawable/editextstyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/slider" />
 
             <TextView
                 android:id="@+id/TextView_12"
@@ -327,19 +317,22 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout6"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="310dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="330dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                app:layout_constraintTop_toBottomOf="@+id/slider"
+                tools:ignore="UnknownIdInLayout">
+
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_activitydetail_Report"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="224dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/background_login_btn5"
@@ -348,26 +341,45 @@
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.692"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.164" />
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_activitydetail_Order"
-                    android:layout_width="180dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="36dp"
                     android:background="@drawable/background_login_btn6"
                     android:text="Order"
                     android:textColor="#000"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_bias="0.491"
                     app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_activitydetail_save"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="100dp"
+                    android:background="@drawable/background_login_btn4"
+                    android:text="Save"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.384" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

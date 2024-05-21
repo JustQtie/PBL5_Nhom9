@@ -101,13 +101,11 @@ public class UserController {
             User user = userService.getUser(id);
             UserResponse userResponse = UserResponse.builder()
                     .id(user.getId())
-                    .password(user.getPassword())
                     .fullname(user.getFullname())
                     .phoneNumber(user.getPhoneNumber())
                     .address(user.getAddress())
                     .active(user.isActive())
                     .thumbnail(user.getThumbnail())
-                    .dateOfBirth(user.getDateOfBirth())
                     .gender(user.isGender())
                     .role(user.getRole())
                     .ec(0)

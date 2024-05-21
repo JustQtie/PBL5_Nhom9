@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -80,9 +82,8 @@ import retrofit2.Response;
 
 public class EditBookActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private EditText edtTieude, edtTacgia, edtGia, edtMota;
+    private EditText edtTieude, edtTacgia, edtGia, edtMota, edtSoLuong;
 
-    NumberPicker edtSoLuong;
 
     private AppCompatButton btnUpload;
 
@@ -94,7 +95,6 @@ public class EditBookActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 123;
     private static final int GALLERY_PERMISSION_CODE = 124;
     private static final int CAMERA_REQUEST_CODE = 125;
-    private static final int GALLERY_REQUEST_CODE = 126;
 
     private static final int PICK_IMAGES_REQUEST = 1;
     List<Uri> imageUris = new ArrayList<>();
@@ -104,7 +104,6 @@ public class EditBookActivity extends AppCompatActivity {
     Long categoryId;
     String selectedStatus;
     private ProgressDialog progressDialog;
-    private User user;
     private Book book;
 
     List<String> imageUrlString = new ArrayList<>();
@@ -124,13 +123,6 @@ public class EditBookActivity extends AppCompatActivity {
         edtTacgia = findViewById(R.id.edt_tacgia_EditBookActivity);
         edtTieude = findViewById(R.id.edt_Title_EditBookActivity);
         edtSoLuong = findViewById(R.id.number_so_luong);
-
-        edtSoLuong.setMinValue(1); // Set giá trị tối thiểu
-        edtSoLuong.setMaxValue(100); // Set giá trị tối đa
-        edtSoLuong.setValue(1); // Set giá trị ban đầu
-        edtSoLuong.setEnabled(false);
-        edtSoLuong.setWrapSelectorWheel(true);
-
         edtGia = findViewById(R.id.edt_gia_EditBookActivity);
         edtMota = findViewById(R.id.edt_mota_EditBookActivity);
         btnDelete = findViewById(R.id.btn_Delete_EditBookActivity);
@@ -142,7 +134,6 @@ public class EditBookActivity extends AppCompatActivity {
         bookApiService = new BookApiService(this);
 
         book = (Book) getIntent().getSerializableExtra("book");
-        Log.d("Checkbook", book.getAuthor());
 
 
         fillImageSlide();
@@ -218,17 +209,22 @@ public class EditBookActivity extends AppCompatActivity {
                 progressDialog.setMessage("Upload...");
                 progressDialog.show();
                 if(imageUris == null){
+                    progressDialog.dismiss();
                     Toast.makeText(EditBookActivity.this, "Please upload photos before update books for sale", Toast.LENGTH_SHORT).show();
                 } else if (imageUris.size()>5) {
+                    progressDialog.dismiss();
                     Toast.makeText(EditBookActivity.this, "Only a maximum of 5 photos can be selected", Toast.LENGTH_SHORT).show();
-                } else if(TextUtils.isEmpty(edtTacgia.toString().trim()) || TextUtils.isEmpty(edtTieude.toString().trim()) || TextUtils.isEmpty(edtGia.toString().trim())){
+                } else if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtGia.getText().toString().trim())){
+                    progressDialog.dismiss();
                     Toast.makeText(EditBookActivity.this, "Please fill in the blank fields", Toast.LENGTH_SHORT).show();
                 }else {
                     Book requestBook = new Book();
                     requestBook.setName(edtTieude.getText().toString().trim());
                     requestBook.setAuthor(edtTacgia.getText().toString().trim());
                     requestBook.setPrice(Float.parseFloat(edtGia.getText().toString()));
-                    requestBook.setQuantity(edtSoLuong.getValue());
+                    requestBook.setQuantity(Integer.parseInt(edtSoLuong.getText().toString()));
                     requestBook.setDescription(edtMota.getText().toString().trim());
                     requestBook.setCategory_id(categoryId);
                     requestBook.setStatus(selectedStatus);
@@ -345,7 +341,7 @@ public class EditBookActivity extends AppCompatActivity {
     private void setEdText(){
         edtGia.setText(book.getPrice().toString());
         edtTieude.setText(book.getName());
-        edtSoLuong.setValue(book.getQuantity());
+        edtSoLuong.setText(String.valueOf(book.getQuantity()));
         edtTacgia.setText(book.getAuthor());
         edtMota.setText(book.getDescription());
         edtGia.addTextChangedListener(new TextWatcher() {
@@ -390,6 +386,55 @@ public class EditBookActivity extends AppCompatActivity {
                 } catch (NumberFormatException e) {
                     // Nếu người dùng nhập số không hợp lệ, báo lỗi
                     edtGia.setError("Định dạng giá tiền không hợp lệ");
+                }
+            }
+        });
+
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                try {
+                    String input = dest.toString() + source.toString();
+                    int value = Integer.parseInt(input);
+                    if (value > 1) {
+                        return null; // Accept the input
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                return ""; // Reject the input
+            }
+        };
+
+
+        edtSoLuong.setFilters(new InputFilter[]{filter});
+
+
+        edtSoLuong.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    String input = s.toString();
+                    if (!input.isEmpty()) {
+                        int value = Integer.parseInt(input);
+                        if (value <= 1) {
+                            edtSoLuong.setError("Please enter a number greater than 1");
+                        } else {
+                            edtSoLuong.setError(null); // Clear the error
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    edtSoLuong.setError("Invalid number");
                 }
             }
         });
@@ -506,7 +551,6 @@ public class EditBookActivity extends AppCompatActivity {
     }
     private void fillImageSlide(){
         // Chuyển đổi danh sách Uri thành danh sách đường dẫn chuỗi
-        // we are creating array list for storing our image urls.
         bookImageApiService = new BookImageApiService(this);
         bookImageApiService.getThumbnailsByProductId(book.getId()).enqueue(new Callback<List<String>>() {
             @Override

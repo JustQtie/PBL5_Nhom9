@@ -72,10 +72,12 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
             public void onClick(View v) {
                 // chuyển màn hình và gửi dữ liệu đi cùng dưới dạng object
 
-//                Intent intent = new Intent(mContext, DetailsCartActivity.class);
-//                //intent.putExtra("book", book);
-//
-//                mContext.startActivity(intent);
+
+                Intent intent = new Intent(mContext, DetailsCartPayActivity.class);
+                //intent.putExtra("book", book);
+
+                mContext.startActivity(intent);
+
             }
         });
 

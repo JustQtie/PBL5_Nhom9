@@ -69,7 +69,15 @@ public class BookApiService {
         return api.getAllBookByUser(id);
     }
 
+    public Call<GetBookResponse> getBooksNotUser(Long id){
+        return api.getBooksNotUser(id);
+    }
+
     public Call<GetBookResponse> getAllBook(){
+        return api.getAllBook();
+    }
+
+    public Call<GetBookResponse> getAllBook(String key){
         return api.getAllBook();
     }
 

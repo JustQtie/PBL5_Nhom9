@@ -20,18 +20,20 @@ public class OrderDTO {
     @JsonProperty("user_id")
     private long userId;
 
-    @JsonProperty("order_date")
-    private LocalDate orderDate;
+    @Min(value = 1, message = "Product's id must be > 0")
+    @JsonProperty("product_id")
+    private long productId;
+
+    private String status;
+
+    @JsonProperty("number_of_product")
+    private int numberOfProduct;
 
     @JsonProperty("total_money")
-    @Min(value = 0, message = "Total money must be >= 0")
     private float totalMoney;
 
     @JsonProperty("shipping_address")
     private String shippingAddress;
-
-    @JsonProperty("shipping_Method")
-    private String shippingMethod;
 
     @JsonProperty("payment_method")
     private String paymentMethod;

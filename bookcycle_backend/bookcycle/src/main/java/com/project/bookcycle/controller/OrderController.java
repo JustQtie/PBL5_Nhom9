@@ -3,6 +3,9 @@ package com.project.bookcycle.controller;
 import com.project.bookcycle.dto.OrderDTO;
 import com.project.bookcycle.exceptions.DataNotFoundException;
 import com.project.bookcycle.model.Order;
+import com.project.bookcycle.response.OrderResponse;
+import com.project.bookcycle.response.ProductListResponse;
+import com.project.bookcycle.response.ProductResponse;
 import com.project.bookcycle.service.IOrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +35,15 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(messageError);
             }
             Order order = orderService.createOrder(orderDTO);
-            return ResponseEntity.ok().body(order);
+            OrderResponse orderResponse = OrderResponse.builder()
+                    .id(order.getId())
+                    .userId(order.getUser().getId())
+                    .productId(order.getProduct().getId())
+                    .status(order.getStatus())
+                    .shippingAddress(order.getShippingAddress())
+                    .ec("0")
+                    .build();
+            return ResponseEntity.ok().body(orderResponse);
         }catch (Exception e){
             return ResponseEntity.ok(e.getMessage());
         }
@@ -58,6 +69,20 @@ public class OrderController {
             return ResponseEntity.ok(order);
         }catch(Exception e){
             return ResponseEntity.ok(e.getMessage());
+        }
+    }
+
+    @GetMapping("/booksaving")
+    public ResponseEntity<?> getBookSaving(){
+        try {
+            List<ProductResponse> productResponses = orderService.findSavingBooks();
+            return ResponseEntity.ok(ProductListResponse.builder()
+                    .productResponseList(productResponses)
+                    .ec("0").build());
+        }catch (Exception e){
+
+            return ResponseEntity.badRequest().body(ProductListResponse.builder()
+                    .ec("-1").build());
         }
     }
 

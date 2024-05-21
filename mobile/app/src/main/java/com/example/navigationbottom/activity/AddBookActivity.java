@@ -21,6 +21,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -67,8 +69,7 @@ import retrofit2.Response;
 
 public class AddBookActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private EditText edtTieude, edtTacgia, edtGia, edtMota ;
-    NumberPicker edtSoLuong;
+    private EditText edtTieude, edtTacgia, edtGia, edtMota, edtSoLuong ;
     private AppCompatButton btnUpload;
     private FloatingActionButton btnCamera;
 
@@ -93,7 +94,7 @@ public class AddBookActivity extends AppCompatActivity {
     private User user;
 
     String url1 = "https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200-1.png";
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +155,7 @@ public class AddBookActivity extends AppCompatActivity {
         });
 
 
-        String[] bookStatuses = {Status.BEEN_USING_FOR_6_MONTHS, Status.BEEN_USING_FOR_3_5_YEARS, Status.BEEN_USING_FOR_5_YEARS, Status.BEEN_USING_FOR_3_5_YEARS};
+        String[] bookStatuses = {Status.BEEN_USING_FOR_6_MONTHS, Status.BEEN_USING_FOR_1_YEARS, Status.BEEN_USING_FOR_3_5_YEARS, Status.BEEN_USING_FOR_5_YEARS};
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, bookStatuses);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBookStatus.setAdapter(statusAdapter);
@@ -176,11 +177,8 @@ public class AddBookActivity extends AppCompatActivity {
         edtSoLuong = findViewById(R.id.number_so_luong);
         edtGia = findViewById(R.id.edt_gia_AddBookActivity);
         edtMota = findViewById(R.id.edt_mota_AddBookActivity);
-        edtSoLuong.setMinValue(1); // Set giá trị tối thiểu
-        edtSoLuong.setMaxValue(100); // Set giá trị tối đa
-        edtSoLuong.setValue(1); // Set giá trị ban đầu
-        edtSoLuong.setEnabled(false);
-        edtSoLuong.setWrapSelectorWheel(true);
+
+
         btnUpload = findViewById(R.id.btn_upload_AddBookActivity);
         btnCamera = findViewById(R.id.btn_camera_AddBookActivity);
         bookApiService = new BookApiService(this);
@@ -239,16 +237,71 @@ public class AddBookActivity extends AppCompatActivity {
                 }
             }
         });
+
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                try {
+                    String input = dest.toString() + source.toString();
+                    int value = Integer.parseInt(input);
+                    if (value > 1) {
+                        return null; // Accept the input
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                return ""; // Reject the input
+            }
+        };
+
+
+        edtSoLuong.setFilters(new InputFilter[]{filter});
+
+
+        edtSoLuong.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    String input = s.toString();
+                    if (!input.isEmpty()) {
+                        int value = Integer.parseInt(input);
+                        if (value <= 1) {
+                            edtSoLuong.setError("Please enter a number greater than 1");
+                        } else {
+                            edtSoLuong.setError(null); // Clear the error
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    edtSoLuong.setError("Invalid number");
+                }
+            }
+        });
+
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
 
                 if(imageUris == null){
+                    progressDialog.dismiss();
                     Toast.makeText(AddBookActivity.this, "Please upload photos before posting books for sale", Toast.LENGTH_SHORT).show();
                 } else if (imageUris.size()>5) {
+                    progressDialog.dismiss();
                     Toast.makeText(AddBookActivity.this, "Only a maximum of 5 photos can be selected", Toast.LENGTH_SHORT).show();
-                } else if(TextUtils.isEmpty(edtTacgia.toString().trim()) || TextUtils.isEmpty(edtTieude.toString().trim()) || TextUtils.isEmpty(edtGia.toString().trim())){
+                } else if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtGia.getText().toString().trim())){
+                    progressDialog.dismiss();
                     Toast.makeText(AddBookActivity.this, "Please fill in the blank fields", Toast.LENGTH_SHORT).show();
                 }else {
                     User user = UserPreferences.getUser(getApplicationContext());
@@ -256,7 +309,7 @@ public class AddBookActivity extends AppCompatActivity {
                     book.setName(edtTieude.getText().toString().trim());
                     book.setAuthor(edtTacgia.getText().toString().trim());
                     book.setPrice(Float.parseFloat(edtGia.getText().toString()));
-                    book.setQuantity(edtSoLuong.getValue());
+                    book.setQuantity(Integer.parseInt(edtSoLuong.getText().toString()));
                     book.setDescription(edtMota.getText().toString().trim());
                     book.setCategory_id(categoryId);
                     book.setStatus(selectedStatus);
@@ -267,46 +320,52 @@ public class AddBookActivity extends AppCompatActivity {
                             BookResponse bookResponse = response.body();
                             if(bookResponse !=null){
                                 Log.d("RequestData1", new Gson().toJson(bookResponse));
+                                //Log.e("RequestData1", bookResponse.getUser().getAddress());
                                 if(bookResponse.getUser()!=null){
-                                    Log.d("RequestData1", "Success post my book");
-                                    idBookPost = bookResponse.getId();
+                                    if(user.getAddress() != null){
+                                        Log.d("RequestData1", "Success post my book");
+                                        idBookPost = bookResponse.getId();
+                                        bookApiService.uploadFileImage(idBookPost, prepareFileParts("files", imageUris)).enqueue(new Callback<BookImageResponse>() {
+                                            @Override
+                                            public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
+                                                BookImageResponse responseBody = response.body();
+                                                if(responseBody!=null){
 
-                                    bookApiService.uploadFileImage(idBookPost, prepareFileParts("files", imageUris)).enqueue(new Callback<BookImageResponse>() {
-                                        @Override
-                                        public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
-                                            BookImageResponse responseBody = response.body();
-                                            if(responseBody!=null){
-
-                                                if(responseBody.getEc().equals("0")){
+                                                    if(responseBody.getEc().equals("0")){
+                                                        progressDialog.dismiss();
+                                                        Log.d("RequestData1", new Gson().toJson(responseBody));
+                                                        Toast.makeText(AddBookActivity.this, "Post my book success!!", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(AddBookActivity.this, MainActivity.class);
+                                                        intent.putExtra("dataFromActivity", "fromAddBook");
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                }
+                                                else {
                                                     progressDialog.dismiss();
-                                                    Log.d("RequestData1", new Gson().toJson(responseBody));
-                                                    Toast.makeText(AddBookActivity.this, "Post my book success!!", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(AddBookActivity.this, MainActivity.class);
-                                                    intent.putExtra("dataFromActivity", "fromAddBook");
-                                                    startActivity(intent);
-                                                    finish();
+                                                    Log.e("UploadError", "Upload failed with status: " + response.code());
+                                                    try {
+                                                        Log.e("UploadError", "Response error body: " + response.errorBody().string());
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                    Toast.makeText(AddBookActivity.this, "Post book fails", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
-                                            else {
-                                                progressDialog.dismiss();
-                                                Log.e("UploadError", "Upload failed with status: " + response.code());
-                                                try {
-                                                    Log.e("UploadError", "Response error body: " + response.errorBody().string());
-                                                } catch (IOException e) {
-                                                    throw new RuntimeException(e);
-                                                }
-                                                Toast.makeText(AddBookActivity.this, "Post book fails", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
 
-                                        @Override
-                                        public void onFailure(Call<BookImageResponse> call, Throwable t) {
-                                            progressDialog.dismiss();
-                                            String errorMessage = t.getMessage();
-                                            Toast.makeText(AddBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                                            Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-                                        }
-                                    });
+                                            @Override
+                                            public void onFailure(Call<BookImageResponse> call, Throwable t) {
+                                                progressDialog.dismiss();
+                                                String errorMessage = t.getMessage();
+                                                Toast.makeText(AddBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                                            }
+                                        });
+                                    }else{
+                                        progressDialog.dismiss();
+                                        Toast.makeText(AddBookActivity.this, "You need to add an address before posting books for sale!", Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }else {
                                     progressDialog.dismiss();
                                     Toast.makeText(AddBookActivity.this, "Post my book not success", Toast.LENGTH_SHORT).show();
@@ -487,18 +546,26 @@ public class AddBookActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGES_REQUEST && resultCode == RESULT_OK && data != null) {
+            imageUris = new ArrayList<>();
             if (data.getClipData() != null) { // Chọn nhiều ảnh
                 int count = data.getClipData().getItemCount();
-                for (int i = 0; i < count; i++) {
-                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                    imageUris.add(imageUri);
+                if (count > 5) {
+                    // Hiển thị thông báo nếu người dùng chọn nhiều hơn 5 ảnh
+                    Toast.makeText(this, "You can select up to 5 images only", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (int i = 0; i < count; i++) {
+                        Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                        imageUris.add(imageUri);
+                    }
+                    // Gọi phương thức để upload ảnh
+                    uploadImages(imageUris);
                 }
             } else if (data.getData() != null) { // Chọn một ảnh
                 Uri imageUri = data.getData();
                 imageUris.add(imageUri);
+                // Gọi phương thức để upload ảnh
+                uploadImages(imageUris);
             }
-            // Gọi phương thức để upload ảnh
-            uploadImages(imageUris);
         }
     }
 

@@ -20,7 +20,7 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
     private ShapeableImageView imgAnhProfile;
     private AppCompatButton btnSave;
 
-    private EditText edtNgaySinh;
+
     private Spinner spinnerGioiTinh;
 
     @Override
@@ -30,9 +30,9 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
 
 
 
-        edtNgaySinh = findViewById(R.id.edt_NgaySinh_setting_ActivityProfile);
+
         spinnerGioiTinh = findViewById(R.id.spinner_Gioitinh_setting_ActivityProfile);
-        edtNgaySinh = findViewById(R.id.edt_NgaySinh_setting_ActivityProfile);
+
         edtSoDienThoai = findViewById(R.id.edt_sodienthoai_setting_ActivityProfile);
         edtDiaChi = findViewById(R.id.edt_diachi_setting_ActivityProfile);
         imgAnhProfile = findViewById(R.id.si_anh_setting_ActivityProfile);
@@ -44,23 +44,10 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGioiTinh.setAdapter(adapter);
 
-        // Setup DatePicker for EditText
-        edtNgaySinh.setOnClickListener(view -> showDatePickerDialog());
+
 
 
     }
 
-    private void showDatePickerDialog() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year1, month1, dayOfMonth) -> {
-                    String selectedDate = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
-                    edtNgaySinh.setText(selectedDate);
-                }, year, month, day);
-        datePickerDialog.show();
-    }
 }

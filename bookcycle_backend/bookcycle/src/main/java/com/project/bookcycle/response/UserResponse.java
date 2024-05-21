@@ -38,7 +38,6 @@ public class UserResponse extends BaseResponse{
                 .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
                 .active(user.isActive())
-                .dateOfBirth(user.getDateOfBirth())
                 .gender(user.isGender())
                 .build();
         userResponse.setCreatedAt(user.getCreateAt());

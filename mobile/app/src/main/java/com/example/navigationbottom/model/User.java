@@ -1,5 +1,7 @@
 package com.example.navigationbottom.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,10 +12,29 @@ public class User implements Serializable {
     private String fullname;
     private String phone_number;
     private String address;
-    private String active;
+    private Boolean active;
     private Date date_of_birth;
-    private String gender;
+    private Boolean gender;
     private String thumbnail;
+
+    @SerializedName("EC")
+    private String ec;
+
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
+    }
+
+    public String getEc() {
+        return ec;
+    }
+
+    public void setEc(String ec) {
+        this.ec = ec;
+    }
 
     public Long getId() {
         return id;
@@ -55,11 +76,11 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public String getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(String active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
@@ -71,11 +92,11 @@ public class User implements Serializable {
         this.date_of_birth = dateOfBirth;
     }
 
-    public String getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
@@ -97,7 +118,7 @@ public class User implements Serializable {
         this.retype_password = retype_password;
     }
 
-    public User(Long id, String password, String fullname, String phoneNumber, String address, String active, Date dateOfBirth, String gender, String thumbnail) {
+    public User(Long id, String password, String fullname, String phoneNumber, String address, Boolean active, Date dateOfBirth, Boolean gender, String thumbnail) {
         this.id = id;
         this.password = password;
         this.fullname = fullname;
