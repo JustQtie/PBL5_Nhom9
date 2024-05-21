@@ -129,4 +129,21 @@ public class User implements Serializable {
         this.gender = gender;
         this.thumbnail = thumbnail;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", retype_password='" + retype_password + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", address='" + address + '\'' +
+                ", active=" + active +
+                ", date_of_birth=" + date_of_birth +
+                ", gender=" + gender +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", ec='" + ec + '\'' +
+                '}';
+    }
 }

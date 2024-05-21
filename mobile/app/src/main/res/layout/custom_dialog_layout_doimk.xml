@@ -47,7 +47,7 @@
                 android:hint="nhập..."
                 android:background="@drawable/editextstyle"
                 android:textColorHint="@color/material_dynamic_neutral60"
-                android:textColor="#ffffff"
+                android:textColor="#000"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -75,7 +75,7 @@
                 android:hint="nhập..."
                 android:background="@drawable/editextstyle"
                 android:textColorHint="@color/material_dynamic_neutral60"
-                android:textColor="#ffffff"
+                android:textColor="#000"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -104,7 +104,7 @@
                 android:hint="nhập..."
                 android:background="@drawable/editextstyle"
                 android:textColorHint="@color/material_dynamic_neutral60"
-                android:textColor="#ffffff"
+                android:textColor="#000"
                 android:textSize="18sp" />
 
         </LinearLayout>
