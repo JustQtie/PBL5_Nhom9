@@ -81,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity {
             userApiService = new UserApiService(this);
             User user = new User();
             user.setFullname(username);
-            user.setPhoneNumber(phone);
+            user.setPhone_number(phone);
             user.setPassword(password);
             user.setRetype_password(pass_confim);
 

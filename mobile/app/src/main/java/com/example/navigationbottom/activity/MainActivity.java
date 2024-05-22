@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         mViewPager2 = findViewById(R.id.view_pager_2);
         mbottomNavigationView = findViewById(R.id.bottom_navigation);
 
+
+
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter(this);
         mViewPager2.setAdapter(myViewPagerAdapter);
 
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             String fragmentName = intent.getStringExtra("dataFromActivity");
             if ("fromAddBook".equals(fragmentName) || "fromEditBook".equals(fragmentName)) {
                 mViewPager2.setCurrentItem(2); // Navigate to the SellFragment page
-            }else if("fromDetailHome".equals(fragmentName)){
+            }else if("fromDetailHome".equals(fragmentName) || "fromDetailCart".equals(fragmentName)){
                 mViewPager2.setCurrentItem(1);
             }
         }

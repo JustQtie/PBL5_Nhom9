@@ -5,10 +5,8 @@ public class Notification {
     private String noiDung;
     private String img;
 
-    public Notification(String id, String noiDung, String img) {
-        this.id = id;
+    public Notification(String noiDung) {
         this.noiDung = noiDung;
-        this.img = img;
     }
 
     public Notification() {

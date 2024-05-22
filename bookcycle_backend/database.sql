@@ -78,7 +78,7 @@ CREATE TABLE orders(
     status ENUM('saving', 'pending', 'delivered')
 COMMENT 'Trạng thái đơn hàng',
     number_of_product INT,
-    total_money FLOAT CHECK (total_money >= 0),
+    total_money FLOAT,
     shipping_address VARCHAR(200),
     payment_method VARCHAR(100),
     active TINYINT(1),

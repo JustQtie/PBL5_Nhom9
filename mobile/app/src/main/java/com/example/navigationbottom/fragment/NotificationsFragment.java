@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.example.navigationbottom.adaper.BooksAdapterForHome;
 import com.example.navigationbottom.adaper.NotificationAdapter;
 import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.Notification;
+import com.example.navigationbottom.viewmodel.WebSocketManager;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,8 @@ public class NotificationsFragment extends Fragment {
     private NotificationAdapter notificationsAdapter;
     private ArrayList<Notification> notifications;
     private View mView;
+
+    private WebSocketManager webSocketManager;
     public NotificationsFragment() {
 
     }
@@ -47,11 +51,11 @@ public class NotificationsFragment extends Fragment {
 
         rvNotification.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
+        webSocketManager = WebSocketManager.getInstance();
+        webSocketManager.subscribeToNotifications();
+
         notifications = new ArrayList<>();
-        notifications.add(new Notification("1", "Nhật Minh muốn order Lập Trình Java", ""));
-        notifications.add(new Notification("2", "Nhật Minh muốn order Giải tích 2", ""));
-        notifications.add(new Notification("3", "Nhật Minh muốn order C++ Cơ Bản", ""));
-        notifications.add(new Notification("4", "Nhật Minh muốn order thiết Kế Web", ""));
+        Log.d("message received!", webSocketManager.getMessage());
 
         getNotificationAll();
 
@@ -62,6 +66,4 @@ public class NotificationsFragment extends Fragment {
         notificationsAdapter = new NotificationAdapter(notifications, getActivity());
         rvNotification.setAdapter(notificationsAdapter);
     }
-
-
 }

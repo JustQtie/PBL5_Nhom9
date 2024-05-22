@@ -17,8 +17,12 @@ import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.BooksAdapterForCart;
 import com.example.navigationbottom.adaper.BooksAdapterForHome;
 import com.example.navigationbottom.model.Book;
+import com.example.navigationbottom.model.Order;
+import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.book.GetBookResponse;
+import com.example.navigationbottom.response.order.GetOrderResponse;
 import com.example.navigationbottom.viewmodel.OrderApiService;
+import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -33,11 +37,13 @@ import retrofit2.Response;
 public class CartFragment extends Fragment {
     private RecyclerView rvBooks;
     private BooksAdapterForCart booksAdapter;
-    private ArrayList<Book> books;
+
+    private ArrayList<Order> orders;
     private View mView;
 
     private OrderApiService orderApiService;
-    public CartFragment() {
+
+    public CartFragment(){
 
     }
 
@@ -61,32 +67,26 @@ public class CartFragment extends Fragment {
 
         rvBooks.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         orderApiService = new OrderApiService(getContext());
-        books = new ArrayList<>();
+        orders = new ArrayList<>();
+        User user = UserPreferences.getUser(getContext());
 
-        orderApiService.getBookSaving().enqueue(new Callback<GetBookResponse>() {
+        orderApiService.getOrdersByUser(user.getId()).enqueue(new Callback<GetOrderResponse>() {
             @Override
-            public void onResponse(Call<GetBookResponse> call, Response<GetBookResponse> response) {
-                GetBookResponse getBookResponse = response.body();
-                if(getBookResponse!=null){
-                    Log.d("RequestData1", new Gson().toJson(getBookResponse));
-                    if(getBookResponse.getEc().equals("0")){
-                        List<Book> productResponseList = getBookResponse.getProductResponseList();
-                        for (Book book : productResponseList) {
-                            Book getBook = new Book();
-                            getBook.setId(book.getId());
-                            getBook.setName(book.getName());
-                            getBook.setAuthor(book.getAuthor());
-                            getBook.setPoint(book.getPoint());
-                            getBook.setDescription(book.getDescription());
-                            getBook.setStatus(book.getStatus());
-                            getBook.setQuantity(book.getQuantity());
-                            getBook.setThumbnail(book.getThumbnail());
-                            getBook.setPrice(book.getPrice());
-                            getBook.setUser_id(book.getUser_id());
-                            getBook.setCategory_id(book.getCategory_id());
-                            books.add(getBook);
+            public void onResponse(Call<GetOrderResponse> call, Response<GetOrderResponse> response) {
+                GetOrderResponse getOrderResponse = response.body();
+                if(getOrderResponse!=null){
+                    Log.d("RequestData1", new Gson().toJson(getOrderResponse));
+                    if(getOrderResponse.getEc().equals("0")){
+                        List<Order> orderResponseList = getOrderResponse.getOrderResponseList();
+                        for (Order order : orderResponseList) {
+                            Order getOrder = new Order();
+                            getOrder.setId(order.getId());
+                            getOrder.setUser_id(order.getUser_id());
+                            getOrder.setProduct_id(order.getProduct_id());
+                            getOrder.setStatus(order.getStatus());
+                            orders.add(getOrder);
                         }
-                        booksAdapter = new BooksAdapterForCart(books, getActivity());
+                        booksAdapter = new BooksAdapterForCart(orders, getActivity());
                         rvBooks.setAdapter(booksAdapter);
                     }else{
                         Log.e("UploadError", "Upload failed with status: " + response.code());
@@ -102,7 +102,7 @@ public class CartFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<GetBookResponse> call, Throwable t) {
+            public void onFailure(Call<GetOrderResponse> call, Throwable t) {
                 String errorMessage = t.getMessage();
                 Toast.makeText(getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));

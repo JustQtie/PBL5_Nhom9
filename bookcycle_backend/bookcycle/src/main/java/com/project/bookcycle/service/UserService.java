@@ -96,12 +96,15 @@ public class UserService implements IUserService{
     @Override
     public String changePassword(Long id, UserChangePassDTO userChangePassDTO) throws DataNotFoundException {
         User existUser = getUser(id);
+        String oldpassword = passwordEncoder.encode(userChangePassDTO.getOldPass());
         if(existUser != null){
-            if(existUser.getPassword().equals(userChangePassDTO.getOldPass())){
-                existUser.setPassword(userChangePassDTO.getNewPass());
+            if (passwordEncoder.matches(userChangePassDTO.getOldPass(), existUser.getPassword())) {
+                String newPassword = userChangePassDTO.getNewPass();
+                String encodePassword = passwordEncoder.encode(newPassword);
+                existUser.setPassword(encodePassword);
                 userRepository.save(existUser);
                 return "Change password complete";
-            }else{
+            } else {
                 return "The old password entered is invalid";
             }
         }

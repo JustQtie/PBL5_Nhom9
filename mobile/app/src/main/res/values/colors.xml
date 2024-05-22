@@ -8,4 +8,7 @@
     <color name="green">#34e3c4</color>
     <color name="shimer_color">#BFBDBD</color>
     <color name="hintTextColor">#CBCED6</color>
+    <color name="saving">#FDEDBA</color>
+    <color name="pending">#C19959</color>
+    <color name="completed">#4CAF50</color>
 </resources>

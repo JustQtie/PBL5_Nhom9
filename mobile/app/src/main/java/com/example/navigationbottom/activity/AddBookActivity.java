@@ -244,7 +244,7 @@ public class AddBookActivity extends AppCompatActivity {
                 try {
                     String input = dest.toString() + source.toString();
                     int value = Integer.parseInt(input);
-                    if (value > 1) {
+                    if (value >= 1) {
                         return null; // Accept the input
                     }
                 } catch (NumberFormatException e) {
@@ -275,7 +275,7 @@ public class AddBookActivity extends AppCompatActivity {
                     String input = s.toString();
                     if (!input.isEmpty()) {
                         int value = Integer.parseInt(input);
-                        if (value <= 1) {
+                        if (value < 1) {
                             edtSoLuong.setError("Please enter a number greater than 1");
                         } else {
                             edtSoLuong.setError(null); // Clear the error

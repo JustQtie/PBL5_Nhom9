@@ -1,6 +1,7 @@
 package com.project.bookcycle.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.bookcycle.model.Order;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Min;
 import lombok.*;
@@ -38,4 +39,13 @@ public class OrderResponse {
 
     @JsonProperty("EC")
     private String ec;
+
+    public static OrderResponse convertFromOrder(Order order){
+        return OrderResponse.builder()
+                .id(order.getId())
+                .userId(order.getUser().getId())
+                .productId(order.getProduct().getId())
+                .status(order.getStatus())
+                .build();
+    }
 }

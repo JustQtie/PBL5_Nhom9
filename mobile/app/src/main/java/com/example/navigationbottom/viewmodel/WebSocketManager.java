@@ -10,10 +10,10 @@ import ua.naiksoftware.stomp.StompClient;
 public class WebSocketManager {
 
     private static WebSocketManager instance;
-    private static final String WEBSOCKET_URL = "wss://8b60-27-69-244-129.ngrok-free.app/chat";
+    private static final String WEBSOCKET_URL = "wss://5bd3-27-69-244-129.ngrok-free.app/chat";
     private StompClient stompClient;
 
-    public static String message;
+    public String message;
 
     public WebSocketManager() {
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_URL);
@@ -44,5 +44,13 @@ public class WebSocketManager {
 
     public void sendOrder(Order order) {
         stompClient.send("/app/order", new Gson().toJson(order)).subscribe();
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

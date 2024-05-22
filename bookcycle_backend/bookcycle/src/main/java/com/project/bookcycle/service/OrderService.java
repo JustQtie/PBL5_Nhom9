@@ -9,6 +9,7 @@ import com.project.bookcycle.model.User;
 import com.project.bookcycle.repository.OrderRepository;
 import com.project.bookcycle.repository.ProductRepository;
 import com.project.bookcycle.repository.UserRepository;
+import com.project.bookcycle.response.OrderResponse;
 import com.project.bookcycle.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -37,7 +38,7 @@ public class OrderService implements IOrderService{
             Order order = Order.builder()
                     .product(product)
                     .user(user)
-                    .status(OrderStatus.SAVING)
+                    .status(orderDTO.getStatus())
                     .shippingAddress(user.getAddress())
                     .active(true)
                     .build();
@@ -55,23 +56,23 @@ public class OrderService implements IOrderService{
                 .orElseThrow(()->new DataNotFoundException("Cannot find order with id "+ id));
     }
 
-    @Override
-    public List<Order> findByUserId(Long userId) throws DataNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->new DataNotFoundException(("Cannot find user with user's id "+userId)));
-        return orderRepository.findByUserId(userId);
-    }
 
     @Override
     public Order updateOrder(long id, OrderDTO orderDTO) throws DataNotFoundException {
         User user = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(()->new DataNotFoundException("Cannot find user with user's id " + orderDTO.getUserId()));
-        Order existingOrder = orderRepository.findById(id)
-                .orElseThrow(()->new DataNotFoundException("Cannot find order with order's id "+ id));
-        modelMapper.typeMap(OrderDTO.class, Order.class)
-                .addMappings(mapper -> mapper.skip(Order::setId));
-        modelMapper.map(orderDTO, existingOrder);
+        Product product = productRepository.findById(orderDTO.getProductId())
+                .orElseThrow(()->new DataNotFoundException("Cannot find product with product's id " + orderDTO.getProductId()));
+        Order existingOrder = getOrderById(id);
+        existingOrder.setProduct(product);
         existingOrder.setUser(user);
+        existingOrder.setStatus(orderDTO.getStatus());
+        existingOrder.setShippingAddress(user.getAddress());
+        existingOrder.setNumberOfProducts(orderDTO.getNumberOfProduct());
+        existingOrder.setTotalMoney(orderDTO.getTotalMoney());
+        existingOrder.setPaymentMethod(orderDTO.getPaymentMethod());
+        existingOrder.setActive(true);
+
         orderRepository.save(existingOrder);
         return existingOrder;
     }
@@ -85,10 +86,19 @@ public class OrderService implements IOrderService{
     }
 
     @Override
-    public List<ProductResponse> findSavingBooks() {
-        return orderRepository.findSavingBooks()
+    public List<OrderResponse> findOrderByUser(long userId) {
+        return orderRepository.findOrderByUser(userId)
                 .stream()
-                .map(ProductResponse::convertToProductResponse)
+                .map(OrderResponse::convertFromOrder)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<OrderResponse> findGetOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .map(OrderResponse::convertFromOrder)
+                .collect(Collectors.toList());
+    }
+
 }
