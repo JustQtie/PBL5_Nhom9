@@ -157,7 +157,7 @@ public class UserController {
         }
     }
     @PutMapping("/changepass/{id}")
-    public ResponseEntity<String> changePass(
+    public ResponseEntity<?> changePass(
             @PathVariable long id,
             @Valid @RequestBody UserChangePassDTO userChangePassDTO,
             BindingResult result
@@ -171,11 +171,25 @@ public class UserController {
                 return ResponseEntity.badRequest().body(messageError.toString());
             }
             String response = userService.changePassword(id, userChangePassDTO);
-            ResponseEntity.ok().body(response);
+            if(response.equals("Change password complete")){
+                User user = userService.getUser(id);
+                return ResponseEntity.ok().body(UserResponse.builder()
+                        .id(user.getId())
+                        .password(user.getPassword())
+                        .fullname(user.getFullname())
+                        .address(user.getAddress())
+                        .active(user.isActive())
+                        .gender(user.isGender())
+                        .thumbnail(user.getThumbnail())
+                        .phoneNumber(user.getPhoneNumber())
+                        .ec(0)
+                        .build());
+            }else{
+                return ResponseEntity.ok().body(UserResponse.builder().ec(-1).build());
+            }
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return null;
     }
 
     @PostMapping ("")

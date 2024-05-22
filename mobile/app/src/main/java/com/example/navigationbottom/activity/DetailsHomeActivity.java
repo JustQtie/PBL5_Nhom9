@@ -59,7 +59,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
 
     List<String> imageUrlString = new ArrayList<>();
 
-    private WebSocketManager webSocketManager;
+
 
 
     @Override
@@ -67,7 +67,6 @@ public class DetailsHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_home);
 
-        webSocketManager = WebSocketManager.getInstance();
         //khoi tao
         initView();
 
@@ -128,71 +127,92 @@ public class DetailsHomeActivity extends AppCompatActivity {
             }
         });
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.setMessage("Save...");
+                progressDialog.show();
+                Order order = new Order();
+                order.setProduct_id(book.getId());
+                order.setStatus(OrderStatus.SAVING);
+                createOrder(order);
+            }
+        });
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressDialog.setMessage("Order...");
                 progressDialog.show();
-                User user1 = UserPreferences.getUser(getApplicationContext());
-                userApiService.getUser(user1.getId()).enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        User user = response.body();
-                        if(user.getEc().equals("0")){
-                            if(user.getAddress() == null){
-                                progressDialog.dismiss();
-                                Toast.makeText(DetailsHomeActivity.this, "You need to add an address before order", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Order order = new Order();
-                                order.setUser_id(user.getId());
-                                order.setProduct_id(book.getId());
-                                order.setStatus(OrderStatus.SAVING);
-                                order.setShipping_address(user.getAddress());
-                                orderApiService.createOrder(order).enqueue(new Callback<Order>() {
-                                    @Override
-                                    public void onResponse(Call<Order> call, Response<Order> response) {
-                                        Order order = response.body();
-                                        if(order.getEC().equals("0")){
-                                            progressDialog.dismiss();
-                                            Intent intent = new Intent(DetailsHomeActivity.this, MainActivity.class);
-                                            intent.putExtra("dataFromActivity", "fromDetailHome");
-                                            startActivity(intent);
-                                            finish();
-                                        }else{
-                                            progressDialog.dismiss();
-                                            Log.e("UploadError", "Upload failed with status: " + response.code());
-                                            try {
-                                                Log.e("UploadError", "Response error body: " + response.errorBody().string());
-                                            } catch (IOException e) {
-                                                throw new RuntimeException(e);
-                                            }
-                                            Toast.makeText(DetailsHomeActivity.this, "Create order fails", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Order> call, Throwable t) {
-                                        progressDialog.dismiss();
-                                        String errorMessage = t.getMessage();
-                                        Toast.makeText(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                                        Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-                                    }
-                                });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Log.e("Error", "Not load user");
-                    }
-                });
-
+                Order order = new Order();
+                order.setProduct_id(book.getId());
+                order.setStatus(OrderStatus.PENDING);
+                createOrder(order);
             }
         });
+    }
 
+    private void createOrder(Order order){
+        User user1 = UserPreferences.getUser(getApplicationContext());
+        userApiService.getUser(user1.getId()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
+                if(user.getEc().equals("0")){
+                    if(user.getAddress() == null){
+                        progressDialog.dismiss();
+                        Toast.makeText(DetailsHomeActivity.this, "You need to add an address before order", Toast.LENGTH_SHORT).show();
+                    }else{
+                        order.setUser_id(user.getId());
+                        order.setShipping_address(user.getAddress());
+                        orderApiService.createOrder(order).enqueue(new Callback<Order>() {
+                            @Override
+                            public void onResponse(Call<Order> call, Response<Order> response) {
+                                Order order = response.body();
+                                if(order.getEC().equals("0")){
+                                    if(order.getStatus().equals(OrderStatus.SAVING)){
+                                        progressDialog.dismiss();
+                                        Intent intent = new Intent(DetailsHomeActivity.this, MainActivity.class);
+                                        intent.putExtra("dataFromActivity", "fromDetailHome");
+                                        startActivity(intent);
+                                        finish();
+                                    }else{
+                                        progressDialog.dismiss();
+                                        Intent intent = new Intent(DetailsHomeActivity.this, DetailsCartPayActivity.class);
+                                        intent.putExtra("book", book);
+                                        intent.putExtra("order", order.getId());
+                                        startActivity(intent);
+                                        finish();
+                                    }
 
+                                }else{
+                                    progressDialog.dismiss();
+                                    Log.e("UploadError", "Upload failed with status: " + response.code());
+                                    try {
+                                        Log.e("UploadError", "Response error body: " + response.errorBody().string());
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    Toast.makeText(DetailsHomeActivity.this, "Create order fails", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
+                            @Override
+                            public void onFailure(Call<Order> call, Throwable t) {
+                                progressDialog.dismiss();
+                                String errorMessage = t.getMessage();
+                                Toast.makeText(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("Error", "Not load user");
+            }
+        });
     }
 
     private void initView() {

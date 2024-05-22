@@ -42,6 +42,8 @@ public class WebSecurityConfig {
                         .requestMatchers(GET,
                                 String.format("%s/products**", apiPrefix)).permitAll()
                         .requestMatchers(GET,
+                                String.format("%s/products/{id}", apiPrefix)).permitAll()
+                        .requestMatchers(GET,
                                 String.format("%s/products/images/*", apiPrefix)).permitAll()
                         .requestMatchers(POST,
                                 String.format("%s/products", apiPrefix)).hasRole("USER")
@@ -64,7 +66,9 @@ public class WebSecurityConfig {
                         .requestMatchers(POST,
                                 String.format("%s/orders", apiPrefix)).hasRole("USER")
                         .requestMatchers(GET,
-                                String.format("%s/orders/booksaving", apiPrefix)).hasRole("USER")
+                                String.format("%s/orders/user/{id}", apiPrefix)).hasRole("USER")
+                        .requestMatchers(PUT,
+                                String.format("%s/orders/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(POST,
                                 String.format("%s/users**", apiPrefix)).hasAnyRole("ADMIN", "USER")
                         .requestMatchers(PUT,
@@ -73,6 +77,10 @@ public class WebSecurityConfig {
                                 String.format("%s/users/images/*", apiPrefix)).permitAll()
                         .requestMatchers(POST,
                                 String.format("%s/users/{id}", apiPrefix)).hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(PUT,
+                                String.format("%s/users/{id}", apiPrefix)).hasRole("USER")
+                        .requestMatchers(PUT,
+                                String.format("%s/users/changepass/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(POST,
                                 String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
                         .requestMatchers(GET,

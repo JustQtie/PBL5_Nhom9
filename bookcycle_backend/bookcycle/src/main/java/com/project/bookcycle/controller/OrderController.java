@@ -3,6 +3,7 @@ package com.project.bookcycle.controller;
 import com.project.bookcycle.dto.OrderDTO;
 import com.project.bookcycle.exceptions.DataNotFoundException;
 import com.project.bookcycle.model.Order;
+import com.project.bookcycle.response.OrderListResponse;
 import com.project.bookcycle.response.OrderResponse;
 import com.project.bookcycle.response.ProductListResponse;
 import com.project.bookcycle.response.ProductResponse;
@@ -48,17 +49,7 @@ public class OrderController {
             return ResponseEntity.ok(e.getMessage());
         }
     }
-    @GetMapping("user/{user_id}")
-    public ResponseEntity<?> getOrderByUserId(
-            @Valid @PathVariable("user_id") Long userId
-    ){
-        try{
-            List<Order> orders = orderService.findByUserId(userId);
-            return ResponseEntity.ok(orders);
-        }catch(Exception e){
-            return ResponseEntity.ok(e.getMessage());
-        }
-    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrder(
@@ -72,17 +63,32 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/booksaving")
-    public ResponseEntity<?> getBookSaving(){
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllOrder(){
         try {
-            List<ProductResponse> productResponses = orderService.findSavingBooks();
-            return ResponseEntity.ok(ProductListResponse.builder()
-                    .productResponseList(productResponses)
+            List<OrderResponse> orderResponses = orderService.findGetOrders();
+            return ResponseEntity.ok(OrderListResponse.builder()
+                    .orderResponseList(orderResponses)
                     .ec("0").build());
         }catch (Exception e){
+            return ResponseEntity.badRequest().body(OrderListResponse.builder()
+                    .ec("-1").build() + e.getMessage());
+        }
+    }
 
-            return ResponseEntity.badRequest().body(ProductListResponse.builder()
-                    .ec("-1").build());
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getOrderByUser(
+            @PathVariable("id") Long id
+    ){
+        try {
+            List<OrderResponse> orderResponses = orderService.findOrderByUser(id);
+            return ResponseEntity.ok(OrderListResponse.builder()
+                    .orderResponseList(orderResponses)
+                    .ec("0").build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(OrderListResponse.builder()
+                    .ec("-1").build() + e.getMessage());
         }
     }
 
@@ -100,8 +106,19 @@ public class OrderController {
                         .toList();
                 return ResponseEntity.badRequest().body(messageError);
             }
-            Order order = orderService.updateOrder(id,orderDTO);
-            return ResponseEntity.ok("Update succesfully with order "+ order);
+            Order order = orderService.updateOrder(id, orderDTO);
+            OrderResponse orderResponse = OrderResponse.builder()
+                    .id(order.getId())
+                    .userId(order.getUser().getId())
+                    .productId(order.getProduct().getId())
+                    .status(order.getStatus())
+                    .shippingAddress(order.getShippingAddress())
+                    .numberOfProduct(order.getNumberOfProducts())
+                    .totalMoney(order.getTotalMoney())
+                    .paymentMethod(order.getPaymentMethod())
+                    .ec("0")
+                    .build();
+            return ResponseEntity.ok(orderResponse);
         }catch (Exception e){
             return ResponseEntity.ok(e.getMessage());
         }

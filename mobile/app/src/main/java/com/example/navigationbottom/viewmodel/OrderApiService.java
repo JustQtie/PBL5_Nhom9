@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.navigationbottom.model.Order;
 import com.example.navigationbottom.response.book.GetBookResponse;
+import com.example.navigationbottom.response.order.GetOrderResponse;
 
 import java.io.IOException;
 
@@ -52,8 +53,12 @@ public class OrderApiService {
        return api.createOrder(order);
     }
 
-    public Call<GetBookResponse> getBookSaving(){
-        return api.getBookSaving();
+
+    public Call<GetOrderResponse> getOrdersByUser(Long userId){
+        return api.getOrderByUser(userId);
     }
 
+    public Call<Order> updateOrder(Long id, @Body Order order){
+        return api.updateOrder(id, order);
+    }
 }

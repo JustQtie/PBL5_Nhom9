@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         edtMauKhau = findViewById(R.id.edt_matkhau_login);
 
         User user = new User();
-        user.setPhoneNumber(edtTaiKhoan.getText().toString().trim());
+        user.setPhone_number(edtTaiKhoan.getText().toString().trim());
         user.setPassword(edtMauKhau.getText().toString().trim());
 
         userApiService = new UserApiService(this);

@@ -60,14 +60,6 @@ public class User implements Serializable {
         this.fullname = fullname;
     }
 
-    public String getPhoneNumber() {
-        return phone_number;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phone_number = phoneNumber;
-    }
-
     public String getAddress() {
         return address;
     }
