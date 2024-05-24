@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
 import { toast } from 'react-toastify';
-import { putUpdateUser } from '../../services/apiServices';
+import { putUpdateUser, postUpdateImageUser } from '../../services/apiServices';
 import _ from 'lodash';
 import "./modalUpdateUser.scss"
 
@@ -61,12 +61,7 @@ const ModalUpdateUser = (props) => {
             toast.error(response.EM); // Đảm bảo bạn đang truy cập thông báo lỗi đúng cách
         }
 
-        // try {
 
-        // } catch (error) {
-        //     console.error(error);
-        //     toast.error("Đã xảy ra lỗi khi cập nhật người dùng");
-        // }
 
     };
 
