@@ -13,7 +13,7 @@ const ModalUpdateUser = (props) => {
     const handleClose = () => {
         setShow(false);
     };
-
+    const [isLoading, setIsLoading] = useState(false);
     const [id, setId] = useState("");
     const [fullname, setFullName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -49,20 +49,37 @@ const ModalUpdateUser = (props) => {
             return;
         }
 
-        console.log("check", id, fullname, phoneNumber, address, gender, token);
+        setIsLoading(true); // Bắt đầu hiển thị trạng thái loading
 
-        let response = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
+        try {
+            // Gọi API cập nhật thông tin người dùng
+            let response = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
 
-        if (response && response.EC === 0) { // Điều chỉnh cho cấu trúc dữ liệu đúng
-            toast.success(response.EM); // Đảm bảo bạn đang truy cập phản hồi đúng cách
+            if (response && response.EC === 0) {
+                toast.success(response.EM);
+            } else {
+                toast.error(response.EM);
+                return; // Nếu gặp lỗi, dừng luôn
+            }
+
+            // Gọi API cập nhật ảnh người dùng
+            let response_image = await postUpdateImageUser(id, image, token);
+
+            if (response_image && response_image.EC === 0) {
+                toast.success("Cập nhật ảnh thành công");
+            } else {
+                toast.error("Cập nhật ảnh thất bại");
+                return; // Nếu gặp lỗi, dừng luôn
+            }
+
+            // Nếu cả hai API đều thành công, đóng modal và gọi fetchUser
             handleClose();
             await fetchUser();
-        } else {
-            toast.error(response.EM); // Đảm bảo bạn đang truy cập thông báo lỗi đúng cách
+        } catch (error) {
+            toast.error("Đã xảy ra lỗi khi cập nhật người dùng", error);
+        } finally {
+            setIsLoading(false); // Dừng hiển thị trạng thái loading
         }
-
-
-
     };
 
     return (
@@ -109,8 +126,8 @@ const ModalUpdateUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Đóng
                     </Button>
-                    <Button variant="primary" onClick={handSubmitUpdateUser}>
-                        Lưu thông tin
+                    <Button variant="primary" onClick={handSubmitUpdateUser} disabled={isLoading}>
+                        {isLoading ? 'Đang cập nhật...' : 'Lưu thông tin'}
                     </Button>
                 </Modal.Footer>
             </Modal>

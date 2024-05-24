@@ -41,7 +41,7 @@ const TableUser = () => {
 
             const res = await getAllUsers(token);
 
-            console.log("API Response:", res);
+            console.log("API Response all users:", res);
 
             if (res && res.EC === 0) {
                 setListUsers(res.userResponseList);
