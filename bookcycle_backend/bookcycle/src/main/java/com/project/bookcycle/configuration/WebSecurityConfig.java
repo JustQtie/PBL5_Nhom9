@@ -87,6 +87,12 @@ public class WebSecurityConfig {
                                 String.format("%s/categories**", apiPrefix)).permitAll()
                         .requestMatchers(GET,
                                 String.format("%s/categories/*", apiPrefix)).permitAll()
+                        .requestMatchers(POST,
+                                String.format("%s/notifies", apiPrefix)).hasRole("USER")
+                        .requestMatchers(GET,
+                                String.format("%s/notifies/user/{id}", apiPrefix)).hasRole("USER")
+                        .requestMatchers(DELETE,
+                                String.format("%s/notifies/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(GET,
                                 "/chat").permitAll()
                         .anyRequest().authenticated());

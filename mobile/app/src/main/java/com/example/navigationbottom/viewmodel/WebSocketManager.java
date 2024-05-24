@@ -10,10 +10,17 @@ import ua.naiksoftware.stomp.StompClient;
 public class WebSocketManager {
 
     private static WebSocketManager instance;
-    private static final String WEBSOCKET_URL = "wss://5bd3-27-69-244-129.ngrok-free.app/chat";
+    private static final String WEBSOCKET_URL = "wss://fa62-27-69-244-129.ngrok-free.app/chat";
     private StompClient stompClient;
 
     public String message;
+
+    // Interface callback
+    public interface MessageListener {
+        void onMessageReceived(String message);
+    }
+
+    private MessageListener messageListener;
 
     public WebSocketManager() {
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, WEBSOCKET_URL);
@@ -33,12 +40,22 @@ public class WebSocketManager {
         stompClient.disconnect();
     }
 
+    public void setMessageListener(MessageListener listener) {
+        this.messageListener = listener;
+    }
+
+
     @SuppressLint("CheckResult")
     public void subscribeToNotifications() {
         stompClient.topic("/topic/notifications").subscribe(topicMessage -> {
             message = topicMessage.getPayload();
             // Xử lý thông báo nhận được
+            setMessage(message);
             Log.d("WebSocket", "Received: " + message);
+
+            if (messageListener != null) {
+                messageListener.onMessageReceived(message);
+            }
         });
     }
 

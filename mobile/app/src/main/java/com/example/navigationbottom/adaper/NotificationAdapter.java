@@ -70,7 +70,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
 
-        holder.tvNoidung.setText(notification.getNoiDung());
+        holder.tvNoidung.setText(notification.getContent());
 
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +80,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         });
     }
 
-    private void showCustomAlertDialog(int gravity, String i) {
+    private void showCustomAlertDialog(int gravity, Long i) {
         Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_dialog_notification);

@@ -1,39 +1,48 @@
 package com.example.navigationbottom.model;
 
-public class Notification {
-    private String id;
-    private String noiDung;
-    private String img;
+import com.google.gson.annotations.SerializedName;
 
-    public Notification(String noiDung) {
-        this.noiDung = noiDung;
-    }
+public class Notification {
+    private Long id;
+    private String content;
+    private Long user_id;
+
+    @SerializedName("EC")
+    private String ec;
 
     public Notification() {
 
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNoiDung() {
-        return noiDung;
+    public String getContent() {
+        return content;
     }
 
-    public void setNoiDung(String noiDung) {
-        this.noiDung = noiDung;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getImg() {
-        return img;
+    public Long getUser_id() {
+        return user_id;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getEc() {
+        return ec;
+    }
+
+    public void setEc(String ec) {
+        this.ec = ec;
     }
 }

@@ -227,9 +227,14 @@ public class UserController {
                 }
                 String filename = storeFile(file);
                 User user = userService.updateImage(userId, filename);
-            return ResponseEntity.ok().body(user);
+            return ResponseEntity.ok().body(UserResponse.builder()
+                    .thumbnail(user.getThumbnail())
+                    .ec(0)
+                    .build());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(UserResponse.builder()
+                    .ec(-1)
+                    .build());
         }
     }
     @PutMapping(value = "ban/{id}")
@@ -284,8 +289,6 @@ public class UserController {
             throw new IOException("Invalid image format");
         }
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
-        String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         java.nio.file.Path uploadDir = Paths.get("uploads/user_image");
         // Kiểm tra và tạo thư mục nếu nó không tồn tại
@@ -293,10 +296,10 @@ public class UserController {
             Files.createDirectories(uploadDir);
         }
         // Đường dẫn đầy đủ đến file
-        java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
+        java.nio.file.Path destination = Paths.get(uploadDir.toString(), filename);
         // Sao chép file vào thư mục đích
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-        return uniqueFilename;
+        return filename;
     }
     private boolean isImageFile(MultipartFile file) {
         String contentType = file.getContentType();
