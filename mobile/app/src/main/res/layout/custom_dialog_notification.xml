@@ -31,7 +31,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/background_login_btn3"
-            android:text="Đồng ý"
+            android:text="Xác nhận"
             android:textColor="#ffffff"
             android:textSize="14sp" />
 
@@ -42,7 +42,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/background_login_btn5"
-            android:text="Từ chối"
+            android:text="Hủy"
             android:textColor="#ffffff"
             android:textSize="14sp" />
 

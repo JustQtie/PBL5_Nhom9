@@ -21,11 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
+import com.example.navigationbottom.activity.DetailCartPaySuccessActivity;
 import com.example.navigationbottom.activity.DetailsCartPayActivity;
 import com.example.navigationbottom.activity.DetailsHomeActivity;
 import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.model.Order;
+import com.example.navigationbottom.utils.OrderStatus;
 import com.example.navigationbottom.viewmodel.ApiService;
 import com.example.navigationbottom.viewmodel.BookApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
@@ -39,6 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -162,9 +165,9 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
         }
 
 
-        holder.tvGia.setText(book.getPrice() + "VND");
+        holder.tvGia.setText(book.getPrice() + " VND");
         holder.tvNguoiBan.setText(book.getAuthor());
-        holder.tvSoLuong.setText( "SL: " + book.getQuantity());
+        holder.tvSoLuong.setText(book.getQuantity()+"");
         holder.tvTieude.setText(book.getName());
 
         String status = orders.get(position).getStatus();
@@ -176,8 +179,8 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
             case "pending":
                 holder.layout1.setBackgroundResource(R.color.pending);
                 break;
-            case "completed":
-                holder.layout1.setBackgroundResource(R.color.completed);
+            case "confirmed":
+                holder.layout1.setBackgroundResource(R.color.confirmed);
                 break;
             default:
                 holder.layout1.setBackgroundColor(Color.TRANSPARENT); // Màu nền mặc định
@@ -187,12 +190,20 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // chuyển màn hình và gửi dữ liệu đi cùng dưới dạng object
 
-                Intent intent = new Intent(mContext, DetailsCartPayActivity.class);
-                intent.putExtra("book", book);
-                intent.putExtra("order", orders.get(position).getId());
-                mContext.startActivity(intent);
+                if(orders.get(position).getStatus().equals(OrderStatus.PENDING)){
+                    Toasty.info(mContext.getApplicationContext(), "Order is awaiting confirmation from the seller", Toast.LENGTH_SHORT).show();
+                }else if(orders.get(position).getStatus().equals(OrderStatus.CONFIRMED)){
+                    Intent intent = new Intent(mContext, DetailCartPaySuccessActivity.class);
+                    intent.putExtra("book", book);
+                    intent.putExtra("order", orders.get(position).getId());
+                    mContext.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(mContext, DetailsCartPayActivity.class);
+                    intent.putExtra("book", book);
+                    intent.putExtra("order", orders.get(position).getId());
+                    mContext.startActivity(intent);
+                }
 
             }
         });

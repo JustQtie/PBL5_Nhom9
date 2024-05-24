@@ -1,6 +1,7 @@
 package com.example.navigationbottom.viewmodel;
 
 import com.example.navigationbottom.model.Notification;
+import com.example.navigationbottom.response.notify.GetNotifyResponse;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ public interface NotifyApi {
     @POST("api/v1/notifies")
     Call<Notification> createNotify(@Body Notification notification);
 
-    @GET("api/v1/user/{id}")
-    Call<List<Notification>> getNotify(@Path("id") Long id);
+    @GET("api/v1/notifies/user/{id}")
+    Call<GetNotifyResponse> getNotify(@Path("id") Long id);
 
-    @DELETE("api/v1/{id}")
+    @DELETE("api/v1/notifies/{id}")
     Call<Notification> deleteNotify(@Path("id") Long id);
 }
