@@ -94,6 +94,14 @@ public class OrderService implements IOrderService{
     }
 
     @Override
+    public List<OrderResponse> findByUserAndStatusNotPaid(long userId, String status) {
+        return orderRepository.findOrderByUserAndStatusNotPaid(userId, status)
+                .stream()
+                .map(OrderResponse::convertFromOrder)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrderResponse> findGetOrders() {
         return orderRepository.findAll()
                 .stream()

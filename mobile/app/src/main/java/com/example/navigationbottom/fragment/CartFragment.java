@@ -70,7 +70,7 @@ public class CartFragment extends Fragment {
         orders = new ArrayList<>();
         User user = UserPreferences.getUser(getContext());
 
-        orderApiService.getOrdersByUser(user.getId()).enqueue(new Callback<GetOrderResponse>() {
+        orderApiService.getOrdersByUserNotPaid(user.getId()).enqueue(new Callback<GetOrderResponse>() {
             @Override
             public void onResponse(Call<GetOrderResponse> call, Response<GetOrderResponse> response) {
                 GetOrderResponse getOrderResponse = response.body();

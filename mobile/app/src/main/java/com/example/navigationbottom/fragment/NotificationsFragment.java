@@ -20,6 +20,7 @@ import com.example.navigationbottom.adaper.NotificationAdapter;
 import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.Notification;
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.notify.GetNotifyResponse;
 import com.example.navigationbottom.viewmodel.NotifyServiceApi;
 import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.example.navigationbottom.viewmodel.WebSocketManager;
@@ -97,14 +98,15 @@ public class NotificationsFragment extends Fragment {
                 });
             }
         });
-        webSocketManager.subscribeToNotifications();
+        webSocketManager.subscribeToNotifications(user.getId(), "/queue/notifications");
 
-        notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<List<Notification>>() {
+        notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<GetNotifyResponse>() {
             @Override
-            public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
-                List<Notification> notificationsList = response.body();
-                if(notificationsList != null){
-                    for(Notification notification : notificationsList){
+            public void onResponse(Call<GetNotifyResponse> call, Response<GetNotifyResponse> response) {
+                GetNotifyResponse notificationsList = response.body();
+                if(notificationsList.getEC().equals("0")){
+                    Log.d("RequestData1", new Gson().toJson(notificationsList));
+                    for(Notification notification : notificationsList.getNotifyResponseList()){
                         Notification notification1 = new Notification();
                         notification1.setId(notification.getId());
                         notification1.setUser_id(notification.getUser_id());
@@ -117,7 +119,7 @@ public class NotificationsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Notification>> call, Throwable t) {
+            public void onFailure(Call<GetNotifyResponse> call, Throwable t) {
                 String errorMessage = t.getMessage();
                 Toast.makeText(mView.getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));

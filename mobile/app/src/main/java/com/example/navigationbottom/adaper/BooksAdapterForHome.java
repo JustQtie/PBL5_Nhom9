@@ -1,5 +1,6 @@
 package com.example.navigationbottom.adaper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
@@ -60,7 +61,7 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BooksAdapterForHome.BookViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BooksAdapterForHome.BookViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         Book book = books.get(position);
         if(book == null){
@@ -129,9 +130,9 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
         }
 
 
-        holder.tvGia.setText(book.getPrice() + "VND");
+        holder.tvGia.setText(book.getPrice() + " VND");
         holder.tvNguoiBan.setText(book.getAuthor());
-        holder.tvSoLuong.setText( "SL: " + book.getQuantity());
+        holder.tvSoLuong.setText(book.getQuantity()+"");
         holder.tvTieude.setText(book.getName());
 
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {

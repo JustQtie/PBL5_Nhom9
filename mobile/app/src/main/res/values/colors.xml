@@ -10,5 +10,6 @@
     <color name="hintTextColor">#CBCED6</color>
     <color name="saving">#FDEDBA</color>
     <color name="pending">#C19959</color>
-    <color name="completed">#4CAF50</color>
+    <color name="confirmed">#4CAF50</color>
+    <color name="paid">#2B80FF</color>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.navigationbottom.model.Notification;
+import com.example.navigationbottom.response.notify.GetNotifyResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,7 +52,7 @@ public class NotifyServiceApi {
     public Call<Notification> createNotify(@Body Notification notification){
         return api.createNotify(notification);
     }
-    public Call<List<Notification>> getNotify(Long id){
+    public Call<GetNotifyResponse> getNotify(Long id){
         return api.getNotify(id);
     }
     public Call<Notification> deleteNotify(Long id){

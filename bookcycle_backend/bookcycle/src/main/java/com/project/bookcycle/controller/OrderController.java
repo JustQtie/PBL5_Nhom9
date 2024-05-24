@@ -3,6 +3,7 @@ package com.project.bookcycle.controller;
 import com.project.bookcycle.dto.OrderDTO;
 import com.project.bookcycle.exceptions.DataNotFoundException;
 import com.project.bookcycle.model.Order;
+import com.project.bookcycle.model.OrderStatus;
 import com.project.bookcycle.response.OrderListResponse;
 import com.project.bookcycle.response.OrderResponse;
 import com.project.bookcycle.response.ProductListResponse;
@@ -83,6 +84,21 @@ public class OrderController {
     ){
         try {
             List<OrderResponse> orderResponses = orderService.findOrderByUser(id);
+            return ResponseEntity.ok(OrderListResponse.builder()
+                    .orderResponseList(orderResponses)
+                    .ec("0").build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(OrderListResponse.builder()
+                    .ec("-1").build() + e.getMessage());
+        }
+    }
+
+    @GetMapping("/user_notpaid/{id}")
+    public ResponseEntity<?> getOrderByUserNotPaid(
+            @PathVariable("id") Long id
+    ){
+        try {
+            List<OrderResponse> orderResponses = orderService.findByUserAndStatusNotPaid(id, OrderStatus.PAID);
             return ResponseEntity.ok(OrderListResponse.builder()
                     .orderResponseList(orderResponses)
                     .ec("0").build());

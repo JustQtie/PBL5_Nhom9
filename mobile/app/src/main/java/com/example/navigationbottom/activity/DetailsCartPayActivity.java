@@ -212,7 +212,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
                             Order order = response.body();
                             if(order != null){
                                 progressDialog.dismiss();
-                                webSocketManager.sendOrder(order);
+                                webSocketManager.sendOrder(order, "/app/order");
                                 Log.d("RequestData1", new Gson().toJson(order));
                                 Intent intent = new Intent(DetailsCartPayActivity.this, MainActivity.class);
                                 intent.putExtra("dataFromActivity", "fromDetailCart");

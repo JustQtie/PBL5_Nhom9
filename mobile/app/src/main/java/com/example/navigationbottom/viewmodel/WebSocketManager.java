@@ -10,7 +10,7 @@ import ua.naiksoftware.stomp.StompClient;
 public class WebSocketManager {
 
     private static WebSocketManager instance;
-    private static final String WEBSOCKET_URL = "wss://fa62-27-69-244-129.ngrok-free.app/chat";
+    private static final String WEBSOCKET_URL = "wss://b715-27-69-244-129.ngrok-free.app/chat";
     private StompClient stompClient;
 
     public String message;
@@ -46,8 +46,9 @@ public class WebSocketManager {
 
 
     @SuppressLint("CheckResult")
-    public void subscribeToNotifications() {
-        stompClient.topic("/topic/notifications").subscribe(topicMessage -> {
+    public void subscribeToNotifications(Long userId, String paths) {
+        String path = "/user/" + userId + paths;
+        stompClient.topic(path).subscribe(topicMessage -> {
             message = topicMessage.getPayload();
             // Xử lý thông báo nhận được
             setMessage(message);
@@ -59,8 +60,8 @@ public class WebSocketManager {
         });
     }
 
-    public void sendOrder(Order order) {
-        stompClient.send("/app/order", new Gson().toJson(order)).subscribe();
+    public void sendOrder(Order order, String destinationPath) {
+        stompClient.send(destinationPath, new Gson().toJson(order)).subscribe();
     }
 
     public String getMessage() {
