@@ -329,7 +329,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_activitydetail_Report"
-                    android:layout_width="180dp"
+                    android:layout_width="165dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="224dp"
                     android:layout_marginTop="10dp"
@@ -364,7 +364,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_activitydetail_save"
-                    android:layout_width="180dp"
+                    android:layout_width="165dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"

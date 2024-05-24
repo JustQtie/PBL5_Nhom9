@@ -72,6 +72,20 @@ const putUpdateUser = (id, fullname, phone_number, address, gender, token) => {
     });
 }
 
+
+const postUpdateImageUser = (id, image, token) => {
+    const data = new FormData();
+    data.append('file', image);
+
+    return axios.put(`api/v1/users/uploads/${id}`, data, {
+        headers: {
+            Authorization: `Bearer ${token}`, // Đính kèm token vào header Authorization
+            'Content-Type': 'application/json' // Đảm bảo kiểu nội dung là JSON
+        }
+    });
+}
+
+
 const deleteProductById = (id, token) => {
 
     return axios.delete(`api/v1/products/${id}`, {
@@ -100,5 +114,6 @@ export {
     getUserById,
     deleteProductById,
     deleteProductThumbnailsById,
+    postUpdateImageUser,
 
 }

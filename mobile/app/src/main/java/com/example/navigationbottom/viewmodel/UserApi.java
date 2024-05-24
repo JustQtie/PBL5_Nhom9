@@ -37,4 +37,5 @@ public interface UserApi {
     Call<UserUpdateImageResponse> updateUserImage(@Path("id") Long userId, @Part MultipartBody.Part image);
 
 
+
 }
