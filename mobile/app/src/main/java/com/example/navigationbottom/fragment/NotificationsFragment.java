@@ -70,6 +70,7 @@ public class NotificationsFragment extends Fragment {
 
         notifications = new ArrayList<>();
 
+
         webSocketManager = WebSocketManager.getInstance();
         webSocketManager.setMessageListener(new WebSocketManager.MessageListener() {
             @Override

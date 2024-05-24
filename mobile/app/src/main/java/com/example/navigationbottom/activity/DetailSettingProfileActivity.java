@@ -14,6 +14,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -34,18 +35,24 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.book.BookImageResponse;
+import com.example.navigationbottom.response.user.UserUpdateImageResponse;
 import com.example.navigationbottom.viewmodel.ApiService;
 import com.example.navigationbottom.viewmodel.UserApiService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,10 +76,7 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 126;
     private Uri imageUri;
     private Dialog dialog;
-
-    private byte[] imageUrl_tempSave;
-    private User user_ReceivedFromSettingFragment;
-    private Uri uriImage;
+    private Uri imageUriUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +97,7 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    capNhatThongTinNguoiDung();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                capNhatThongTinNguoiDung();
             }
         });
 
@@ -160,54 +160,56 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
 
 
     private void capNhatThongTinNguoiDung() {
-        // Lấy dữ liệu từ các trường nhập liệu
 
-//        // Tạo đối tượng User để gửi yêu cầu cập nhật
-//        User userCapNhat = new User();
-//        userCapNhat.setId(userChuyenDen.getId());
-//        userCapNhat.setFullname(hoVaTen);
-//        userCapNhat.setPhone_number(soDienThoai);
-//        userCapNhat.setAddress(diaChi);
-//        userCapNhat.setGender(gioiTinh);
+        // Tạo đối tượng User để gửi yêu cầu cập nhật
+
+
 
         String name = edtHoVaTen.getText().toString();
         String phone = edtSoDienThoai.getText().toString();
         String address = edtDiaChi.getText().toString();
         boolean gioiTinh = spinnerGioiTinh.getSelectedItem().toString().equals("Nam");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imageUrl_tempSave, 0, imageUrl_tempSave.length);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
-        byte[] compressedBytes = byteArrayOutputStream.toByteArray();
 
+        User userCapNhat = new User();
+        userCapNhat.setId(userChuyenDen.getId());
+        userCapNhat.setFullname(name);
+        userCapNhat.setPhone_number(phone);
+        userCapNhat.setAddress(address);
+        userCapNhat.setGender(gioiTinh);
 
-//        User.AvatarData avatar = new User.AvatarData("Buffer", compressedBytes);
-//        User user = new User(user_ReceivedFromSettingFragment.getId(), name, phone, email, address, avatar);
 
 
         // Gọi API cập nhật thông tin người dùng
-//        userApiService.updateUser(userCapNhat.getId(), userCapNhat).enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                if (response.isSuccessful()) {
-//                    // Cập nhật thành công
-//                    Toast.makeText(DetailSettingProfileActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
-//                    finish();
-//                } else {
-//                    // Xử lý lỗi nếu có
-//                    Toast.makeText(DetailSettingProfileActivity.this, "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
-//                    finish();
-//                    Log.e("API Error", "Response Code: " + response.code());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                // Xử lý lỗi khi gọi API thất bại
-//                Toast.makeText(DetailSettingProfileActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
-//                finish();
-//                Log.e("API Error", "onFailure: ", t);
-//            }
-//        });
+        if(isValidPhoneNumber(userCapNhat.getPhone_number())){
+            userApiService.updateUser(userCapNhat.getId(), userCapNhat).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful()) {
+                        // Cập nhật thành công
+                        Toast.makeText(DetailSettingProfileActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        // Xử lý lỗi nếu có
+                        Toast.makeText(DetailSettingProfileActivity.this, "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
+                        finish();
+                        Log.e("API Error", "Response Code: " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    // Xử lý lỗi khi gọi API thất bại
+                    Toast.makeText(DetailSettingProfileActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                    finish();
+                    Log.e("API Error", "onFailure: ", t);
+                }
+            });
+        }else{
+            Toast.makeText(DetailSettingProfileActivity.this, "Số điện thoại không hợp lệ!", Toast.LENGTH_SHORT).show();
+        }
+
+
+
     }
 
 
@@ -225,26 +227,22 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
             spinnerGioiTinh.setSelection(adapter.getPosition("Nữ"));
         }
 
-//        // Gán ảnh vào ImageView
-//        try {
-//            String imageUrl = ApiService.BASE_URL + "api/v1/users/images/" + userChuyenDen.getThumbnail();
-//
-//            if (imageUrl != null && !imageUrl.isEmpty()) {
-//                Glide.with(this)
-//                        .load(imageUrl)
-//                        .placeholder(R.drawable.ic_round_person_24) // Ảnh tạm thời khi đang tải
-//                        .error(R.drawable.ic_round_person_24) // Ảnh hiển thị khi có lỗi
-//                        .into(imgAnhProfile);
-//            } else {
-//                Glide.with(this)
-//                        .load(R.drawable.ic_round_person_24)
-//                        .into(imgAnhProfile);
-//            }
-//        } catch (Exception e) {
-//            Glide.with(this)
-//                    .load(R.drawable.ic_round_person_24)
-//                    .into(imgAnhProfile);
-//        }
+        // Gán ảnh vào ImageView
+        try {
+            String imageUrl = ApiService.BASE_URL + "api/v1/users/images/" + userChuyenDen.getThumbnail();
+
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                Glide.with(this)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.baseline_person_taikhoan) // Ảnh tạm thời khi đang tải
+                        .error(R.drawable.baseline_person_taikhoan) // Ảnh hiển thị khi có lỗi
+                        .into(imgAnhProfile);
+            }
+        } catch (Exception e) {
+            Glide.with(this)
+                    .load(R.drawable.profile)
+                    .into(imgAnhProfile);
+        }
 
 
     }
@@ -300,18 +298,19 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Context context = this;
+
 
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             imgAnhProfile.setImageURI(selectedImage);
-            uriImage = selectedImage;
-            imageUrl_tempSave = convertUriToByteArray(context, selectedImage);
+            imageUriUpdate = selectedImage;
+            updateImageOnServer(imageUriUpdate);
+
 
         } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             imgAnhProfile.setImageURI(imageUri);
-            uriImage = imageUri;
-            imageUrl_tempSave = convertUriToByteArray(context, imageUri);
+            imageUriUpdate = imageUri;
+            updateImageOnServer(imageUriUpdate);
         }
     }
 
@@ -335,30 +334,67 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
 
 
 
-    public static byte[] convertUriToByteArray(Context context, Uri uri) {
-        try {
-            ContentResolver contentResolver = context.getContentResolver();
-            InputStream inputStream = contentResolver.openInputStream(uri);
 
-            if (inputStream != null) {
-                // Đọc dữ liệu từ InputStream thành mảng byte
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int len;
-
-                while ((len = inputStream.read(buffer)) != -1) {
-                    byteArrayOutputStream.write(buffer, 0, len);
-                }
-
-                inputStream.close();
-                byteArrayOutputStream.close();
-
-                return byteArrayOutputStream.toByteArray();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private String getRealPathFromURI(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            return null;
         }
-        return null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+        return path;
     }
+
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+        String filePath = getRealPathFromURI(fileUri);
+        Log.d("hovanthao", "1: File path: " + filePath);
+        File file = new File(filePath);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+        return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
+    }
+
+
+
+
+
+    private void updateImageOnServer(Uri imageUriUpdate) {
+        MultipartBody.Part imagePart = prepareFilePart("file", imageUriUpdate);
+        userApiService.updateUserImage(userChuyenDen.getId(), imagePart).enqueue(new Callback<UserUpdateImageResponse>() {
+            @Override
+            public void onResponse(Call<UserUpdateImageResponse> call, Response<UserUpdateImageResponse> response) {
+                if (response.isSuccessful()) {
+                    UserUpdateImageResponse responseBody = response.body();
+                    if (responseBody != null) {
+                        Log.d("hovanthao", "Response Body: " + responseBody.toString());
+                        if ("0".equals(responseBody.getEc())) {
+                            Log.d("hovanthao", "Cập nhật ảnh người dùng thành công");
+                        } else {
+                            Log.d("hovanthao", "Cập nhật ảnh người dùng thất bại, mã lỗi: " + responseBody.getEc());
+                        }
+                    } else {
+                        Log.d("hovanthao", "Response body is null");
+                    }
+                } else {
+                    Log.d("hovanthao", "3 : Cập nhật ảnh người dùng thất bại, mã phản hồi: " + response.code());
+                    try {
+                        Log.d("hovanthao", "Response error body: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        Log.d("hovanthao", "Error parsing response error body", e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserUpdateImageResponse> call, Throwable t) {
+                Log.e("hovanthao", "Xảy ra lỗi khi cập nhật ảnh người dùng", t);
+            }
+        });
+    }
+
+
+
 
 }

@@ -7,6 +7,7 @@ import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.user.ChangePassResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
 import com.example.navigationbottom.response.user.RegisterResponse;
+import com.example.navigationbottom.response.user.UserUpdateImageResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -60,7 +62,7 @@ public class UserApiService {
         return api.postUserLogin(requestData);
     }
     public Call<RegisterResponse> signUpUser(@Body User requestData){
-        Log.d("RequestData", new Gson().toJson(requestData));
+
         return api.signUpUser(requestData);
     }
     public Call<User> getUser(@Path("id") Long id){
@@ -68,7 +70,7 @@ public class UserApiService {
     }
 
     public Call<ChangePassResponse> changePassword(@Path("id") Long id, @Body ChangePassResponse requestData) {
-        Log.d("Thao", new Gson().toJson(requestData));
+
         return api.changePassword(id, requestData);
     }
 
@@ -77,6 +79,9 @@ public class UserApiService {
         return api.updateUser(id, requestData);
     }
 
-
+    public Call<UserUpdateImageResponse> updateUserImage(Long userId, MultipartBody.Part imageFile) {
+        Log.d("hovanthao", "2" + imageFile.toString());
+        return api.updateUserImage(userId, imageFile);
+    }
 
 }
