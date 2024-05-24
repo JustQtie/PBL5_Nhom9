@@ -55,7 +55,7 @@ public class NotificationsFragment extends Fragment {
         webSocketManager.subscribeToNotifications();
 
         notifications = new ArrayList<>();
-        Log.d("message received!", webSocketManager.getMessage());
+//        Log.d("message received!", webSocketManager.getMessage());
 
         getNotificationAll();
 

@@ -579,7 +579,7 @@ public class AddBookActivity extends AppCompatActivity {
         }
         reloadImageSlider(imageUris);
         // Gọi API upload với Retrofit
-        //uploadToServer(parts);
+//        uploadToServer(parts);
     }
 
     private String getRealPathFromURI(Uri uri) {
