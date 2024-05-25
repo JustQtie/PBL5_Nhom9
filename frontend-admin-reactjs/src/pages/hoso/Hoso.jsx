@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import ModalUpdateUser from "../../components/modal/ModalUpdateUser";
 import { getUserById } from "../../services/apiServices";
 import { toast } from 'react-toastify';
+import ModalDoiMatKhau from "../../components/modal/ModalDoiMatKhau";
 
 const Hoso = () => {
     const [showModalUpdateuser, setShowModalUpdate] = useState(false);
+    const [showModalDoiMatKhau, setShowModalDoiMatKhau] = useState(false);
     const [userData, setUserData] = useState({});
     const [userId, setUserId] = useState("");
 
@@ -65,6 +67,10 @@ const Hoso = () => {
         setShowModalUpdate(true);
     }
 
+    const handClickBtnDoiMatKhau = () => {
+        setShowModalDoiMatKhau(true);
+    }
+
     return (
         <div className="hoso-list">
             <Sidebar />
@@ -99,8 +105,11 @@ const Hoso = () => {
                             <input type="text" disabled className="form-control" value={gender ? "Nam" : "Nữ"} />
                         </div>
                         <div className="col-md-6 d-flex justify-content-center">
-                            <button onClick={handClickBtnUpdate}>
+                            <button className="btn btn-primary mx-2" onClick={handClickBtnUpdate}>
                                 Chỉnh sửa
+                            </button>
+                            <button className="btn btn-secondary mx-2" onClick={handClickBtnDoiMatKhau}>
+                                Đổi mật khẩu
                             </button>
                         </div>
                         <ModalUpdateUser
@@ -108,6 +117,11 @@ const Hoso = () => {
                             setShow={setShowModalUpdate}
                             userData={userData}
                             fetchUser={fetchUser}
+                        />
+
+                        <ModalDoiMatKhau
+                            show={showModalDoiMatKhau}
+                            setShow={setShowModalDoiMatKhau}
                         />
                     </div>
                 </div>

@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
 import { toast } from 'react-toastify';
+import Spinner from 'react-bootstrap/Spinner';
 import { putUpdateUser, postUpdateImageUser } from '../../services/apiServices';
 import _ from 'lodash';
 import "./modalUpdateUser.scss"
@@ -11,7 +12,9 @@ const ModalUpdateUser = (props) => {
     const { show, setShow, userData, fetchUser } = props;
 
     const handleClose = () => {
-        setShow(false);
+        if (!isLoading) {
+            setShow(false);
+        }
     };
     const [isLoading, setIsLoading] = useState(false);
     const [id, setId] = useState("");
@@ -73,8 +76,8 @@ const ModalUpdateUser = (props) => {
             }
 
             // Nếu cả hai API đều thành công, đóng modal và gọi fetchUser
-            handleClose();
             await fetchUser();
+            handleClose();
         } catch (error) {
             toast.error("Đã xảy ra lỗi khi cập nhật người dùng", error);
         } finally {
@@ -85,7 +88,7 @@ const ModalUpdateUser = (props) => {
     return (
         <>
             <Modal className='modal-add-user' backdrop="static" show={show} onHide={handleClose} size='xl'>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={!isLoading}>
                     <Modal.Title>Chỉnh sửa thông tin</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -123,11 +126,24 @@ const ModalUpdateUser = (props) => {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleClose} disabled={isLoading}>
                         Đóng
                     </Button>
                     <Button variant="primary" onClick={handSubmitUpdateUser} disabled={isLoading}>
-                        {isLoading ? 'Đang cập nhật...' : 'Lưu thông tin'}
+                        {isLoading ? (
+                            <>
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                <span className="visually-hidden">Đang cập nhật...</span>
+                            </>
+                        ) : (
+                            'Lưu thông tin'
+                        )}
                     </Button>
                 </Modal.Footer>
             </Modal>
