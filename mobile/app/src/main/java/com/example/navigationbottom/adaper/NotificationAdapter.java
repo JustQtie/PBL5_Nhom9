@@ -28,6 +28,8 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
+
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>{
 
 
@@ -101,14 +103,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         appCompatButtonDongY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "click đồng ý", Toast.LENGTH_SHORT).show();
+                Toasty.success(mContext, "click đồng ý", Toasty.LENGTH_SHORT).show();
             }
         });
 
         appCompatButtonTuChoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "click từ chối", Toast.LENGTH_SHORT).show();
+                Toasty.warning(mContext, "click từ chối", Toasty.LENGTH_SHORT).show();
             }
         });
 

@@ -83,6 +83,13 @@ public class HomeFragment extends Fragment {
 
 
         books = new ArrayList<>();
+
+        loadPosts();
+
+        return mView;
+    }
+
+    private void loadPosts() {
         User user = UserPreferences.getUser(getContext());
         bookApiService = new BookApiService(getContext());
         bookApiService.getBooksNotUser(user.getId()).enqueue(new Callback<GetBookResponse>() {
@@ -130,60 +137,8 @@ public class HomeFragment extends Fragment {
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
-        return mView;
     }
 
-    public void search(String query) {
-        // Giả sử bạn có một interface APIService được định nghĩa với phương thức search
-        bookApiService = new BookApiService(getContext());
-        books = new ArrayList<>();
-        bookApiService.getAllBook(query).enqueue(new Callback<GetBookResponse>() {
-            @Override
-            public void onResponse(Call<GetBookResponse> call, Response<GetBookResponse> response) {
-                GetBookResponse getBookResponse = response.body();
-                if(getBookResponse!=null){
-                    Log.d("RequestData1", new Gson().toJson(getBookResponse));
-                    if(getBookResponse.getEc().equals("0")){
-                        List<Book> productResponseList = getBookResponse.getProductResponseList();
-                        for (Book book : productResponseList) {
-                            Book getBook = new Book();
-                            getBook.setId(book.getId());
-                            getBook.setName(book.getName());
-                            getBook.setAuthor(book.getAuthor());
-                            getBook.setPoint(book.getPoint());
-                            getBook.setDescription(book.getDescription());
-                            getBook.setStatus(book.getStatus());
-                            getBook.setQuantity(book.getQuantity());
-                            getBook.setThumbnail(book.getThumbnail());
-                            getBook.setPrice(book.getPrice());
-                            getBook.setUser_id(book.getUser_id());
-                            getBook.setCategory_id(book.getCategory_id());
-                            books.add(getBook);
-                        }
-                        booksAdapter = new BooksAdapterForHome(books, getActivity());
-                        rvBooks.setAdapter(booksAdapter);
-                    }else{
-                        Log.e("UploadError", "Upload failed with status: " + response.code());
-                        try {
-                            Log.e("UploadError", "Response error body: " + response.errorBody().string());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }else{
-                    Toast.makeText(getContext(), "Book invalid", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetBookResponse> call, Throwable t) {
-                String errorMessage = t.getMessage();
-                Toast.makeText(getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-            }
-        });
-
-    }
 
 
     @Override
@@ -200,21 +155,13 @@ public class HomeFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(!TextUtils.isEmpty(query)){
-//                    searchPosts(query);
-                }else{
-//                    loadPosts();
-                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(!TextUtils.isEmpty(newText)){
-//                    searchPosts(newText);
-                }else{
-//                    loadPosts();
-                }
+
+                booksAdapter.getFilter().filter(newText);
                 return false;
             }
         });

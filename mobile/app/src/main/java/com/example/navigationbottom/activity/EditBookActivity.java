@@ -72,6 +72,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import es.dmoral.toasty.Toasty;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -162,7 +163,7 @@ public class EditBookActivity extends AppCompatActivity {
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     if(response.isSuccessful()){
                                         progressDialog.dismiss();
-                                        Toast.makeText(EditBookActivity.this, "Delete success!" , Toast.LENGTH_SHORT).show();
+                                        Toasty.success(EditBookActivity.this, "Delete success!" , Toasty.LENGTH_SHORT).show();
                                         Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
                                         intent.putExtra("dataFromActivity", "fromEditBook");
                                         startActivity(intent);
@@ -171,7 +172,7 @@ public class EditBookActivity extends AppCompatActivity {
                                         progressDialog.dismiss();
                                         String errorMessage = "Unsuccessful response: " + response.code();
                                         Log.e("UploadError", errorMessage);
-                                        Toast.makeText(EditBookActivity.this, "Can't delete", Toast.LENGTH_SHORT).show();
+                                        Toasty.warning(EditBookActivity.this, "Can't delete", Toasty.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -180,14 +181,14 @@ public class EditBookActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     String errorMessage = "Request failed: " + t.getMessage();
                                     Log.e("Hello", errorMessage);
-                                    Toast.makeText(EditBookActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                    Toasty.error(EditBookActivity.this, errorMessage, Toasty.LENGTH_SHORT).show();
                                 }
                             });
                         } else {
                             progressDialog.dismiss();
                             String errorMessage = "Unsuccessful response: " + response.code();
                             Log.e("UploadError", errorMessage);
-                            Toast.makeText(EditBookActivity.this, "Can't delete", Toast.LENGTH_SHORT).show();
+                            Toasty.error(EditBookActivity.this, "Can't delete", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
@@ -196,7 +197,7 @@ public class EditBookActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         String errorMessage = "Request failed: " + t.getMessage();
                         Log.e("Hello", errorMessage);
-                        Toast.makeText(EditBookActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toasty.error(EditBookActivity.this, errorMessage, Toasty.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -210,15 +211,15 @@ public class EditBookActivity extends AppCompatActivity {
                 progressDialog.show();
                 if(imageUris == null){
                     progressDialog.dismiss();
-                    Toast.makeText(EditBookActivity.this, "Please upload photos before update books for sale", Toast.LENGTH_SHORT).show();
+                    Toasty.info(EditBookActivity.this, "Please upload photos before update books for sale", Toasty.LENGTH_SHORT).show();
                 } else if (imageUris.size()>5) {
                     progressDialog.dismiss();
-                    Toast.makeText(EditBookActivity.this, "Only a maximum of 5 photos can be selected", Toast.LENGTH_SHORT).show();
+                    Toasty.info(EditBookActivity.this, "Only a maximum of 5 photos can be selected", Toasty.LENGTH_SHORT).show();
                 } else if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtGia.getText().toString().trim())){
                     progressDialog.dismiss();
-                    Toast.makeText(EditBookActivity.this, "Please fill in the blank fields", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(EditBookActivity.this, "Please fill in the blank fields", Toasty.LENGTH_SHORT).show();
                 }else {
                     Book requestBook = new Book();
                     requestBook.setName(edtTieude.getText().toString().trim());
@@ -255,7 +256,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                                             if(responseBody.getEc().equals("0")){
                                                                                 Log.d("RequestData1", new Gson().toJson(responseBody));
                                                                                 progressDialog.dismiss();
-                                                                                Toast.makeText(EditBookActivity.this, "Update my book success!!", Toast.LENGTH_SHORT).show();
+                                                                                Toasty.success(EditBookActivity.this, "Update my book success!!", Toasty.LENGTH_SHORT).show();
                                                                                 Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
                                                                                 intent.putExtra("dataActivity", "fromEditBook");
                                                                                 startActivity(intent);
@@ -270,7 +271,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                                             } catch (IOException e) {
                                                                                 throw new RuntimeException(e);
                                                                             }
-                                                                            Toast.makeText(EditBookActivity.this, "Post book fails", Toast.LENGTH_SHORT).show();
+                                                                            Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
                                                                         }
                                                                     }
 
@@ -278,7 +279,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                                     public void onFailure(Call<BookImageResponse> call, Throwable t) {
                                                                         progressDialog.dismiss();
                                                                         String errorMessage = t.getMessage();
-                                                                        Toast.makeText(EditBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                                                        Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                                                         Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                                                     }
                                                                 });
@@ -290,7 +291,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                                 } catch (IOException e) {
                                                                     throw new RuntimeException(e);
                                                                 }
-                                                                Toast.makeText(EditBookActivity.this, "Post book fails", Toast.LENGTH_SHORT).show();
+                                                                Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
                                                             }
                                                         }
                                                     }
@@ -299,7 +300,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                     public void onFailure(Call<BookImageResponse> call, Throwable t) {
                                                         progressDialog.dismiss();
                                                         String errorMessage = t.getMessage();
-                                                        Toast.makeText(EditBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                                        Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                                         Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                                     }
                                                 });
@@ -310,7 +311,7 @@ public class EditBookActivity extends AppCompatActivity {
                                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                                             progressDialog.dismiss();
                                             String errorMessage = t.getMessage();
-                                            Toast.makeText(EditBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                            Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                         }
                                     });
@@ -318,11 +319,11 @@ public class EditBookActivity extends AppCompatActivity {
 
                                 }else {
                                     progressDialog.dismiss();
-                                    Toast.makeText(EditBookActivity.this, "Post my book not success", Toast.LENGTH_SHORT).show();
+                                    Toasty.success(EditBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
                                 }
                             }else{
                                 progressDialog.dismiss();
-                                Toast.makeText(EditBookActivity.this, "Post book fails", Toast.LENGTH_SHORT).show();
+                                Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
                             }
                         }
 
@@ -330,7 +331,7 @@ public class EditBookActivity extends AppCompatActivity {
                         public void onFailure(Call<BookResponse> call, Throwable t) {
                             progressDialog.dismiss();
                             String errorMessage = t.getMessage();
-                            Toast.makeText(EditBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                         }
                     });
@@ -484,13 +485,13 @@ public class EditBookActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(EditBookActivity.this, "Category not found", Toast.LENGTH_SHORT).show();
+                    Toasty.error(EditBookActivity.this, "Category not found", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetCategoryResponse> call, Throwable t) {
-                Toast.makeText(EditBookActivity.this, "Failed to load categories", Toast.LENGTH_SHORT).show();
+                Toasty.error(EditBookActivity.this, "Failed to load categories", Toast.LENGTH_SHORT).show();
             }
         });
         String[] bookStatuses = {Status.BEEN_USING_FOR_6_MONTHS, Status.BEEN_USING_FOR_1_YEARS, Status.BEEN_USING_FOR_3_5_YEARS, Status.BEEN_USING_FOR_5_YEARS};
@@ -598,7 +599,7 @@ public class EditBookActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(EditBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
@@ -687,7 +688,7 @@ public class EditBookActivity extends AppCompatActivity {
             moThuVien();
         }
         else {
-            Toast.makeText(this, "Quyền truy cập bị từ chối.", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Quyền truy cập bị từ chối.", Toasty.LENGTH_SHORT).show();
         }
     }
     @Override
@@ -699,7 +700,7 @@ public class EditBookActivity extends AppCompatActivity {
                 int count = data.getClipData().getItemCount();
                 if (count > 5) {
                     // Hiển thị thông báo nếu người dùng chọn nhiều hơn 5 ảnh
-                    Toast.makeText(this, "You can select up to 5 images only", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(this, "You can select up to 5 images only", Toasty.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i < count; i++) {
                         Uri imageUri = data.getClipData().getItemAt(i).getUri();

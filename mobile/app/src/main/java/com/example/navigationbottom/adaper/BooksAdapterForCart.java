@@ -96,7 +96,7 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
             @Override
             public void onFailure(Call<Book> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(mContext.getApplicationContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(mContext.getApplicationContext(), "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });

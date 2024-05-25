@@ -146,13 +146,13 @@ public class AddBookActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(AddBookActivity.this, "Category not found", Toast.LENGTH_SHORT).show();
+                    Toasty.error(AddBookActivity.this, "Category not found", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetCategoryResponse> call, Throwable t) {
-                Toast.makeText(AddBookActivity.this, "Failed to load categories", Toast.LENGTH_SHORT).show();
+                Toasty.error(AddBookActivity.this, "Failed to load categories", Toasty.LENGTH_SHORT).show();
             }
         });
 
@@ -297,15 +297,15 @@ public class AddBookActivity extends AppCompatActivity {
 
                 if(imageUris == null){
                     progressDialog.dismiss();
-                    Toast.makeText(AddBookActivity.this, "Please upload photos before posting books for sale", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(AddBookActivity.this, "Please upload photos before posting books for sale", Toasty.LENGTH_SHORT).show();
                 } else if (imageUris.size()>5) {
                     progressDialog.dismiss();
-                    Toast.makeText(AddBookActivity.this, "Only a maximum of 5 photos can be selected", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(AddBookActivity.this, "Only a maximum of 5 photos can be selected", Toasty.LENGTH_SHORT).show();
                 } else if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtGia.getText().toString().trim())){
                     progressDialog.dismiss();
-                    Toast.makeText(AddBookActivity.this, "Please fill in the blank fields", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(AddBookActivity.this, "Please fill in the blank fields", Toasty.LENGTH_SHORT).show();
                 }else {
                     user = UserPreferences.getUser(getApplicationContext());
                     User exitsuser = UserPreferences.getUser(getApplicationContext());
@@ -316,7 +316,7 @@ public class AddBookActivity extends AppCompatActivity {
                             if(user.getEc().equals("0")){
                                 if(user.getAddress() == null){
                                     progressDialog.dismiss();
-                                    Toasty.info(AddBookActivity.this, "You need to add an address before posting books for sale!", Toast.LENGTH_SHORT).show();
+                                    Toasty.info(AddBookActivity.this, "You need to add an address before posting books for sale!", Toasty.LENGTH_SHORT).show();
                                 }else{
                                     Book book = new Book();
                                     book.setName(edtTieude.getText().toString().trim());
@@ -346,7 +346,7 @@ public class AddBookActivity extends AppCompatActivity {
                                                                     if(responseBody.getEc().equals("0")){
                                                                         progressDialog.dismiss();
                                                                         Log.d("RequestData1", new Gson().toJson(responseBody));
-                                                                        Toasty.success(AddBookActivity.this, "Post my book success!!", Toast.LENGTH_SHORT).show();
+                                                                        Toasty.success(AddBookActivity.this, "Post my book success!!", Toasty.LENGTH_SHORT).show();
                                                                         Intent intent = new Intent(AddBookActivity.this, MainActivity.class);
                                                                         intent.putExtra("dataFromActivity", "fromAddBook");
                                                                         startActivity(intent);
@@ -361,7 +361,7 @@ public class AddBookActivity extends AppCompatActivity {
                                                                     } catch (IOException e) {
                                                                         throw new RuntimeException(e);
                                                                     }
-                                                                    Toast.makeText(AddBookActivity.this, "Post my book not success", Toast.LENGTH_SHORT).show();
+                                                                    Toasty.error(AddBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
                                                                 }
                                                             }
 
@@ -369,25 +369,25 @@ public class AddBookActivity extends AppCompatActivity {
                                                             public void onFailure(Call<BookImageResponse> call, Throwable t) {
                                                                 progressDialog.dismiss();
                                                                 String errorMessage = t.getMessage();
-                                                                Toast.makeText(AddBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                                                Toasty.error(AddBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                                                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                                             }
                                                         });
                                                     }else{
                                                         progressDialog.dismiss();
-                                                        Toast.makeText(AddBookActivity.this, "Post my book not success", Toast.LENGTH_SHORT).show();
+                                                        Toasty.error(AddBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
                                                     }
 
                                                 }else {
                                                     progressDialog.dismiss();
-                                                    Toast.makeText(AddBookActivity.this, "Post my book not success", Toast.LENGTH_SHORT).show();
+                                                    Toasty.error(AddBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
                                                 }
                                         }
                                         @Override
                                         public void onFailure(Call<BookResponse> call, Throwable t) {
                                             progressDialog.dismiss();
                                             String errorMessage = t.getMessage();
-                                            Toast.makeText(AddBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                            Toasty.error(AddBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                         }
                                     });
@@ -553,7 +553,7 @@ public class AddBookActivity extends AppCompatActivity {
             moThuVien();
         }
         else {
-            Toast.makeText(this, "Quyền truy cập bị từ chối.", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Quyền truy cập bị từ chối.", Toasty.LENGTH_SHORT).show();
         }
     }
     @Override
@@ -565,7 +565,7 @@ public class AddBookActivity extends AppCompatActivity {
                 int count = data.getClipData().getItemCount();
                 if (count > 5) {
                     // Hiển thị thông báo nếu người dùng chọn nhiều hơn 5 ảnh
-                    Toast.makeText(this, "You can select up to 5 images only", Toast.LENGTH_SHORT).show();
+                    Toasty.info(this, "You can select up to 5 images only", Toasty.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i < count; i++) {
                         Uri imageUri = data.getClipData().getItemAt(i).getUri();

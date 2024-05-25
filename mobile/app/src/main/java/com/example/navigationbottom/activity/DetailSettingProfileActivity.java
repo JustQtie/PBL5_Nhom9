@@ -50,6 +50,7 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import es.dmoral.toasty.Toasty;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -186,11 +187,11 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
                         // Cập nhật thành công
-                        Toast.makeText(DetailSettingProfileActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                        Toasty.success(DetailSettingProfileActivity.this, "Cập nhật thông tin thành công", Toasty.LENGTH_SHORT).show();
                         finish();
                     } else {
                         // Xử lý lỗi nếu có
-                        Toast.makeText(DetailSettingProfileActivity.this, "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
+                        Toasty.error(DetailSettingProfileActivity.this, "Cập nhật thông tin thất bại", Toasty.LENGTH_SHORT).show();
                         finish();
                         Log.e("API Error", "Response Code: " + response.code());
                     }
@@ -199,13 +200,13 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
                     // Xử lý lỗi khi gọi API thất bại
-                    Toast.makeText(DetailSettingProfileActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(DetailSettingProfileActivity.this, "Lỗi kết nối", Toasty.LENGTH_SHORT).show();
                     finish();
                     Log.e("API Error", "onFailure: ", t);
                 }
             });
         }else{
-            Toast.makeText(DetailSettingProfileActivity.this, "Số điện thoại không hợp lệ!", Toast.LENGTH_SHORT).show();
+            Toasty.warning(DetailSettingProfileActivity.this, "Số điện thoại không hợp lệ!", Toasty.LENGTH_SHORT).show();
         }
 
 
@@ -327,7 +328,7 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
             moThuVien();
         }
         else {
-            Toast.makeText(DetailSettingProfileActivity.this, "Access denied.", Toast.LENGTH_SHORT).show();
+            Toasty.error(DetailSettingProfileActivity.this, "Access denied.", Toasty.LENGTH_SHORT).show();
         }
 
     }
@@ -370,14 +371,17 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
                     if (responseBody != null) {
                         Log.d("hovanthao", "Response Body: " + responseBody.toString());
                         if ("0".equals(responseBody.getEc())) {
-                            Log.d("hovanthao", "Cập nhật ảnh người dùng thành công");
+                            Toasty.success(DetailSettingProfileActivity.this, "Cập nhật ảnh người dùng thành công", Toasty.LENGTH_SHORT).show();
                         } else {
+                            Toasty.error(DetailSettingProfileActivity.this, "Cập nhật ảnh người dùng thất bại", Toasty.LENGTH_SHORT).show();
                             Log.d("hovanthao", "Cập nhật ảnh người dùng thất bại, mã lỗi: " + responseBody.getEc());
                         }
                     } else {
+                        Toasty.error(DetailSettingProfileActivity.this, "Response body is null", Toasty.LENGTH_SHORT).show();
                         Log.d("hovanthao", "Response body is null");
                     }
                 } else {
+                    Toasty.error(DetailSettingProfileActivity.this, "Cập nhật ảnh người dùng thất bại", Toasty.LENGTH_SHORT).show();
                     Log.d("hovanthao", "3 : Cập nhật ảnh người dùng thất bại, mã phản hồi: " + response.code());
                     try {
                         Log.d("hovanthao", "Response error body: " + response.errorBody().string());
@@ -390,6 +394,7 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserUpdateImageResponse> call, Throwable t) {
                 Log.e("hovanthao", "Xảy ra lỗi khi cập nhật ảnh người dùng", t);
+                Toasty.error(DetailSettingProfileActivity.this, "Xảy ra lỗi khi cập nhật ảnh người dùng", Toasty.LENGTH_SHORT).show();
             }
         });
     }
