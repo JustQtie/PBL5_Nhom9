@@ -34,6 +34,7 @@ import com.example.navigationbottom.viewmodel.UserApiService;
 import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.gson.Gson;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,7 +88,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Lấy giá trị được chọn từ Spinner
                 selectedItem = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(), "Bạn đang chọn phương thức thanh toán là " + selectedItem, Toast.LENGTH_SHORT).show();
+                Toasty.info(getApplicationContext(), "Bạn đang chọn phương thức thanh toán là " + selectedItem, Toasty.LENGTH_SHORT).show();
             }
 
             @Override
@@ -197,7 +198,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
                 progressDialog.show();
                 if(Integer.parseInt(edtSoLuong.getText().toString()) > book.getQuantity()){
                     progressDialog.dismiss();
-                    Toast.makeText(DetailsCartPayActivity.this, "The current number of books is not enough", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(DetailsCartPayActivity.this, "The current number of books is not enough", Toasty.LENGTH_SHORT).show();
                 }else{
                     Order requestOrder = new Order();
                     requestOrder.setProduct_id(book.getId());
@@ -246,7 +247,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
                         public void onFailure(Call<Order> call, Throwable t) {
                             progressDialog.dismiss();
                             String errorMessage = t.getMessage();
-                            Toast.makeText(DetailsCartPayActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            Toasty.error(DetailsCartPayActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                         }
                     });

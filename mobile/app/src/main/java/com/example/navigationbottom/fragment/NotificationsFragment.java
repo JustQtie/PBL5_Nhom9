@@ -67,6 +67,7 @@ public class NotificationsFragment extends Fragment {
 
         notifyServiceApi = new NotifyServiceApi(getContext());
 
+
         load();
         return mView;
     }
@@ -77,12 +78,13 @@ public class NotificationsFragment extends Fragment {
         load();
     }
 
-    @SuppressLint("CheckResult")
-    public void load(){
-        User user = UserPreferences.getUser(getContext());
 
+
+    @SuppressLint("CheckResult")
+    private void load() {
         notifications = new ArrayList<>();
         notifyApplication = NotifyApplication.instance();
+        User user = UserPreferences.getUser(getContext());
         notifyApplication.getSubscriptions().addSubscription("/topic/" + user.getId(), stompMessage -> {
             Log.d("StompMessage", stompMessage.getPayload());
             Notification notification = new Gson().fromJson(String.valueOf(stompMessage), Notification.class);
@@ -94,11 +96,11 @@ public class NotificationsFragment extends Fragment {
         notifyApplication.getStompClient().topic("/topic/"+user.getId()).subscribe(stompMessage -> {
             Notification notification = new Gson().fromJson(String.valueOf(stompMessage), Notification.class);
             Log.d("message received!", notification.getContent());
+
             ((MainActivity)requireActivity()).runOnUiThread(()->{
                 Toasty.info(mView.getContext(), "Bạn có thông báo mới!");
             });
         });
-
         notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<GetNotifyResponse>() {
             @Override
             public void onResponse(Call<GetNotifyResponse> call, Response<GetNotifyResponse> response) {
@@ -122,9 +124,11 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onFailure(Call<GetNotifyResponse> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(mView.getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(mView.getContext(), "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
     }
+
+
 }

@@ -38,6 +38,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -135,7 +136,7 @@ public class SellFragment extends Fragment {
             @Override
             public void onFailure(Call<GetBookResponse> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });

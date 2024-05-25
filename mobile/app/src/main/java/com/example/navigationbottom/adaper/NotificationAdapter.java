@@ -31,9 +31,11 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>{
 
@@ -98,6 +100,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         AppCompatButton appCompatButtonDongY = dialog.findViewById(R.id.btn_digDongY_notification);
         AppCompatButton appCompatButtonTuChoi = dialog.findViewById(R.id.btn_digTuchoi_notification);
+
 
         if(notification.getStatus().equals(NotifyStatus.NOT_RESPONDED)){
             appCompatButtonDongY.setOnClickListener(new View.OnClickListener() {

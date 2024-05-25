@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,9 +75,9 @@ public class SignUpActivity extends AppCompatActivity {
         String pass_confim = edt_pass_confi.getText().toString();
 
         if (TextUtils.isEmpty(username.trim()) || TextUtils.isEmpty(password.trim()) || TextUtils.isEmpty(phone.trim()) || TextUtils.isEmpty(phone.trim()) || TextUtils.isEmpty(pass_confim.trim())) {
-            Toast.makeText(SignUpActivity.this, "Please enter complete information!", Toast.LENGTH_SHORT).show();
+            Toasty.info(SignUpActivity.this, "Please enter complete information!", Toasty.LENGTH_SHORT).show();
         } else if (isValidPhoneNumber(phone.trim()) == false) {
-            Toast.makeText(SignUpActivity.this, "Invalid phone number!", Toast.LENGTH_SHORT).show();
+            Toasty.error(SignUpActivity.this, "Invalid phone number!", Toasty.LENGTH_SHORT).show();
         }else{
             userApiService = new UserApiService(this);
             User user = new User();
@@ -94,21 +95,21 @@ public class SignUpActivity extends AppCompatActivity {
                         if (registerResponse.getEc().equals("0")) {
                             Log.d("RequestData1", new Gson().toJson(registerResponse));
 
-                            Toast.makeText(SignUpActivity.this, "Login success!!", Toast.LENGTH_SHORT).show();
+                            Toasty.success(SignUpActivity.this, "Login success!!", Toasty.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                         } else {
-                            Toast.makeText(SignUpActivity.this, "Sign up not success", Toast.LENGTH_SHORT).show();
+                            Toasty.error(SignUpActivity.this, "Sign up not success", Toasty.LENGTH_SHORT).show();
                         }
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(SignUpActivity.this, "Create user fails", Toast.LENGTH_SHORT).show();
+                        Toasty.error(SignUpActivity.this, "Create user fails", Toasty.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RegisterResponse> call, Throwable t) {
                     String errorMessage = t.getMessage();
-                    Toast.makeText(SignUpActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    Toasty.error(SignUpActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                     Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                 }
             });

@@ -88,7 +88,7 @@ const Login = () => {
 
                     <button type="submit" onClick={handleLogin}>
                         <span>Đăng nhập</span>
-                        <RotateIcon className={`login-icon ${isLoading ? 'rotate-icon' : ''}`} /> {/* Thêm icon mới và class */}
+                        <RotateIcon className={`login-icon ${isLoading ? 'rotate-icon' : ''}`} />
                     </button>
 
 

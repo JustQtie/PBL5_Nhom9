@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,7 +29,9 @@ import com.example.navigationbottom.viewmodel.ApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -38,18 +42,51 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 
-public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHome.BookViewHolder>{
+public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHome.BookViewHolder> implements Filterable {
     private Context mContext;
     public static ArrayList<Book> books;
-
-
+    public static ArrayList<Book> booksCopy;
     private ExecutorService executorService;
     private Handler mainHandler;
     public BooksAdapterForHome(ArrayList<Book> books, Context mContext) {
         this.books = books;
+        this.booksCopy = new ArrayList<>(books);
         this.mContext = mContext;
         this.executorService = Executors.newSingleThreadExecutor();
         this.mainHandler = new Handler(Looper.getMainLooper());
+        loadCategoryNames();
+    }
+
+    private void loadCategoryNames() {
+        for (Book book : books) {
+            Callable<Category> callable = new Callable<Category>() {
+                @Override
+                public Category call() throws Exception {
+                    CategoryApiService categoryApiService = new CategoryApiService(mContext.getApplicationContext());
+                    Call<Category> call = categoryApiService.getCategoriesById(book.getCategory_id());
+                    Response<Category> response = call.execute();
+                    if (response.isSuccessful() && response.body() != null) {
+                        return response.body();
+                    } else {
+                        throw new Exception("Failed to get category with status: " + response.code());
+                    }
+                }
+            };
+
+            Future<Category> future = executorService.submit(callable);
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        final Category category = future.get();
+                        book.setCategoryName(category.getName());
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                        book.setCategoryName("Unknown Category");
+                    }
+                }
+            });
+        }
     }
 
     @NonNull
@@ -69,45 +106,6 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
         }
 
 
-// Call API to get Category by ID in a separate thread
-        Callable<Category> callable = new Callable<Category>() {
-            @Override
-            public Category call() throws Exception {
-                CategoryApiService categoryApiService = new CategoryApiService(mContext.getApplicationContext());
-                Call<Category> call = categoryApiService.getCategoriesById(book.getCategory_id());
-                Response<Category> response = call.execute();
-                if (response.isSuccessful() && response.body() != null) {
-                    return response.body();
-                } else {
-                    throw new Exception("Failed to get category with status: " + response.code());
-                }
-            }
-        };
-
-        Future<Category> future = executorService.submit(callable);
-
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final Category category = future.get();
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            holder.tvLoai.setText(category.getName());
-                        }
-                    });
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            holder.tvLoai.setText("Unknown Category");
-                        }
-                    });
-                }
-            }
-        });
 
         try {
             String imageUrl = ApiService.BASE_URL + "api/v1/products/images/" + book.getThumbnail();
@@ -129,7 +127,7 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
                     .into(holder.ivItem);
         }
 
-
+        holder.tvLoai.setText(book.getCategoryName());
         holder.tvGia.setText(book.getPrice() + " VND");
         holder.tvNguoiBan.setText(book.getAuthor());
         holder.tvSoLuong.setText(book.getQuantity()+"");
@@ -155,6 +153,60 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
         }
         return 0;
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String input = charSequence.toString().toLowerCase();
+                List<Book> filteredBooks = new ArrayList<>();
+
+
+                if (input.isEmpty()) {
+                    filteredBooks.addAll(booksCopy);
+                } else {
+                    for (Book bb : booksCopy) {
+
+                        String normalizedNoiDungName = removeAccents(bb.getName().toLowerCase());
+                        String normalizedNoiDungAuthor = removeAccents(bb.getAuthor().toLowerCase());
+                        String normalizedNoiDungCategory = removeAccents(bb.getCategoryName().toLowerCase());
+                        String normalizedSearchText = removeAccents(input).toLowerCase();
+
+                        if (normalizedNoiDungName.contains(normalizedSearchText) ||
+                                normalizedNoiDungAuthor.contains(normalizedSearchText) ||
+                                normalizedNoiDungCategory.contains(normalizedSearchText)) {
+                            filteredBooks.add(bb);
+                        }
+                    }
+                }
+
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredBooks;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                books.clear();
+                books.addAll((List<Book>) results.values);
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
+    // Hàm để loại bỏ dấu tiếng Việt
+    public String removeAccents(String input) {
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        normalized = normalized.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return normalized;
+    }
+
+
+
 
     public class BookViewHolder extends RecyclerView.ViewHolder {
         private ShapeableImageView ivItem;

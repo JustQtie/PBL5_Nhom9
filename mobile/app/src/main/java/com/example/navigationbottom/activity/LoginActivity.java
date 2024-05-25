@@ -20,6 +20,7 @@ import com.example.navigationbottom.viewmodel.UserApiService;
 import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.gson.Gson;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -85,25 +86,25 @@ public class LoginActivity extends AppCompatActivity {
                             UserPreferences.saveUser(LoginActivity.this, response1.getUser());
                             Log.d("RequestData1", new Gson().toJson(response1));
                             SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
-                            Toast.makeText(LoginActivity.this, "Login success!!", Toast.LENGTH_SHORT).show();
+                            Toasty.success(LoginActivity.this, "Login success!!", Toasty.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         }else{
-                            Toast.makeText(LoginActivity.this, "Your account has been banned", Toast.LENGTH_SHORT).show();
+                            Toasty.warning(LoginActivity.this, "Your account has been banned", Toasty.LENGTH_SHORT).show();
                         }
 
                     }else{
-                        Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
+                        Toasty.error(LoginActivity.this, "Username or Password invalid", Toasty.LENGTH_SHORT).show();
                     }
                 }else{
                     progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
+                    Toasty.error(LoginActivity.this, "Username or Password invalid", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(LoginActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(LoginActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });

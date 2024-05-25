@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -159,7 +160,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
                 if(user.getEc().equals("0")){
                     if(user.getAddress() == null){
                         progressDialog.dismiss();
-                        Toast.makeText(DetailsHomeActivity.this, "You need to add an address before order", Toast.LENGTH_SHORT).show();
+                        Toasty.warning(DetailsHomeActivity.this, "You need to add an address before order", Toasty.LENGTH_SHORT).show();
                     }else{
                         order.setUser_id(user.getId());
                         order.setShipping_address(user.getAddress());
@@ -191,7 +192,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
-                                    Toast.makeText(DetailsHomeActivity.this, "Create order fails", Toast.LENGTH_SHORT).show();
+                                    Toasty.error(DetailsHomeActivity.this, "Create order fails", Toasty.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -199,7 +200,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
                             public void onFailure(Call<Order> call, Throwable t) {
                                 progressDialog.dismiss();
                                 String errorMessage = t.getMessage();
-                                Toast.makeText(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                Toasty.error(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                             }
                         });
@@ -279,7 +280,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });

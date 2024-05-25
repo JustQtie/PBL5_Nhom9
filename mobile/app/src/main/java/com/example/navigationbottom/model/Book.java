@@ -24,6 +24,16 @@ public class Book implements Serializable {
     private long user_id;
 
     private long category_id;
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     private List<Integer> created_at;  // Thay đổi từ Object sang List<Integer>
     private List<Integer> updated_at;
 

@@ -35,6 +35,7 @@ import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.Gson;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -164,7 +165,7 @@ public class ProfileFragment extends Fragment {
                 String confirmPassword = edtNhapLaiMatKhauMoi.getText().toString();
 
                 if (!newPassword.equals(confirmPassword)) {
-                    Toast.makeText(getActivity(), "Mật khẩu mới không khớp!", Toast.LENGTH_SHORT).show();
+                    Toasty.warning(getActivity(), "Mật khẩu mới không khớp!", Toasty.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -190,26 +191,26 @@ public class ProfileFragment extends Fragment {
 
                                 if (errorCodeLong == -1) {
                                     // Xử lý khi không thể thay đổi mật khẩu
-                                    Toast.makeText(getActivity(), "Thay đổi mật khẩu không thành công", Toast.LENGTH_SHORT).show();
+                                    Toasty.error(getActivity(), "Thay đổi mật khẩu không thành công", Toasty.LENGTH_SHORT).show();
                                 } else {
                                     // Xử lý khi thay đổi mật khẩu thành công (nếu cần)
-                                    Toast.makeText(getActivity(), "Thay đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                                    Toasty.success(getActivity(), "Thay đổi mật khẩu thành công", Toasty.LENGTH_SHORT).show();
                                     dialog.dismiss(); // Đóng dialog sau khi thay đổi mật khẩu thành công
                                 }
                             } else {
                                 // Xử lý khi không nhận được dữ liệu phản hồi từ server
-                                Toast.makeText(getActivity(), "Không nhận được dữ liệu từ máy chủ", Toast.LENGTH_SHORT).show();
+                                Toasty.error(getActivity(), "Không nhận được dữ liệu từ máy chủ", Toasty.LENGTH_SHORT).show();
                             }
                         } else {
                             // Xử lý khi response không thành công
-                            Toast.makeText(getActivity(), "Thay đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getActivity(), "Thay đổi mật khẩu thất bại", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ChangePassResponse> call, Throwable t) {
                         // Xử lý khi gặp lỗi
-                        Toast.makeText(getActivity(), "Đã xảy ra lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), "Đã xảy ra lỗi: " + t.getMessage(), Toasty.LENGTH_SHORT).show();
                     }
 
                 });
@@ -236,23 +237,23 @@ public class ProfileFragment extends Fragment {
                             displayUserProfile(currentUser);
                         } else {
                             // Xử lý khi không có dữ liệu người dùng trả về
-                            Toast.makeText(requireContext(), "No user data found", Toast.LENGTH_SHORT).show();
+                            Toasty.error(requireContext(), "No user data found", Toasty.LENGTH_SHORT).show();
                         }
                     } else {
                         // Xử lý khi response không thành công
-                        Toast.makeText(requireContext(), "Failed to get user profile", Toast.LENGTH_SHORT).show();
+                        Toasty.error(requireContext(), "Failed to get user profile", Toasty.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
                     // Xử lý khi gặp lỗi
-                    Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toasty.error(requireContext(), "Error: " + t.getMessage(), Toasty.LENGTH_SHORT).show();
                 }
             });
         } else {
             // Xử lý khi không tìm thấy người dùng đăng nhập
-            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            Toasty.error(requireContext(), "User not logged in", Toasty.LENGTH_SHORT).show();
         }
 
     }
