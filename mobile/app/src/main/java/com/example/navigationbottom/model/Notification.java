@@ -2,10 +2,16 @@ package com.example.navigationbottom.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Notification {
+import java.io.Serializable;
+
+public class Notification implements Serializable {
     private Long id;
     private String content;
     private Long user_id;
+
+    private Long order_id;
+
+    private String status;
 
     @SerializedName("EC")
     private String ec;
@@ -44,5 +50,21 @@ public class Notification {
 
     public void setEc(String ec) {
         this.ec = ec;
+    }
+
+    public Long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(Long order_id) {
+        this.order_id = order_id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -82,7 +82,7 @@ public class WebSecurityConfig {
                         .requestMatchers(PUT,
                                 String.format("%s/users/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(PUT,
-                                String.format("%s/users/changepass/{id}", apiPrefix)).hasRole("USER")
+                                String.format("%s/users/changepass/{id}", apiPrefix)).hasAnyRole("USER", "ADMIN")
                         .requestMatchers(POST,
                                 String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
                         .requestMatchers(GET,

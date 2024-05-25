@@ -27,6 +27,8 @@ public class NotifyController {
                     .id(notifyEntity.getId())
                     .content(notifyEntity.getContent())
                     .userId(notifyEntity.getUser().getId())
+                    .orderId(notifyEntity.getOrder().getId())
+                    .status(notifyEntity.getStatus())
                     .ec("0")
                     .build());
         }catch (Exception e){

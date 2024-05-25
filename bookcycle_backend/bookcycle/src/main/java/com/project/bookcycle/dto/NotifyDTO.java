@@ -14,6 +14,11 @@ public class NotifyDTO {
     @JsonProperty("user_id")
     private long userId;
 
+    @JsonProperty("order_id")
+    private long orderId;
+
+    private String status;
+
     @NotEmpty(message = "Content cannot null")
     private String content;
 }

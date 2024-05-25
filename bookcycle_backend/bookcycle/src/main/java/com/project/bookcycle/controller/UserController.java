@@ -8,6 +8,7 @@ import com.project.bookcycle.exceptions.DataNotFoundException;
 
 import com.project.bookcycle.model.User;
 import com.project.bookcycle.response.*;
+import com.project.bookcycle.service.INotifyService;
 import com.project.bookcycle.service.IUserService;
 import com.project.bookcycle.utils.MessageKeys;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -38,7 +40,8 @@ import java.util.UUID;
 @RequiredArgsConstructor // Tự động tạo Constructor cho các biến final,...
 public class UserController {
     private final IUserService userService;
-
+    private final INotifyService notifyService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(
@@ -80,6 +83,10 @@ public class UserController {
             if(loginResponse.getUser().isActive()){
                 loginResponse.setMessage(MessageKeys.LOGIN_SUCCESSFULLY);
                 loginResponse.setEc(0);
+                List<NotifyResponse> notifyResponses = notifyService.findByUserId(loginResponse.getUser().getId());
+                for(NotifyResponse notifyResponse : notifyResponses){
+                    simpMessagingTemplate.convertAndSend("/topic/notification/" + loginResponse.getUser().getId(), notifyResponse.getContent());
+                }
                 return ResponseEntity.ok().body(loginResponse);
             }else{
                 return ResponseEntity.ok().body(LoginResponse.builder()

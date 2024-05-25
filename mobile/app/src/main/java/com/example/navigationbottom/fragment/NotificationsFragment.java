@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,7 +52,6 @@ public class NotificationsFragment extends Fragment {
 
     }
 
-    @SuppressLint("CheckResult")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,35 +67,37 @@ public class NotificationsFragment extends Fragment {
 
         notifyServiceApi = new NotifyServiceApi(getContext());
 
+        load();
+        return mView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        load();
+    }
+
+    @SuppressLint("CheckResult")
+    public void load(){
         User user = UserPreferences.getUser(getContext());
 
         notifications = new ArrayList<>();
-
-
         notifyApplication = NotifyApplication.instance();
-        notifyApplication.getStompClient().topic("/topic/notification/"+user.getId()).subscribe(stompMessage -> {
-           String message = stompMessage.getPayload();
-           Log.d("message received!", message);
-           Notification notification = new Notification();
-           notification.setContent(message);
-           notification.setUser_id(user.getId());
-           notifyServiceApi.createNotify(notification).enqueue(new Callback<Notification>() {
-               @Override
-               public void onResponse(Call<Notification> call, Response<Notification> response) {
-                   Notification notification1 = response.body();
-                   if(notification1.getEc().equals("0")){
-                            Log.d("RequestData1", new Gson().toJson(notification1));
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<Notification> call, Throwable t) {
-                        String errorMessage = t.getMessage();
-                        Toast.makeText(mView.getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                        Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-                    }
-                });
+        notifyApplication.getSubscriptions().addSubscription("/topic/" + user.getId(), stompMessage -> {
+            Log.d("StompMessage", stompMessage.getPayload());
+            Notification notification = new Gson().fromJson(String.valueOf(stompMessage), Notification.class);
+            Log.d("message received!", notification.getContent());
+            ((MainActivity)requireActivity()).runOnUiThread(()->{
+                Toasty.info(mView.getContext(), "Bạn có thông báo mới!");
+            });
         });
-
+        notifyApplication.getStompClient().topic("/topic/"+user.getId()).subscribe(stompMessage -> {
+            Notification notification = new Gson().fromJson(String.valueOf(stompMessage), Notification.class);
+            Log.d("message received!", notification.getContent());
+            ((MainActivity)requireActivity()).runOnUiThread(()->{
+                Toasty.info(mView.getContext(), "Bạn có thông báo mới!");
+            });
+        });
 
         notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<GetNotifyResponse>() {
             @Override
@@ -107,6 +109,8 @@ public class NotificationsFragment extends Fragment {
                         Notification notification1 = new Notification();
                         notification1.setId(notification.getId());
                         notification1.setUser_id(notification.getUser_id());
+                        notification1.setOrder_id(notification.getOrder_id());
+                        notification1.setStatus(notification.getStatus());
                         notification1.setContent(notification.getContent());
                         notifications.add(notification1);
                     }
@@ -122,6 +126,5 @@ public class NotificationsFragment extends Fragment {
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
-        return mView;
     }
 }

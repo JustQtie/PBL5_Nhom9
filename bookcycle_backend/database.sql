@@ -87,6 +87,7 @@ COMMENT 'Trạng thái đơn hàng',
 CREATE TABLE Notify(
     id INT PRIMARY KEY AUTO_INCREMENT,
     content TEXT DEFAULT '',
+    read TINYINT(1),
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 )
