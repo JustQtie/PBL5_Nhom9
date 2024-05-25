@@ -2,8 +2,6 @@ package com.example.navigationbottom.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -12,26 +10,29 @@ import android.view.MenuItem;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.MyViewPagerAdapter;
-import com.example.navigationbottom.fragment.SellFragment;
-import com.example.navigationbottom.model.User;
-import com.example.navigationbottom.viewmodel.WebSocketManager;
+import com.example.navigationbottom.utils.Subscriptions;
+import com.example.navigationbottom.viewmodel.NotifyApplication;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import ua.naiksoftware.stomp.Stomp;
+import ua.naiksoftware.stomp.StompClient;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 mViewPager2;
     private BottomNavigationView mbottomNavigationView;
-    private WebSocketManager webSocketManager;
+
+
+    private NotifyApplication notifyApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        webSocketManager = WebSocketManager.getInstance();
-        webSocketManager.connect();
+        notifyApplication = NotifyApplication.instance();
 
         mViewPager2 = findViewById(R.id.view_pager_2);
         mbottomNavigationView = findViewById(R.id.bottom_navigation);

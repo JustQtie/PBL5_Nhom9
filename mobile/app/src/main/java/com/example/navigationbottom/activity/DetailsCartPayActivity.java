@@ -27,10 +27,10 @@ import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.utils.OrderStatus;
 import com.example.navigationbottom.viewmodel.BookApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
+import com.example.navigationbottom.viewmodel.NotifyApplication;
 import com.example.navigationbottom.viewmodel.OrderApiService;
 import com.example.navigationbottom.viewmodel.UserApiService;
 import com.example.navigationbottom.viewmodel.UserPreferences;
-import com.example.navigationbottom.viewmodel.WebSocketManager;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -61,7 +61,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
     String selectedItem;
 
-    private WebSocketManager webSocketManager;
+    //private WebSocketManager webSocketManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
         khoitao();
 
-        webSocketManager = WebSocketManager.getInstance();
+        //webSocketManager = WebSocketManager.getInstance();
         progressDialog = new ProgressDialog(DetailsCartPayActivity.this);
 
         book = (Book) getIntent().getSerializableExtra("book");
@@ -212,7 +212,8 @@ public class DetailsCartPayActivity extends AppCompatActivity {
                             Order order = response.body();
                             if(order != null){
                                 progressDialog.dismiss();
-                                webSocketManager.sendOrder(order, "/app/order");
+                                NotifyApplication notifyApplication = NotifyApplication.instance();
+                                notifyApplication.getStompClient().send("/app/notify", new Gson().toJson(order)).subscribe();
                                 Log.d("RequestData1", new Gson().toJson(order));
                                 Intent intent = new Intent(DetailsCartPayActivity.this, MainActivity.class);
                                 intent.putExtra("dataFromActivity", "fromDetailCart");
