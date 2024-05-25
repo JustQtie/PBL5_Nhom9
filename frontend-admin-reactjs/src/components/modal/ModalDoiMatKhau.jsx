@@ -4,15 +4,18 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
 import Spinner from 'react-bootstrap/Spinner';
-import { postChangePassword } from '../../services/apiServices';
+import { putChangePassword } from '../../services/apiServices';
 
 
 const ModalDoiMatKhau = (props) => {
-    const { show, setShow } = props;
+    const { show, setShow, userData } = props;
 
     const handleClose = () => {
         if (!isLoading) {
             setShow(false);
+            setOldPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
         }
     };
 
@@ -35,20 +38,21 @@ const ModalDoiMatKhau = (props) => {
 
         setIsLoading(true);
 
-        // try {
-        //     let response = await postChangePassword(oldPassword, newPassword, token);
+        try {
+            console.log("check users doi mat khau: ", userData.id, oldPassword, newPassword, token);
+            let response = await putChangePassword(userData.id, oldPassword, newPassword, token);
 
-        //     if (response && response.EC === 0) {
-        //         toast.success("Đổi mật khẩu thành công");
-        //         handleClose();
-        //     } else {
-        //         toast.error(response.EM);
-        //     }
-        // } catch (error) {
-        //     toast.error("Đã xảy ra lỗi khi đổi mật khẩu", error);
-        // } finally {
-        //     setIsLoading(false);
-        // }
+            if (response && response.EC === 0) {
+                toast.success("Đổi mật khẩu thành công");
+                handleClose();
+            } else {
+                toast.error(response.EM);
+            }
+        } catch (error) {
+            toast.error("Đã xảy ra lỗi khi đổi mật khẩu", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (

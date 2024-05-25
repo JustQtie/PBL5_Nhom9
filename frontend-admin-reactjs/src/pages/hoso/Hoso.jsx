@@ -104,7 +104,7 @@ const Hoso = () => {
                             <label className="form-label">Giới tính</label>
                             <input type="text" disabled className="form-control" value={gender ? "Nam" : "Nữ"} />
                         </div>
-                        <div className="col-md-6 d-flex justify-content-center">
+                        <div className="col-md-12 d-flex justify-content-center">
                             <button className="btn btn-primary mx-2" onClick={handClickBtnUpdate}>
                                 Chỉnh sửa
                             </button>
@@ -122,6 +122,7 @@ const Hoso = () => {
                         <ModalDoiMatKhau
                             show={showModalDoiMatKhau}
                             setShow={setShowModalDoiMatKhau}
+                            userData={userData}
                         />
                     </div>
                 </div>

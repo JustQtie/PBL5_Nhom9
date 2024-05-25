@@ -76,51 +76,31 @@ public class NotificationsFragment extends Fragment {
         notifyApplication.getStompClient().topic("/topic/notification/"+user.getId()).subscribe(stompMessage -> {
            String message = stompMessage.getPayload();
            Log.d("message received!", message);
-           Notification notification = new Notification();
-           notification.setContent(message);
-           notification.setUser_id(user.getId());
-           notifyServiceApi.createNotify(notification).enqueue(new Callback<Notification>() {
-               @Override
-               public void onResponse(Call<Notification> call, Response<Notification> response) {
-                   Notification notification1 = response.body();
-                   if(notification1.getEc().equals("0")){
-                            Log.d("RequestData1", new Gson().toJson(notification1));
+            notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<GetNotifyResponse>() {
+                @Override
+                public void onResponse(Call<GetNotifyResponse> call, Response<GetNotifyResponse> response) {
+                    GetNotifyResponse notificationsList = response.body();
+                    if(notificationsList.getEC().equals("0")){
+                        Log.d("RequestData1", new Gson().toJson(notificationsList));
+                        for(Notification notification : notificationsList.getNotifyResponseList()){
+                            Notification notification1 = new Notification();
+                            notification1.setId(notification.getId());
+                            notification1.setUser_id(notification.getUser_id());
+                            notification1.setContent(notification.getContent());
+                            notifications.add(notification1);
                         }
+                        notificationsAdapter = new NotificationAdapter(notifications, getActivity());
+                        rvNotification.setAdapter(notificationsAdapter);
                     }
-                    @Override
-                    public void onFailure(Call<Notification> call, Throwable t) {
-                        String errorMessage = t.getMessage();
-                        Toast.makeText(mView.getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                        Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-                    }
-                });
-        });
-
-
-        notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<GetNotifyResponse>() {
-            @Override
-            public void onResponse(Call<GetNotifyResponse> call, Response<GetNotifyResponse> response) {
-                GetNotifyResponse notificationsList = response.body();
-                if(notificationsList.getEC().equals("0")){
-                    Log.d("RequestData1", new Gson().toJson(notificationsList));
-                    for(Notification notification : notificationsList.getNotifyResponseList()){
-                        Notification notification1 = new Notification();
-                        notification1.setId(notification.getId());
-                        notification1.setUser_id(notification.getUser_id());
-                        notification1.setContent(notification.getContent());
-                        notifications.add(notification1);
-                    }
-                    notificationsAdapter = new NotificationAdapter(notifications, getActivity());
-                    rvNotification.setAdapter(notificationsAdapter);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<GetNotifyResponse> call, Throwable t) {
-                String errorMessage = t.getMessage();
-                Toast.makeText(mView.getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-            }
+                @Override
+                public void onFailure(Call<GetNotifyResponse> call, Throwable t) {
+                    String errorMessage = t.getMessage();
+                    Toast.makeText(mView.getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                }
+            });
         });
         return mView;
     }

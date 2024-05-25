@@ -104,6 +104,21 @@ const deleteProductThumbnailsById = (id, token) => {
     });
 }
 
+
+const putChangePassword = (id, oldPassword, newPassword, token) => {
+    const data = {
+        old_password: oldPassword,
+        new_password: newPassword,
+    };
+
+    return axios.put(`api/v1/users/changepass/${id}`, data, {
+        headers: {
+            Authorization: `Bearer ${token}`, // Đính kèm token vào header Authorization
+            'Content-Type': 'application/json' // Đảm bảo kiểu nội dung là JSON
+        }
+    });
+}
+
 export {
     postLogin,
     getAllUsers,
@@ -115,5 +130,6 @@ export {
     deleteProductById,
     deleteProductThumbnailsById,
     postUpdateImageUser,
+    putChangePassword,
 
 }
