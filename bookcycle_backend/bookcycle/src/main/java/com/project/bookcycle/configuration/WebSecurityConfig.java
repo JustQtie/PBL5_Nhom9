@@ -96,7 +96,7 @@ public class WebSecurityConfig {
                         .requestMatchers(DELETE,
                                 String.format("%s/notifies/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(GET,
-                                "/chat").permitAll()
+                                "/notify").permitAll()
                         .anyRequest().authenticated());
 
         httpSecurity.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {

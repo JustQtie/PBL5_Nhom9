@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebSocketController {
     private final IUserService userService;
     private final IProductService productService;
-    private final SimpMessagingTemplate messagingTemplate;
-    @MessageMapping("/order")
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    @MessageMapping("/notify")
     public void handleOrderNotification(OrderResponse order) throws DataNotFoundException {
         User user = userService.getUser(order.getUserId());
         Product product = productService.getProduct(order.getProductId());
         String message = "Người dùng với đầu số điện thoại: '" + user.getPhoneNumber() + "' đã đặt đơn hàng với tiêu đề sách giáo trình cũ là '" + product.getName() + "'. Hãy nhấn vào thông báo này để xác nhận đơn hàng!";
-        messagingTemplate.convertAndSend("/user/" + user.getId() + "/queue/notifications", message);
+        System.out.println(message);
+        simpMessagingTemplate.convertAndSend("/topic/notification/" + product.getUser().getId(), message);
     }
 }

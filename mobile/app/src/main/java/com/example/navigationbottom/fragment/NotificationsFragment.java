@@ -1,5 +1,6 @@
 package com.example.navigationbottom.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,20 +15,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.navigationbottom.R;
-import com.example.navigationbottom.activity.AddBookActivity;
-import com.example.navigationbottom.adaper.BooksAdapterForHome;
+import com.example.navigationbottom.activity.MainActivity;
 import com.example.navigationbottom.adaper.NotificationAdapter;
-import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.Notification;
 import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.notify.GetNotifyResponse;
+import com.example.navigationbottom.viewmodel.NotifyApplication;
 import com.example.navigationbottom.viewmodel.NotifyServiceApi;
 import com.example.navigationbottom.viewmodel.UserPreferences;
-import com.example.navigationbottom.viewmodel.WebSocketManager;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +39,8 @@ public class NotificationsFragment extends Fragment {
     private NotifyServiceApi notifyServiceApi;
     private View mView;
 
-    private WebSocketManager webSocketManager;
+    private NotifyApplication notifyApplication;
+
     public NotificationsFragment() {
 
     }
@@ -52,6 +51,7 @@ public class NotificationsFragment extends Fragment {
 
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,23 +72,21 @@ public class NotificationsFragment extends Fragment {
         notifications = new ArrayList<>();
 
 
-        webSocketManager = WebSocketManager.getInstance();
-        webSocketManager.setMessageListener(new WebSocketManager.MessageListener() {
-            @Override
-            public void onMessageReceived(String message) {
-                Log.d("message received!", message);
-                Notification notification = new Notification();
-                notification.setContent(message);
-                notification.setUser_id(user.getId());
-                notifyServiceApi.createNotify(notification).enqueue(new Callback<Notification>() {
-                    @Override
-                    public void onResponse(Call<Notification> call, Response<Notification> response) {
-                        Notification notification1 = response.body();
-                        if(notification1.getEc().equals("0")){
+        notifyApplication = NotifyApplication.instance();
+        notifyApplication.getStompClient().topic("/topic/notification/"+user.getId()).subscribe(stompMessage -> {
+           String message = stompMessage.getPayload();
+           Log.d("message received!", message);
+           Notification notification = new Notification();
+           notification.setContent(message);
+           notification.setUser_id(user.getId());
+           notifyServiceApi.createNotify(notification).enqueue(new Callback<Notification>() {
+               @Override
+               public void onResponse(Call<Notification> call, Response<Notification> response) {
+                   Notification notification1 = response.body();
+                   if(notification1.getEc().equals("0")){
                             Log.d("RequestData1", new Gson().toJson(notification1));
                         }
                     }
-
                     @Override
                     public void onFailure(Call<Notification> call, Throwable t) {
                         String errorMessage = t.getMessage();
@@ -96,9 +94,8 @@ public class NotificationsFragment extends Fragment {
                         Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                     }
                 });
-            }
         });
-        webSocketManager.subscribeToNotifications(user.getId(), "/queue/notifications");
+
 
         notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<GetNotifyResponse>() {
             @Override

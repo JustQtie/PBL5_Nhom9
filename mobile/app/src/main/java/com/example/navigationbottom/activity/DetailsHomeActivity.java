@@ -26,7 +26,6 @@ import com.example.navigationbottom.viewmodel.CategoryApiService;
 import com.example.navigationbottom.viewmodel.OrderApiService;
 import com.example.navigationbottom.viewmodel.UserApiService;
 import com.example.navigationbottom.viewmodel.UserPreferences;
-import com.example.navigationbottom.viewmodel.WebSocketManager;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.io.IOException;
