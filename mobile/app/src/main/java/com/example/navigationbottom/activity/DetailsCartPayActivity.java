@@ -24,6 +24,7 @@ import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.model.Order;
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.book.BookResponse;
 import com.example.navigationbottom.utils.OrderStatus;
 import com.example.navigationbottom.viewmodel.BookApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
@@ -214,6 +215,25 @@ public class DetailsCartPayActivity extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 NotifyApplication notifyApplication = NotifyApplication.instance();
                                 notifyApplication.getStompClient().send("/app/notify", new Gson().toJson(order)).subscribe();
+                                book.setQuantity(book.getQuantity() - Integer.parseInt(edtSoLuong.getText().toString()));
+                                bookApiService.updateBook(book.getId(), book).enqueue(new Callback<BookResponse>() {
+                                    @Override
+                                    public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
+                                        BookResponse bookResponse = response.body();
+                                        if(bookResponse !=null) {
+                                            Log.d("RequestData1", new Gson().toJson(bookResponse));
+                                        }else{
+                                            Log.d("RequestData1", "Update book fails");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<BookResponse> call, Throwable t) {
+                                        String errorMessage = t.getMessage();
+                                        Toast.makeText(DetailsCartPayActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                        Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                                    }
+                                });
                                 Log.d("RequestData1", new Gson().toJson(order));
                                 Intent intent = new Intent(DetailsCartPayActivity.this, MainActivity.class);
                                 intent.putExtra("dataFromActivity", "fromDetailCart");

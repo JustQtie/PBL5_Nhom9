@@ -17,6 +17,11 @@ public class NotifyResponse {
     @JsonProperty("user_id")
     private long userId;
 
+    @JsonProperty("order_id")
+    private long orderId;
+
+    private String status;
+
     private String content;
 
     @JsonProperty("EC")
@@ -26,6 +31,8 @@ public class NotifyResponse {
         return NotifyResponse.builder()
                 .id(notifyEntity.getId())
                 .userId(notifyEntity.getUser().getId())
+                .orderId(notifyEntity.getOrder().getId())
+                .status(notifyEntity.getStatus())
                 .content(notifyEntity.getContent())
                 .build();
     }

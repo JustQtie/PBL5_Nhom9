@@ -18,6 +18,12 @@ public class NotifyEntity {
 
     private String content;
 
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
