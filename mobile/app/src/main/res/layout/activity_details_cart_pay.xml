@@ -353,7 +353,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Tổng tiền:"
-            android:textColor="@color/black"
+            android:textColor="#2B2B9E"
             android:textSize="20sp"
             android:textStyle="bold" />
 
