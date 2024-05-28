@@ -129,7 +129,7 @@ public class SellFragment extends Fragment {
                         }
                     }
                 }else{
-                    Toast.makeText(getContext(), "Book invalid", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Book invalid", Toasty.LENGTH_SHORT).show();
                 }
             }
 

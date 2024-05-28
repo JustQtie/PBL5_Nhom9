@@ -2,6 +2,7 @@ package com.example.navigationbottom.viewmodel;
 
 import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.user.ChangePassResponse;
+import com.example.navigationbottom.response.user.GetUsersResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
 import com.example.navigationbottom.response.user.RegisterResponse;
 import com.example.navigationbottom.response.user.UserUpdateImageResponse;
@@ -9,6 +10,7 @@ import com.example.navigationbottom.response.user.UserUpdateImageResponse;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -28,6 +30,9 @@ public interface UserApi {
 
     @POST("api/v1/users/{id}")
     Call<User> getUser(@Path("id") Long id);
+
+    @GET("api/v1/users/notuser/{id}")
+    Call<GetUsersResponse> getAllUserTruIdNay(@Path("id") Long id);
 
     @PUT("api/v1/users/{id}")
     Call<User> updateUser(@Path("id") Long id, @Body User requestData);
