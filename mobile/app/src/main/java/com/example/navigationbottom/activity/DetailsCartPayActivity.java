@@ -43,7 +43,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
     private TextView tvTenNguoiDatHang, tvSoDienThoaiNguoiDatHang, tvDiaChiNguoiDatHang, tvTieuDe, tvTacGia, tvLoai, tvGia, tvStatus, tvSoLuong, tvTongTien;
     private EditText edtSoLuong;
-    private AppCompatButton btnTaoGiaoDich;
+    private AppCompatButton btnTaoGiaoDich, btnLienHeNguoiBan;
     private Spinner spinnerPhuongThucThanhToan;
     private ProgressDialog progressDialog;
 
@@ -57,7 +57,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
     private Book book;
 
-    private Long orderId;
+    private Long orderId, bookUserId;
 
     private User user;
 
@@ -76,6 +76,10 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
         book = (Book) getIntent().getSerializableExtra("book");
         orderId =  getIntent().getLongExtra("order", -1);
+
+        Intent intent = getIntent();
+        bookUserId = intent.getLongExtra("bookUserId", -1);
+
         // Setup Spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.thanhToan_array, android.R.layout.simple_spinner_item);
@@ -256,6 +260,16 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
             }
         });
+
+
+        btnLienHeNguoiBan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailsCartPayActivity.this, ChatItemActivity.class);
+                intent.putExtra("hisUid", bookUserId);
+                startActivity(intent);
+            }
+        });
     }
 
     private float getMoney(String money){
@@ -295,6 +309,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
         tvTongTien = findViewById(R.id.tv_tongTien_detail_cart_pay_activity);
         edtSoLuong = findViewById(R.id.edt_soLuong_detail_cart_pay_activity);
         btnTaoGiaoDich = findViewById(R.id.btn_taogiaodich_cart_pay_activity);
+        btnLienHeNguoiBan = findViewById(R.id.btn_chat_cart_pay_activity);
         spinnerPhuongThucThanhToan = findViewById(R.id.spinner_PhuongThucthanhtoan_detail_cart_pay_activity);
     }
 }

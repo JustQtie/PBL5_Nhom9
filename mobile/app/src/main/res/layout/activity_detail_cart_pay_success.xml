@@ -338,29 +338,38 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_thanhtoan_cart_pay_success_activity"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/background_login_btn3"
-        android:text="Thanh toán"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_thanhtoan_cart_pay_success_activity"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_login_btn3"
+            android:text="Thanh toán"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_thanhtoan_zalopay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="#008FE5"
-        android:text="Thanh toán bằng Zalo Pay"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_thanhtoan_zalopay"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+
+            android:background="@drawable/background_login_btn3"
+            android:text="Thanh toán bằng Zalo Pay"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 
 
