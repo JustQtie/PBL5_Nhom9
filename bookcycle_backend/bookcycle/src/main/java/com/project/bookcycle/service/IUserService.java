@@ -20,4 +20,5 @@ public interface IUserService {
     List<UserResponse> getAll() throws DataNotFoundException;
     User updateImage(Long id, String urlFile) throws DataNotFoundException;
     List<UserResponse> banUser(Long id, boolean isActive) throws DataNotFoundException;
+    List<UserResponse> getAllNotUser(Long id);
 }
