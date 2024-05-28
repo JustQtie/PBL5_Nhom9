@@ -31,6 +31,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="29">
         <activity
+
             android:name=".activity.DetailCartPaySuccessActivity"
             android:exported="true"
             android:launchMode="singleTask"
@@ -44,6 +45,10 @@
                     android:host="app" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.ItemHistoryActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activity.DetailsCartPayActivity"
             android:exported="false" />
@@ -62,7 +67,6 @@
         <activity
             android:name=".activity.AddBookActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.SignUpActivity"
             android:exported="false" />
