@@ -65,4 +65,8 @@ public class OrderApiService {
     public Call<Order> updateOrder(Long id, @Body Order order){
         return api.updateOrder(id, order);
     }
+
+    public Call<Order> getOrder(Long id){
+        return api.getOrderById(id);
+    }
 }

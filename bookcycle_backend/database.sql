@@ -87,7 +87,9 @@ COMMENT 'Trạng thái đơn hàng',
 CREATE TABLE Notify(
     id INT PRIMARY KEY AUTO_INCREMENT,
     content TEXT DEFAULT '',
-    read TINYINT(1),
+    status ENUM('agree', 'cancel', 'have not responded yet'),
+    order_id INT,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 )

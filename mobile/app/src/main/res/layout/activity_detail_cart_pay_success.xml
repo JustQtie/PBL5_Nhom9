@@ -24,23 +24,33 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="220dp"
         android:background="@drawable/bg_receiver"
         android:padding="10dp"
         android:layout_margin="10dp"
         >
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/img_detail_cart_pay_success_activity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="3dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/baseline_menu_book_24"
-            app:strokeColor="#E4CCA7"
-            app:strokeWidth="2dp"
+        <com.smarteist.autoimageslider.SliderView
+            android:id="@+id/slider"
 
-            />
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_centerInParent="true"
+            app:sliderAnimationDuration="600"
+            app:sliderAutoCycleDirection="back_and_forth"
+            app:sliderIndicatorAnimationDuration="600"
+            app:sliderIndicatorEnabled="true"
+            app:sliderIndicatorGravity="center_horizontal|bottom"
+            app:sliderIndicatorMargin="15dp"
+            app:sliderIndicatorOrientation="horizontal"
+            app:sliderIndicatorPadding="3dp"
+            app:sliderIndicatorRadius="2dp"
+            app:sliderIndicatorSelectedColor="#5A5A5A"
+            app:sliderIndicatorUnselectedColor="#FFF"
+            app:sliderScrollTimeInSec="1"
+            tools:ignore="MissingConstraints">
+
+
+        </com.smarteist.autoimageslider.SliderView>
 
 
 
@@ -295,16 +305,60 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_taogiaodich_cart_pay_activity"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_cart_pay3"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Tổng tiền:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_tongTien_detail_cart_pay_success_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="2"
+            android:background="@drawable/editextstyle"
+            android:padding="10dp"
+            android:textAlignment="viewStart"
+            android:textColor="#5B5B5B"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_thanhtoan_cart_pay_success_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/background_login_btn3"
-        android:text="Review"
+        android:text="Thanh toán"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_thanhtoan_zalopay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#008FE5"
+        android:text="Thanh toán bằng Zalo Pay"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

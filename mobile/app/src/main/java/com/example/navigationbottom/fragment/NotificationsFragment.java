@@ -3,6 +3,9 @@ package com.example.navigationbottom.fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +27,7 @@ import com.example.navigationbottom.viewmodel.NotifyApplication;
 import com.example.navigationbottom.viewmodel.NotifyServiceApi;
 import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 
@@ -73,6 +77,12 @@ public class NotificationsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setFragmentToolbar(view);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         load();
@@ -83,24 +93,7 @@ public class NotificationsFragment extends Fragment {
     @SuppressLint("CheckResult")
     private void load() {
         notifications = new ArrayList<>();
-        notifyApplication = NotifyApplication.instance();
         User user = UserPreferences.getUser(getContext());
-        notifyApplication.getSubscriptions().addSubscription("/topic/" + user.getId(), stompMessage -> {
-            Log.d("StompMessage", stompMessage.getPayload());
-            Notification notification = new Gson().fromJson(String.valueOf(stompMessage), Notification.class);
-            Log.d("message received!", notification.getContent());
-            ((MainActivity)requireActivity()).runOnUiThread(()->{
-                Toasty.info(mView.getContext(), "Bạn có thông báo mới!");
-            });
-        });
-        notifyApplication.getStompClient().topic("/topic/"+user.getId()).subscribe(stompMessage -> {
-            Notification notification = new Gson().fromJson(String.valueOf(stompMessage), Notification.class);
-            Log.d("message received!", notification.getContent());
-
-            ((MainActivity)requireActivity()).runOnUiThread(()->{
-                Toasty.info(mView.getContext(), "Bạn có thông báo mới!");
-            });
-        });
         notifyServiceApi.getNotify(user.getId()).enqueue(new Callback<GetNotifyResponse>() {
             @Override
             public void onResponse(Call<GetNotifyResponse> call, Response<GetNotifyResponse> response) {
@@ -130,5 +123,9 @@ public class NotificationsFragment extends Fragment {
         });
     }
 
+    private void setFragmentToolbar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar_Notification);
+        ((MainActivity)requireActivity()).setSupportActionBar(toolbar);
+    }
 
 }

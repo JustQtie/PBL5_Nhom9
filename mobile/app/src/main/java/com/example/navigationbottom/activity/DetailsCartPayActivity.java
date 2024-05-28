@@ -72,7 +72,6 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
         khoitao();
 
-        //webSocketManager = WebSocketManager.getInstance();
         progressDialog = new ProgressDialog(DetailsCartPayActivity.this);
 
         book = (Book) getIntent().getSerializableExtra("book");
@@ -196,8 +195,10 @@ public class DetailsCartPayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.setMessage("Order...");
                 progressDialog.show();
-                if(Integer.parseInt(edtSoLuong.getText().toString()) > book.getQuantity()){
+                if(edtSoLuong.getText().toString().isEmpty()) {
                     progressDialog.dismiss();
+                    Toasty.warning(DetailsCartPayActivity.this, "Please enter quantity before ordering");
+                }else if(Integer.parseInt(edtSoLuong.getText().toString()) > book.getQuantity()){
                     Toasty.warning(DetailsCartPayActivity.this, "The current number of books is not enough", Toasty.LENGTH_SHORT).show();
                 }else{
                     Order requestOrder = new Order();

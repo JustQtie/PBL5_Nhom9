@@ -1,20 +1,32 @@
 package com.example.navigationbottom.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.MyViewPagerAdapter;
+import com.example.navigationbottom.model.Notification;
+import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.utils.Subscriptions;
 import com.example.navigationbottom.viewmodel.NotifyApplication;
+import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
+import es.dmoral.toasty.Toasty;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
@@ -108,5 +120,17 @@ public class MainActivity extends AppCompatActivity {
                 mViewPager2.setCurrentItem(1);
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        notifyApplication = NotifyApplication.instance();
+        User user = UserPreferences.getUser(this);
+        notifyApplication.getSubscriptions().addSubscription("/topic/" + user.getId(), stompMessage -> {
+            String payload = stompMessage.getPayload();
+            Log.d("StompMessage", payload);
+        });
+        return super.onCreateView(parent, name, context, attrs);
     }
 }
