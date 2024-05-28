@@ -71,6 +71,8 @@ public class WebSecurityConfig {
                                 String.format("%s/orders/user_notpaid/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(PUT,
                                 String.format("%s/orders/{id}", apiPrefix)).hasRole("USER")
+                        .requestMatchers(GET,
+                                String.format("%s/orders/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(POST,
                                 String.format("%s/users**", apiPrefix)).hasAnyRole("ADMIN", "USER")
                         .requestMatchers(PUT,

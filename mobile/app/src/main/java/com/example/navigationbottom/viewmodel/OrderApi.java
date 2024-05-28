@@ -24,4 +24,7 @@ public interface OrderApi {
 
     @PUT("api/v1/orders/{id}")
     Call<Order> updateOrder(@Path("id") Long id, @Body Order order);
+
+    @GET("api/v1/orders/{id}")
+    Call<Order> getOrderById(@Path("id") Long id);
 }

@@ -58,7 +58,18 @@ public class OrderController {
     ){
         try{
             Order order = orderService.getOrderById(id);
-            return ResponseEntity.ok(order);
+            OrderResponse orderResponse = OrderResponse.builder()
+                    .id(order.getId())
+                    .userId(order.getUser().getId())
+                    .productId(order.getProduct().getId())
+                    .status(order.getStatus())
+                    .shippingAddress(order.getShippingAddress())
+                    .numberOfProduct(order.getNumberOfProducts())
+                    .totalMoney(order.getTotalMoney())
+                    .paymentMethod(order.getPaymentMethod())
+                    .ec("0")
+                    .build();
+            return ResponseEntity.ok(orderResponse);
         }catch(Exception e){
             return ResponseEntity.ok(e.getMessage());
         }

@@ -7,8 +7,11 @@ import java.io.Serializable;
 public class Notification implements Serializable {
     private Long id;
     private String content;
+
+    @SerializedName("user_id")
     private Long user_id;
 
+    @SerializedName("order_id")
     private Long order_id;
 
     private String status;
