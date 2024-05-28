@@ -2,5 +2,5 @@ package com.example.navigationbottom.viewmodel;
 
 public class ApiService {
 
-    public static final String BASE_URL = "https://e51a-27-69-244-129.ngrok-free.app";
+    public static final String BASE_URL = "https://4c97-171-225-184-143.ngrok-free.app";
 }

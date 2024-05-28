@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
+import com.example.navigationbottom.activity.ChatListActivity;
 import com.example.navigationbottom.activity.DetailHistoryProfileActivity;
 import com.example.navigationbottom.activity.DetailSettingProfileActivity;
 import com.example.navigationbottom.activity.LoginActivity;
@@ -41,7 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
-    private LinearLayout btnDoiMatKhau, btnDoiThongTin, btnLichSuGiaoDich;
+    private LinearLayout btnDoiMatKhau, btnDoiThongTin, btnLichSuGiaoDich, btnChat;
     private TextView tvSoDienThoai,tvHoVaTen, tvGioiTinh, tvDiaChi;
     private AppCompatButton btnLogout;
     private ShapeableImageView imgAnhDaiDien;
@@ -106,6 +107,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(requireActivity(), ChatListActivity.class));
+            }
+        });
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +130,7 @@ public class ProfileFragment extends Fragment {
         btnDoiMatKhau = mView.findViewById(R.id.linearLayout_doimatkhau_fragment_profile);
         btnDoiThongTin = mView.findViewById(R.id.linearLayout_Thaydoithongtin_fragment_profile);
         btnLichSuGiaoDich = mView.findViewById(R.id.linearLayout_lichsugiaodich_fragment_profile);
+        btnChat = mView.findViewById(R.id.linearLayout_chat_fragment_profile);
         btnLogout = mView.findViewById(R.id.btn_logout_fragment_profile);
 
         tvHoVaTen = mView.findViewById(R.id.tv_fullname_fragment_profile);
@@ -177,7 +186,7 @@ public class ProfileFragment extends Fragment {
 
                 UserApiService apiService = new UserApiService(getActivity());
 
-                // Giả sử bạn có ID người dùng lưu trữ trong Session hoặc một nơi nào đó
+                // ID người dùng lưu trữ
                 Long userId = UserPreferences.getUser(getContext()).getId();
 
                 // Gọi phương thức changePassword và xử lý kết quả

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.user.ChangePassResponse;
+import com.example.navigationbottom.response.user.GetUsersResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
 import com.example.navigationbottom.response.user.RegisterResponse;
 import com.example.navigationbottom.response.user.UserUpdateImageResponse;
@@ -67,6 +68,10 @@ public class UserApiService {
     }
     public Call<User> getUser(@Path("id") Long id){
         return api.getUser(id);
+    }
+
+    public Call<GetUsersResponse> getAllUserTruIdNay(@Path("id") Long id){
+        return api.getAllUserTruIdNay(id);
     }
 
     public Call<ChangePassResponse> changePassword(@Path("id") Long id, @Body ChangePassResponse requestData) {

@@ -111,7 +111,7 @@
                                 android:id="@+id/linearLayout_doimatkhau_fragment_profile"
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:layout_margin="10dp"
+                                android:layout_margin="7dp"
                                 android:layout_weight="0.33333"
                                 android:background="@drawable/grey_background"
                                 android:elevation="5dp"
@@ -121,7 +121,7 @@
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_gravity="center_horizontal"
-                                    android:layout_margin="12dp"
+                                    android:layout_margin="10dp"
                                     android:background="@drawable/circle_background">
 
                                     <ImageView
@@ -144,7 +144,7 @@
                                     android:text="Change password"
                                     android:textAlignment="center"
                                     android:textColor="#000000"
-                                    android:textSize="13sp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
@@ -162,7 +162,7 @@
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_gravity="center_horizontal"
-                                    android:layout_margin="12dp"
+                                    android:layout_margin="10dp"
                                     android:background="@drawable/circle_background">
 
                                     <ImageView
@@ -185,7 +185,7 @@
                                     android:text="change information"
                                     android:textAlignment="center"
                                     android:textColor="#000000"
-                                    android:textSize="13sp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
@@ -203,7 +203,7 @@
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:layout_gravity="center_horizontal"
-                                    android:layout_margin="12dp"
+                                    android:layout_margin="10dp"
                                     android:background="@drawable/circle_background">
 
                                     <ImageView
@@ -224,6 +224,46 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="8dp"
                                     android:text="Transaction History"
+                                    android:textAlignment="center"
+                                    android:textColor="#000000"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/linearLayout_chat_fragment_profile"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="10dp"
+                                android:layout_weight="0.33333"
+                                android:background="@drawable/grey_background"
+                                android:elevation="5dp"
+                                android:orientation="vertical">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/circle_background">
+
+                                    <ImageView
+                                        android:id="@+id/imageView987"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:srcCompat="@drawable/chat" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <TextView
+                                    android:id="@+id/textView59"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:text="Chat"
                                     android:textAlignment="center"
                                     android:textColor="#000000"
                                     android:textSize="13sp"
