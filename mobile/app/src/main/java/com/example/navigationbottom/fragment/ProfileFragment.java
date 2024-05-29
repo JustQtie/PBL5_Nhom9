@@ -273,12 +273,11 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            updateProfileData();
+            getUserProfile();
         }
     }
 
-    private void updateProfileData() {
-    }
+
 
     private void displayUserProfile(User user) {
         tvHoVaTen.setText(user.getFullname());
