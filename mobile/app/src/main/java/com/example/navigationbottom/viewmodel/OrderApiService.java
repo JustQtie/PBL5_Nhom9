@@ -62,6 +62,10 @@ public class OrderApiService {
         return api.getOrderByUserNotPaid(userId);
     }
 
+    public Call<GetOrderResponse> getOrdersByUserPaid(Long userId){
+        return api.getOrderByUserPaid(userId);
+    }
+
     public Call<Order> updateOrder(Long id, @Body Order order){
         return api.updateOrder(id, order);
     }

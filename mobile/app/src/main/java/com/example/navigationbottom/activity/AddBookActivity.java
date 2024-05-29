@@ -85,7 +85,7 @@ public class AddBookActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 126;
 
     private static final int PICK_IMAGES_REQUEST = 1;
-    List<Uri> imageUris = new ArrayList<>();
+    private List<Uri> imageUris;
 
     BookApiService bookApiService;
     UserApiService userApiService;
@@ -303,7 +303,8 @@ public class AddBookActivity extends AppCompatActivity {
                     Toasty.warning(AddBookActivity.this, "Only a maximum of 5 photos can be selected", Toasty.LENGTH_SHORT).show();
                 } else if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
-                        TextUtils.isEmpty(edtGia.getText().toString().trim())){
+                        TextUtils.isEmpty(edtGia.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtSoLuong.getText().toString().trim())){
                     progressDialog.dismiss();
                     Toasty.warning(AddBookActivity.this, "Please fill in the blank fields", Toasty.LENGTH_SHORT).show();
                 }else {
@@ -572,29 +573,17 @@ public class AddBookActivity extends AppCompatActivity {
                         imageUris.add(imageUri);
                     }
                     // Gọi phương thức để upload ảnh
-                    uploadImages(imageUris);
+                    reloadImageSlider(imageUris);
                 }
             } else if (data.getData() != null) { // Chọn một ảnh
                 Uri imageUri = data.getData();
                 imageUris.add(imageUri);
                 // Gọi phương thức để upload ảnh
-                uploadImages(imageUris);
+                reloadImageSlider(imageUris);
             }
         }
     }
 
-    private void uploadImages(List<Uri> imageUris) {
-        List<MultipartBody.Part> parts = new ArrayList<>();
-        for (Uri uri : imageUris) {
-            File file = new File(getRealPathFromURI(uri));
-            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), requestBody);
-            parts.add(part);
-        }
-        reloadImageSlider(imageUris);
-        // Gọi API upload với Retrofit
-//        uploadToServer(parts);
-    }
 
     private String getRealPathFromURI(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };

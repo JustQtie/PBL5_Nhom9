@@ -41,11 +41,24 @@ public class OrderResponse {
     private String ec;
 
     public static OrderResponse convertFromOrder(Order order){
-        return OrderResponse.builder()
+        OrderResponse orderResponse = OrderResponse.builder()
                 .id(order.getId())
                 .userId(order.getUser().getId())
                 .productId(order.getProduct().getId())
+                .numberOfProduct(order.getNumberOfProducts())
+                .shippingAddress(order.getShippingAddress())
                 .status(order.getStatus())
                 .build();
+        if(order.getTotalMoney() != null && order.getPaymentMethod() != null){
+            orderResponse.setTotalMoney(order.getTotalMoney());
+            orderResponse.setPaymentMethod(order.getPaymentMethod());
+        }
+        if(order.getTotalMoney() == null){
+            orderResponse.setTotalMoney(0L);
+        }
+        if(order.getPaymentMethod() == null){
+            orderResponse.setPaymentMethod("");
+        }
+        return orderResponse;
     }
 }

@@ -21,11 +21,15 @@ import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.model.CreateOrder;
 import com.example.navigationbottom.model.Order;
 import com.example.navigationbottom.model.SliderData;
+import com.example.navigationbottom.response.book.BookResponse;
+import com.example.navigationbottom.utils.OrderStatus;
 import com.example.navigationbottom.viewmodel.ApiService;
 import com.example.navigationbottom.viewmodel.BookApiService;
 import com.example.navigationbottom.viewmodel.BookImageApiService;
 import com.example.navigationbottom.viewmodel.CategoryApiService;
+import com.example.navigationbottom.viewmodel.NotifyApplication;
 import com.example.navigationbottom.viewmodel.OrderApiService;
+import com.google.gson.Gson;
 import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONObject;
@@ -41,10 +45,7 @@ import vn.zalopay.sdk.Environment;
 import vn.zalopay.sdk.ZaloPayError;
 import vn.zalopay.sdk.ZaloPaySDK;
 import vn.zalopay.sdk.listeners.PayOrderListener;
-//import vn.zalopay.sdk.Environment;
-//import vn.zalopay.sdk.ZaloPayError;
-//import vn.zalopay.sdk.ZaloPaySDK;
-//import vn.zalopay.sdk.listeners.PayOrderListener;
+
 
 
 public class DetailCartPaySuccessActivity extends AppCompatActivity {
@@ -62,6 +63,8 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
     private BookImageApiService bookImageApiService;
 
     private Book book;
+
+    private Order order;
     private Long orderId;
 
     private ProgressDialog progressDialog;
@@ -79,7 +82,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         // ZaloPay SDK Init
         ZaloPaySDK.init(2553, Environment.SANDBOX);
-
+        progressDialog = new ProgressDialog(DetailCartPaySuccessActivity.this);
         init();
 
         progressDialog = new ProgressDialog(DetailCartPaySuccessActivity.this);
@@ -117,7 +120,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
             orderApiService.getOrder(orderId).enqueue(new Callback<Order>() {
                 @Override
                 public void onResponse(Call<Order> call, Response<Order> response) {
-                    Order order = response.body();
+                    order = response.body();
                     if(order != null){
                         if(order.getEC().equals("0")){
                             txtDiaChi.setText(order.getShipping_address());
@@ -145,6 +148,8 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
         btnZalo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.setMessage("ZaloPay...");
+                progressDialog.show();
                 requestZalo();
             }
         });
@@ -223,6 +228,8 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
     private void requestZalo(){
         CreateOrder orderApi = new CreateOrder();
         try {
+            amount = amount.replaceAll("\\.0$", "");
+            Log.e("amount", amount);
             JSONObject data = orderApi.createOrder(amount);
             String code = data.getString("return_code");
             if (code.equals("1")) {
@@ -230,8 +237,9 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
                 ZaloPaySDK.getInstance().payOrder(DetailCartPaySuccessActivity.this, token, "demozpdk://app", new PayOrderListener() {
                     @Override
                     public void onPaymentSucceeded(final String transactionId, final String transToken, final String appTransID) {
+                        progressDialog.dismiss();
                         Toasty.success(DetailCartPaySuccessActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
-
+                        CompletedOrder();
                     }
 
                     @Override
@@ -255,5 +263,31 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         ZaloPaySDK.getInstance().onResult(intent);
+    }
+
+    private void CompletedOrder(){
+        order.setStatus(OrderStatus.PAID);
+        orderApiService.updateOrder(orderId, order).enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(Call<Order> call, Response<Order> response) {
+                Order order = response.body();
+                if(order != null){
+                    NotifyApplication notifyApplication = NotifyApplication.instance();
+                    notifyApplication.getStompClient().send("/app/success_order_notify", new Gson().toJson(order)).subscribe();
+                    Log.d("RequestData1", new Gson().toJson(order));
+                    Intent intent = new Intent(DetailCartPaySuccessActivity.this, DetailHistoryProfileActivity.class);
+                    intent.putExtra("order", order);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Order> call, Throwable t) {
+                String errorMessage = t.getMessage();
+                Toasty.error(DetailCartPaySuccessActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+            }
+        });
     }
 }

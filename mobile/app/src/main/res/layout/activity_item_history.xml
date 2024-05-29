@@ -29,8 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="6dp"
-                app:layout_constraintEnd_toStartOf="@+id/slider_itemHistory"
-                app:layout_constraintStart_toEndOf="@+id/slider_itemHistory"
+                app:layout_constraintEnd_toStartOf="@+id/slider"
+                app:layout_constraintStart_toEndOf="@+id/slider"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
@@ -58,7 +58,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.smarteist.autoimageslider.SliderView
-                android:id="@+id/slider_itemHistory"
+                android:id="@+id/slider"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
                 android:layout_centerInParent="true"
@@ -89,7 +89,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/slider_itemHistory">
+                app:layout_constraintTop_toBottomOf="@+id/slider">
 
                 <TextView
                     android:id="@+id/tv_itemHistory_loai"
