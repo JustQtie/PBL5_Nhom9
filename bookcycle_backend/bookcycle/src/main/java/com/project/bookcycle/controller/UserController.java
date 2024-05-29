@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -312,4 +313,21 @@ public class UserController {
         String contentType = file.getContentType();
         return contentType != null && contentType.startsWith("image/");
     }
+
+    @GetMapping("/notuser/{id}")
+    public ResponseEntity<?> getAllNotUser(
+            @PathVariable("id") Long id
+    ){
+        try {
+            UserListResponse userListResponse = new UserListResponse();
+            userListResponse.setUserResponseList(userService.getAllNotUser(id));
+            userListResponse.setEC(0);
+            return ResponseEntity.ok().body(userListResponse);
+        }catch (Exception e){
+            return ResponseEntity.ok().body(UserListResponse.builder()
+                    .EC(-1)
+                    .build());
+        }
+    }
+
 }

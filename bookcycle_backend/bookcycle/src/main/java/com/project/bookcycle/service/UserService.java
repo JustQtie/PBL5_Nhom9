@@ -139,6 +139,14 @@ public class UserService implements IUserService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<UserResponse> getAllNotUser(Long id) {
+        return userRepository.getAllNotUser(id)
+                .stream()
+                .map(UserResponse::convertToUserResponse)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public User updateUser(Long id, UserDTO userDTO) throws DataNotFoundException {
