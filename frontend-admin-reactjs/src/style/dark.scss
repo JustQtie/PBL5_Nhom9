@@ -16,7 +16,8 @@
 
     .navbar {
         color: #999;
-        border-color: #333;
+        border-color: #666;
+        background-color: #111;
 
         .navbar-search {
             border-color: gray;
@@ -67,4 +68,168 @@
     input {
         background-color: transparent;
     }
+
+    .bangdieukhien {
+        .bangdieukhien-Container {
+            .bangdieukhien-listContainer {
+                background-color: #333; // Màu nền cho .bangdieukhien-listContainer trong chế độ dark
+                color: #999; // Màu chữ cho .bangdieukhien-listContainer trong chế độ dark
+                box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47); // Điều chỉnh độ đậm của shadow trong chế độ dark nếu cần
+            }
+        }
+    }
+
+
+    .table-user {
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+
+        th,
+        td {
+            border-color: #444; // Màu đường viền cho cả thẻ th và td
+            color: #ddd; // Màu chữ cho cả thẻ th và td trong chế độ dark
+        }
+
+        th {
+            background-color: #333; // Màu nền cho thẻ th trong chế độ dark
+        }
+
+
+
+        tbody {
+            tr {
+                &:nth-child(odd) {
+                    background-color: #444; // Màu nền cho các hàng lẻ trong chế độ dark
+                }
+
+                &:nth-child(even) {
+                    background-color: #333; // Màu nền cho các hàng chẵn trong chế độ dark
+                }
+
+                &:hover {
+                    background-color: #555; // Màu nền khi hover trên dòng trong chế độ dark
+                }
+            }
+
+            .status {
+                &.true {
+                    color: #00ff00; // Màu chữ cho trạng thái true trong chế độ dark
+                    background-color: rgba(0, 128, 0, 0.5); // Màu nền cho trạng thái true trong chế độ dark
+                }
+
+                &.false {
+                    color: #ffd700; // Màu chữ cho trạng thái false trong chế độ dark
+                    background-color: rgba(189, 189, 3, 0.5); // Màu nền cho trạng thái false trong chế độ dark
+                }
+            }
+        }
+
+    }
+
+    .datatable {
+
+        // Các quy tắc cho chế độ dark
+        .datatableTitle {
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47); // Điều chỉnh độ đậm của shadow trong chế độ dark nếu cần
+            background-color: #333; // Màu nền cho .datatableTitle trong chế độ dark
+            color: #ddd; // Màu chữ cho .datatableTitle trong chế độ dark
+            border-radius: 10px; // Độ cong của góc .datatableTitle trong chế độ dark
+            justify-content: center; // Căn giữa nội dung ngang trong chế độ dark
+            align-items: center; // Căn giữa nội dung dọc trong chế độ dark
+        }
+
+        .datatableTitle .link {
+            color: #00ff00; // Màu chữ cho .link trong chế độ dark
+            border-color: #00ff00; // Màu viền cho .link trong chế độ dark
+        }
+    }
+
+
+    .datatable-qlgt {
+
+
+        .datatableTitle-qlgt {
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47); // Điều chỉnh độ đậm của shadow trong chế độ dark nếu cần
+            background-color: #333; // Màu nền cho .datatableTitle-qlgt trong chế độ dark
+            color: #ddd; // Màu chữ cho .datatableTitle-qlgt trong chế độ dark
+            border-radius: 10px; // Độ cong của góc .datatableTitle-qlgt trong chế độ dark
+            justify-content: center; // Căn giữa nội dung ngang trong chế độ dark
+            align-items: center; // Căn giữa nội dung dọc trong chế độ dark
+            padding: 10px; // Điều chỉnh padding trong chế độ dark nếu cần
+            width: 100%; // Đảm bảo chiều rộng là 100% trong chế độ dark
+            margin-bottom: 20px; // Điều chỉnh margin-bottom trong chế độ dark nếu cần
+        }
+    }
+
+    .table-products {
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+
+        th,
+        td {
+            border-color: #444; // Màu đường viền cho cả thẻ th và td trong chế độ dark
+            color: #ddd; // Màu chữ cho cả thẻ th và td trong chế độ dark
+        }
+
+        th {
+            background-color: #333; // Màu nền cho thẻ th trong chế độ dark
+        }
+
+        tbody {
+            tr {
+                &:nth-child(odd) {
+                    background-color: #444; // Màu nền cho các hàng lẻ trong chế độ dark
+                }
+
+                &:nth-child(even) {
+                    background-color: #333; // Màu nền cho các hàng chẵn trong chế độ dark
+                }
+
+                &:hover {
+                    background-color: #555; // Màu nền khi hover trên dòng trong chế độ dark
+                }
+            }
+
+            .cellWrapper-products {
+                .image {
+                    border-color: #ddd; // Màu đường viền cho ảnh trong chế độ dark
+                }
+            }
+        }
+    }
+
+
+    .hoso-list {
+        .hoso-listContainer {
+            .hoso-top {
+                background: linear-gradient(to right, #1a1a1a, #333); // Màu nền cho .hoso-top trong chế độ dark
+                box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47); // Điều chỉnh độ đậm của shadow trong chế độ dark
+                color: #ddd; // Màu chữ cho .hoso-top trong chế độ dark
+            }
+
+            .hoso-bottom {
+                background: linear-gradient(to right, #1a1a1a, #333); // Màu nền cho .hoso-bottom trong chế độ dark
+                box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47); // Điều chỉnh độ đậm của shadow trong chế độ dark
+                color: #ddd; // Màu chữ cho .hoso-bottom trong chế độ dark
+
+                .form-label {
+                    color: #ddd; // Màu chữ cho .form-label trong chế độ dark
+                }
+
+                .form-control {
+                    border-color: #666; // Màu viền cho .form-control trong chế độ dark
+                    background: #444; // Màu nền cho .form-control trong chế độ dark
+                    color: #000; // Màu chữ cho .form-control trong chế độ dark
+                }
+
+                button {
+                    background-color: #009688; // Màu nền cho nút trong chế độ dark
+                    color: #fff; // Màu chữ cho nút trong chế độ dark
+
+                    &:hover {
+                        background-color: #00796b; // Màu nền khi hover trên nút trong chế độ dark
+                    }
+                }
+            }
+        }
+    }
+
 }
