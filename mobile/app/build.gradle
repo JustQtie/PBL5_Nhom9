@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:21.0.0'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation fileTree(dir: 'D:\\zalopay', include: ['*.aar', '*.jar'], exclude: [])
+    implementation fileTree(dir: 'D:\\PBL\\PBL5_BookCycle\\BookCycle\\PBL5_Nhom9\\mobile', include: ['*.aar', '*.jar'], exclude: [])
 
 
     testImplementation 'junit:junit:4.13.2'
