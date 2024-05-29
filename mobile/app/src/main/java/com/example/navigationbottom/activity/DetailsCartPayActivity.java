@@ -266,6 +266,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailsCartPayActivity.this, ChatItemActivity.class);
+                Log.d("hovanthaocheck", bookUserId + "");
                 intent.putExtra("hisUid", bookUserId);
                 startActivity(intent);
             }

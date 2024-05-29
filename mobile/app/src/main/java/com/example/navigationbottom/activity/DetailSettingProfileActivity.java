@@ -188,6 +188,8 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         // Cập nhật thành công
                         Toasty.success(DetailSettingProfileActivity.this, "Cập nhật thông tin thành công", Toasty.LENGTH_SHORT).show();
+                        Intent resultIntent = new Intent();
+                        setResult(RESULT_OK, resultIntent);
                         finish();
                     } else {
                         // Xử lý lỗi nếu có

@@ -167,4 +167,25 @@ public class Book implements Serializable {
         this.description = description;
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", point=" + point +
+                ", status='" + status + '\'' +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                ", user_id=" + user_id +
+                ", category_id=" + category_id +
+                ", categoryName='" + categoryName + '\'' +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                ", ec='" + ec + '\'' +
+                '}';
+    }
 }

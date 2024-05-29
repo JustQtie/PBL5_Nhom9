@@ -201,9 +201,9 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
                     Intent intent = new Intent(mContext, DetailsCartPayActivity.class);
                     intent.putExtra("book", book);
                     intent.putExtra("order", orders.get(position).getId());
+                    intent.putExtra("bookUserId", book.getUser_id());
                     mContext.startActivity(intent);
                 }
-
             }
         });
     }
