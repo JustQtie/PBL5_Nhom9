@@ -68,6 +68,8 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
 
     List<String> imageUrlString = new ArrayList<>();
 
+    String amount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
         if (book != null && orderId != -1) {
             txtTieuDe.setText(book.getName());
             txtGia.setText(book.getPrice().toString() + " VND");
+            amount = String.valueOf(Float.parseFloat(book.getPrice().toString()) * 1000);
             txtStatus.setText(book.getStatus());
             txtAuthor.setText(book.getAuthor());
             txtMota.setText(book.getDescription());
@@ -220,7 +223,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
     private void requestZalo(){
         CreateOrder orderApi = new CreateOrder();
         try {
-            JSONObject data = orderApi.createOrder("100000");
+            JSONObject data = orderApi.createOrder(amount);
             String code = data.getString("return_code");
             if (code.equals("1")) {
                 String token  = data.getString("zp_trans_token");
@@ -228,6 +231,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
                     @Override
                     public void onPaymentSucceeded(final String transactionId, final String transToken, final String appTransID) {
                         Toasty.success(DetailCartPaySuccessActivity.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override

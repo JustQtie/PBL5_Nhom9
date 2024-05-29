@@ -164,46 +164,51 @@ public class DetailsHomeActivity extends AppCompatActivity {
                     }else{
                         order.setUser_id(user.getId());
                         order.setShipping_address(user.getAddress());
-                        orderApiService.createOrder(order).enqueue(new Callback<Order>() {
-                            @Override
-                            public void onResponse(Call<Order> call, Response<Order> response) {
-                                Order order = response.body();
-                                if(order.getEC().equals("0")){
-                                    if(order.getStatus().equals(OrderStatus.SAVING)){
-                                        progressDialog.dismiss();
-                                        Intent intent = new Intent(DetailsHomeActivity.this, MainActivity.class);
-                                        intent.putExtra("dataFromActivity", "fromDetailHome");
-                                        startActivity(intent);
-                                        finish();
+                        if(book.getQuantity() == 0){
+                            orderApiService.createOrder(order).enqueue(new Callback<Order>() {
+                                @Override
+                                public void onResponse(Call<Order> call, Response<Order> response) {
+                                    Order order = response.body();
+                                    if(order.getEC().equals("0")){
+                                        if(order.getStatus().equals(OrderStatus.SAVING)){
+                                            progressDialog.dismiss();
+                                            Intent intent = new Intent(DetailsHomeActivity.this, MainActivity.class);
+                                            intent.putExtra("dataFromActivity", "fromDetailHome");
+                                            startActivity(intent);
+                                            finish();
+                                        }else{
+                                            progressDialog.dismiss();
+                                            Intent intent = new Intent(DetailsHomeActivity.this, DetailsCartPayActivity.class);
+                                            intent.putExtra("book", book);
+                                            intent.putExtra("order", order.getId());
+                                            startActivity(intent);
+                                            finish();
+                                        }
+
                                     }else{
                                         progressDialog.dismiss();
-                                        Intent intent = new Intent(DetailsHomeActivity.this, DetailsCartPayActivity.class);
-                                        intent.putExtra("book", book);
-                                        intent.putExtra("order", order.getId());
-                                        startActivity(intent);
-                                        finish();
+                                        Log.e("UploadError", "Upload failed with status: " + response.code());
+                                        try {
+                                            Log.e("UploadError", "Response error body: " + response.errorBody().string());
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        Toasty.error(DetailsHomeActivity.this, "Create order fails", Toasty.LENGTH_SHORT).show();
                                     }
-
-                                }else{
-                                    progressDialog.dismiss();
-                                    Log.e("UploadError", "Upload failed with status: " + response.code());
-                                    try {
-                                        Log.e("UploadError", "Response error body: " + response.errorBody().string());
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                    Toasty.error(DetailsHomeActivity.this, "Create order fails", Toasty.LENGTH_SHORT).show();
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<Order> call, Throwable t) {
-                                progressDialog.dismiss();
-                                String errorMessage = t.getMessage();
-                                Toasty.error(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
-                                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<Order> call, Throwable t) {
+                                    progressDialog.dismiss();
+                                    String errorMessage = t.getMessage();
+                                    Toasty.error(DetailsHomeActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                                    Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                                }
+                            });
+                        }else{
+                            Toasty.warning(DetailsHomeActivity.this,"Hiện tại sách giáo trình này đang hết hàng", Toasty.LENGTH_SHORT).show();
+                        }
+
                     }
                 }
             }
