@@ -139,7 +139,6 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
                 // nho chuyen id qua de goi API
                 Intent intent = new Intent(mContext, DetailsHomeActivity.class);
                 intent.putExtra("book", books.get(position));
-                intent.putExtra("bookUserId", book.getUser_id());
                 mContext.startActivity(intent);
 
             }

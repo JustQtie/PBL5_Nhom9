@@ -1,5 +1,6 @@
 package com.example.navigationbottom.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -42,6 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
+    private static final int REQUEST_CODE = 1;
     private LinearLayout btnDoiMatKhau, btnDoiThongTin, btnLichSuGiaoDich, btnChat;
     private TextView tvSoDienThoai,tvHoVaTen, tvGioiTinh, tvDiaChi;
     private AppCompatButton btnLogout;
@@ -96,7 +98,7 @@ public class ProfileFragment extends Fragment {
 
                 Intent intent = new Intent(requireActivity(), DetailSettingProfileActivity.class);
                 intent.putExtra("userChuyenDi", userChuyenDi);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
@@ -267,6 +269,17 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            updateProfileData();
+        }
+    }
+
+    private void updateProfileData() {
+    }
+
     private void displayUserProfile(User user) {
         tvHoVaTen.setText(user.getFullname());
         tvDiaChi.setText(user.getAddress());
@@ -275,7 +288,6 @@ public class ProfileFragment extends Fragment {
 
         try {
             String imageUrl = ApiService.BASE_URL + "api/v1/users/images/" + user.getThumbnail();
-
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 Glide.with(requireContext())
                         .load(imageUrl)
