@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.EditBookActivity">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarEditBookActivity"
         android:layout_width="match_parent"
@@ -24,10 +23,11 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbarEditBookActivity"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarEditBookActivity">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,10 +36,9 @@
             android:orientation="vertical"
             >
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/editextstyle"
                 >
 
@@ -47,7 +46,6 @@
                     android:id="@+id/slider"
                     android:layout_width="match_parent"
                     android:layout_height="270dp"
-                    android:layout_centerInParent="true"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
@@ -68,13 +66,11 @@
                     app:sliderIndicatorSelectedColor="#5A5A5A"
                     app:sliderIndicatorUnselectedColor="#FFF"
                     app:sliderScrollTimeInSec="1">
-
-
                 </com.smarteist.autoimageslider.SliderView>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btn_camera_EditBookActivity"
-                    android:layout_width="420dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
@@ -83,7 +79,7 @@
                     android:contentDescription="TODO"
                     android:focusable="true"
                     android:tint="@color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/slider"
+                    app:layout_constraintBottom_toBottomOf="@id/slider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:srcCompat="@drawable/baseline_photo_camera_24" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -104,7 +100,6 @@
                     android:textSize="18dp"
                     android:text="Tiêu đề:"
                     />
-
 
                 <EditText
                     android:id="@+id/edt_Title_EditBookActivity"
@@ -134,7 +129,6 @@
                     android:text="Tác giả:"
                     />
 
-
                 <EditText
                     android:id="@+id/edt_tacgia_EditBookActivity"
                     android:layout_width="match_parent"
@@ -145,7 +139,6 @@
                     android:singleLine="true"
                     android:layout_marginEnd="10dp"/>
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -162,7 +155,6 @@
                     android:textSize="18dp"
                     android:text="Số lượng:"
                     />
-
 
                 <EditText
                     android:id="@+id/number_so_luong"
@@ -182,7 +174,6 @@
                     android:textSize="18dp"
                     android:text="Giá:"
                     />
-
 
                 <EditText
                     android:id="@+id/edt_gia_EditBookActivity"
@@ -220,9 +211,8 @@
                     android:background="@drawable/editextstyle"
                     android:layout_marginRight="10dp"
                     />
-
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -265,17 +255,17 @@
                 android:background="@drawable/editextstyle"
                 />
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_upload_EditBookActivity"
-                    android:layout_width="182dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@drawable/background_login_btn3"
@@ -285,25 +275,15 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_Delete_EditBookActivity"
-                    android:layout_width="182dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@drawable/background_login_btn5"
                     android:text="Delete"
                     android:textColor="#ffffff"
                     android:textSize="18sp" />
-
             </LinearLayout>
-
-
-
         </LinearLayout>
-
     </ScrollView>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
