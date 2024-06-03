@@ -102,6 +102,14 @@ public class OrderService implements IOrderService{
     }
 
     @Override
+    public List<OrderResponse> findByUserAndStatusPaid(long userId) {
+        return orderRepository.findOrderByUserAndStatusPaid(userId, OrderStatus.PAID)
+                .stream()
+                .map(OrderResponse::convertFromOrder)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrderResponse> findGetOrders() {
         return orderRepository.findAll()
                 .stream()

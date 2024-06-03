@@ -164,7 +164,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
                     }else{
                         order.setUser_id(user.getId());
                         order.setShipping_address(user.getAddress());
-                        if(book.getQuantity() == 0){
+                        if(book.getQuantity() > 0){
                             orderApiService.createOrder(order).enqueue(new Callback<Order>() {
                                 @Override
                                 public void onResponse(Call<Order> call, Response<Order> response) {

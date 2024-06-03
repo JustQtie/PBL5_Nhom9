@@ -2,6 +2,8 @@ package com.example.navigationbottom.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,9 +70,44 @@ public class CartFragment extends Fragment {
 
         rvBooks.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         orderApiService = new OrderApiService(getContext());
+
+
+        rvBooks.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    // Kéo từ trên xuống
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        // Đã đến cuối danh sách, làm mới dữ liệu ở đây
+                        goiAPILayDuLieu();
+                    }
+                }
+            }
+
+
+        });
+
+        return mView;
+    }
+
+
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        goiAPILayDuLieu();
+    }
+
+    private void goiAPILayDuLieu() {
         orders = new ArrayList<>();
         User user = UserPreferences.getUser(getContext());
-
         orderApiService.getOrdersByUserNotPaid(user.getId()).enqueue(new Callback<GetOrderResponse>() {
             @Override
             public void onResponse(Call<GetOrderResponse> call, Response<GetOrderResponse> response) {
@@ -85,6 +122,7 @@ public class CartFragment extends Fragment {
                             getOrder.setUser_id(order.getUser_id());
                             getOrder.setProduct_id(order.getProduct_id());
                             getOrder.setStatus(order.getStatus());
+                            getOrder.setNumber_of_product(order.getNumber_of_product());
                             orders.add(getOrder);
                         }
                         booksAdapter = new BooksAdapterForCart(orders, getActivity());
@@ -109,10 +147,5 @@ public class CartFragment extends Fragment {
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
-
-
-        return mView;
     }
-
-
 }

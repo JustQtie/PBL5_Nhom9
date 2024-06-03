@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -63,7 +64,11 @@ import com.google.gson.Gson;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -75,6 +80,8 @@ import java.util.concurrent.Future;
 import es.dmoral.toasty.Toasty;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -98,7 +105,7 @@ public class EditBookActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST_CODE = 125;
 
     private static final int PICK_IMAGES_REQUEST = 1;
-    List<Uri> imageUris = new ArrayList<>();
+    private List<Uri> imageUris;
 
     BookApiService bookApiService;
     BookImageApiService bookImageApiService;
@@ -209,15 +216,11 @@ public class EditBookActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.setMessage("Upload...");
                 progressDialog.show();
-                if(imageUris == null){
-                    progressDialog.dismiss();
-                    Toasty.info(EditBookActivity.this, "Please upload photos before update books for sale", Toasty.LENGTH_SHORT).show();
-                } else if (imageUris.size()>5) {
-                    progressDialog.dismiss();
-                    Toasty.info(EditBookActivity.this, "Only a maximum of 5 photos can be selected", Toasty.LENGTH_SHORT).show();
-                } else if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
+
+                if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
-                        TextUtils.isEmpty(edtGia.getText().toString().trim())){
+                        TextUtils.isEmpty(edtGia.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtSoLuong.getText().toString().trim())){
                     progressDialog.dismiss();
                     Toasty.warning(EditBookActivity.this, "Please fill in the blank fields", Toasty.LENGTH_SHORT).show();
                 }else {
@@ -229,6 +232,16 @@ public class EditBookActivity extends AppCompatActivity {
                     requestBook.setDescription(edtMota.getText().toString().trim());
                     requestBook.setCategory_id(categoryId);
                     requestBook.setStatus(selectedStatus);
+                    List<MultipartBody.Part> parts;
+                    if (imageUris != null) {
+                        parts = prepareFileParts("files", imageUris);
+                    } else {
+                        try {
+                            parts = getRealPath("files", imageUrlString);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 
                     bookApiService.updateBook(book.getId(), requestBook).enqueue(new Callback<BookResponse>() {
                         public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
@@ -237,7 +250,6 @@ public class EditBookActivity extends AppCompatActivity {
                                 Log.d("RequestData1", new Gson().toJson(bookResponse));
                                 if(bookResponse.getUser()!=null){
                                     Log.d("RequestData1", "Success update my book");
-                                    Log.d("UploadError", String.valueOf(imageUris.size()));
                                     bookApiService.deleteBookThumbnail(book.getId()).enqueue(new Callback<ResponseBody>() {
                                         @Override
                                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -248,7 +260,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                         BookImageResponse bookImageResponse = response.body();
                                                         if(response.isSuccessful()){
                                                             if(bookImageResponse.getEc().equals("0")){
-                                                                bookApiService.uploadFileImage(book.getId(), prepareFileParts("files", imageUris)).enqueue(new Callback<BookImageResponse>() {
+                                                                bookApiService.uploadFileImage(book.getId(), parts).enqueue(new Callback<BookImageResponse>() {
                                                                     @Override
                                                                     public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
                                                                         BookImageResponse responseBody = response.body();
@@ -531,6 +543,73 @@ public class EditBookActivity extends AppCompatActivity {
         }
         return parts;
     }
+    private class DownloadTask extends AsyncTask<String, Void, File> {
+
+        private DownloadCallback callback;
+
+        public DownloadTask(DownloadCallback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected File doInBackground(String... urls) {
+            try {
+                return saveFileToCache(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            if (callback != null) {
+                callback.onDownloadComplete(file);
+            }
+        }
+    }
+
+    // Tạo interface callback
+    public interface DownloadCallback {
+        void onDownloadComplete(File file);
+    }
+    private File saveFileToCache(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.connect();
+
+        // Tạo tệp tạm thời
+        File cacheDir = getCacheDir();
+        File tempFile = File.createTempFile("temp", null, cacheDir);
+
+        // Lưu tệp từ URL vào tệp tạm thời
+        try (InputStream inputStream = connection.getInputStream();
+             FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return tempFile;
+    }
+    private List<MultipartBody.Part> getRealPath(String partName, List<String> flieStrings) throws IOException {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+        for (String path : flieStrings) {
+            DownloadTask task = new DownloadTask(new DownloadCallback() {
+                @Override
+                public void onDownloadComplete(File file) {
+                    if (file != null) {
+                        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+                        parts.add(MultipartBody.Part.createFormData(partName, file.getName(), requestFile));
+                    }
+                }
+            });
+            task.execute(ApiService.BASE_URL + "api/v1/products/images/" + path);
+        }
+        return parts;
+    }
     private void reloadImageSlider(List<Uri> imageUris) {
         // Chuyển đổi danh sách Uri thành danh sách đường dẫn chuỗi
         List<String> imagePaths = convertUrisToPaths(imageUris);
@@ -707,28 +786,15 @@ public class EditBookActivity extends AppCompatActivity {
                         imageUris.add(imageUri);
                     }
                     // Gọi phương thức để upload ảnh
-                    uploadImages(imageUris);
+                    reloadImageSlider(imageUris);
                 }
             } else if (data.getData() != null) { // Chọn một ảnh
                 Uri imageUri = data.getData();
                 imageUris.add(imageUri);
                 // Gọi phương thức để upload ảnh
-                uploadImages(imageUris);
+                reloadImageSlider(imageUris);
             }
         }
-    }
-
-    private void uploadImages(List<Uri> imageUris) {
-        List<MultipartBody.Part> parts = new ArrayList<>();
-        for (Uri uri : imageUris) {
-            File file = new File(getRealPathFromURI(uri));
-            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), requestBody);
-            parts.add(part);
-        }
-        reloadImageSlider(imageUris);
-        // Gọi API upload với Retrofit
-        //uploadToServer(parts);
     }
 
     private String getRealPathFromURI(Uri uri) {
@@ -753,4 +819,7 @@ public class EditBookActivity extends AppCompatActivity {
         }
         return paths;
     }
+
+
+
 }

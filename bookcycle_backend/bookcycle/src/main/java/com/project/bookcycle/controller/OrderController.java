@@ -119,6 +119,21 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/user_paid/{id}")
+    public ResponseEntity<?> getOrderByUserPaid(
+            @PathVariable("id") Long id
+    ){
+        try {
+            List<OrderResponse> orderResponses = orderService.findByUserAndStatusPaid(id);
+            return ResponseEntity.ok(OrderListResponse.builder()
+                    .orderResponseList(orderResponses)
+                    .ec("0").build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(OrderListResponse.builder()
+                    .ec("-1").build() + e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(
             @Valid @PathVariable long id,

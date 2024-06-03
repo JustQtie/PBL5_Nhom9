@@ -98,4 +98,20 @@ public class WebSocketController {
             simpMessagingTemplate.convertAndSend("/topic/" + user.getId(), notifyResponse);
         }
     }
+
+    @MessageMapping("/success_order_notify")
+    public void handleSuccessOrderNotify(OrderResponse order) throws DataNotFoundException {
+        User user = userService.getUser(order.getUserId());
+        Product product = productService.getProduct(order.getProductId());
+        String message = "Người dùng với đầu số điện thoại: '" + user.getPhoneNumber() + "' đã thanh toán thành công sách giá trình '" + product.getName() + "'. Hãy nhấn vào thông báo này để xác nhận!";
+        NotifyDTO notifyDTO = NotifyDTO.builder()
+                .userId(product.getUser().getId())
+                .orderId(order.getId())
+                .content(message)
+                .status(NotifyStatus.NOT_RESPONDED)
+                .build();
+        notifyService.createNotify(notifyDTO);
+        simpMessagingTemplate.convertAndSend("/topic/" + product.getUser().getId(), notifyDTO);
+    }
+
 }
