@@ -9,6 +9,7 @@ import com.example.navigationbottom.response.notify.GetNotifyResponse;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
@@ -38,7 +39,10 @@ public class NotifyServiceApi {
                 }
                 return chain.proceed(newRequest);
             }
-        }).build();
+        }).connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         api = new Retrofit.Builder()
                 .client(client)

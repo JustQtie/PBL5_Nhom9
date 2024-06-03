@@ -11,4 +11,5 @@ public interface INotifyService {
     List<NotifyResponse> findByUserId(long userId);
     void deleteNotifyEntity(long id);
     NotifyEntity createNotify(NotifyDTO notifyDTO) throws DataNotFoundException;
+    void deleteNotifyByOrder(Long id);
 }

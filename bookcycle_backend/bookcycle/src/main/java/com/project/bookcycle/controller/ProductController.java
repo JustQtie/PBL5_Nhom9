@@ -7,6 +7,7 @@ import com.project.bookcycle.model.ProductImage;
 import com.project.bookcycle.response.ProductImageResponse;
 import com.project.bookcycle.response.ProductListResponse;
 import com.project.bookcycle.response.ProductResponse;
+import com.project.bookcycle.service.IOrderService;
 import com.project.bookcycle.service.IProductImageService;
 import com.project.bookcycle.service.IProductService;
 import com.project.bookcycle.utils.MessageKeys;
@@ -38,6 +39,7 @@ import java.util.UUID;
 public class ProductController {
     private final IProductService productService;
     private final IProductImageService productImageService;
+    private final IOrderService orderService;
     @PostMapping("")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
@@ -271,6 +273,18 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/order_notify/{id}")
+    public ResponseEntity<String> deleteProductIncluOrder(@PathVariable long id) {
+        try {
+            orderService.deleteOrderByProduct(id);
+            productService.deleteProduct(id);
+            return ResponseEntity.ok("Delete success!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(
             @PathVariable long id,

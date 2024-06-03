@@ -6,6 +6,7 @@ import com.project.bookcycle.model.Order;
 import com.project.bookcycle.model.OrderStatus;
 import com.project.bookcycle.model.Product;
 import com.project.bookcycle.model.User;
+import com.project.bookcycle.repository.NotifyRepository;
 import com.project.bookcycle.repository.OrderRepository;
 import com.project.bookcycle.repository.ProductRepository;
 import com.project.bookcycle.repository.UserRepository;
@@ -25,6 +26,7 @@ public class OrderService implements IOrderService{
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final NotifyRepository notifyRepository;
     private final ModelMapper modelMapper;
     @Override
     public Order createOrder(OrderDTO orderDTO) {
@@ -115,6 +117,20 @@ public class OrderService implements IOrderService{
                 .stream()
                 .map(OrderResponse::convertFromOrder)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Order> findOrderByProduct(Long productId) {
+        return orderRepository.findByProduct_Id(productId);
+    }
+
+    @Override
+    public void deleteOrderByProduct(Long id) {
+        List<Order> orders = findOrderByProduct(id);
+        for(Order order : orders){
+            notifyRepository.deleteNotifyEntitiesByOrder(order.getId());
+        }
+        orderRepository.deleteOrderByProduct(id);
     }
 
 }

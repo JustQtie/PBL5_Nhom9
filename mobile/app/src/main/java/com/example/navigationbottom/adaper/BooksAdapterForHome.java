@@ -39,6 +39,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 
@@ -46,48 +47,16 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
     private Context mContext;
     public static ArrayList<Book> books;
     public static ArrayList<Book> booksCopy;
-    private ExecutorService executorService;
-    private Handler mainHandler;
+
+    private CategoryApiService categoryApiService;
+
     public BooksAdapterForHome(ArrayList<Book> books, Context mContext) {
         this.books = books;
         this.booksCopy = new ArrayList<>(books);
         this.mContext = mContext;
-        this.executorService = Executors.newSingleThreadExecutor();
-        this.mainHandler = new Handler(Looper.getMainLooper());
-        loadCategoryNames();
     }
 
-    private void loadCategoryNames() {
-        for (Book book : books) {
-            Callable<Category> callable = new Callable<Category>() {
-                @Override
-                public Category call() throws Exception {
-                    CategoryApiService categoryApiService = new CategoryApiService(mContext.getApplicationContext());
-                    Call<Category> call = categoryApiService.getCategoriesById(book.getCategory_id());
-                    Response<Category> response = call.execute();
-                    if (response.isSuccessful() && response.body() != null) {
-                        return response.body();
-                    } else {
-                        throw new Exception("Failed to get category with status: " + response.code());
-                    }
-                }
-            };
 
-            Future<Category> future = executorService.submit(callable);
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        final Category category = future.get();
-                        book.setCategoryName(category.getName());
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                        book.setCategoryName("Unknown Category");
-                    }
-                }
-            });
-        }
-    }
 
     @NonNull
     @Override
@@ -105,6 +74,22 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
             return;
         }
 
+        categoryApiService = new CategoryApiService(mContext.getApplicationContext());
+        categoryApiService.getCategoriesById(book.getCategory_id()).enqueue(new Callback<Category>() {
+            @Override
+            public void onResponse(Call<Category> call, Response<Category> response) {
+                Category category = response.body();
+                if(category!=null){
+                    book.setCategoryName(category.getName());
+                    holder.tvLoai.setText(book.getCategoryName());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Category> call, Throwable t) {
+                Log.e("Error", "Not load order");
+            }
+        });
 
 
         try {
@@ -127,7 +112,7 @@ public class BooksAdapterForHome extends RecyclerView.Adapter<BooksAdapterForHom
                     .into(holder.ivItem);
         }
 
-        holder.tvLoai.setText(book.getCategoryName());
+
         holder.tvGia.setText(book.getPrice() + " VND");
         holder.tvNguoiBan.setText(book.getAuthor());
         holder.tvSoLuong.setText(book.getQuantity()+"");

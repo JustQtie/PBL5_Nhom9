@@ -116,7 +116,7 @@ public class EditBookActivity extends AppCompatActivity {
 
     List<String> imageUrlString = new ArrayList<>();
 
-
+    private Handler handler = new Handler();
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +165,7 @@ public class EditBookActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.isSuccessful()){
-                            bookApiService.deleteBook(book.getId()).enqueue(new Callback<ResponseBody>() {
+                            bookApiService.deleteBookIncludeOrder(book.getId()).enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     if(response.isSuccessful()){
@@ -242,60 +242,52 @@ public class EditBookActivity extends AppCompatActivity {
                             throw new RuntimeException(e);
                         }
                     }
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Thực hiện tác vụ tiếp theo
+                            secondTask(requestBook, parts);
+                        }
+                    }, 10000);
 
-                    bookApiService.updateBook(book.getId(), requestBook).enqueue(new Callback<BookResponse>() {
-                        public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
-                            BookResponse bookResponse = response.body();
-                            if(bookResponse !=null){
-                                Log.d("RequestData1", new Gson().toJson(bookResponse));
-                                if(bookResponse.getUser()!=null){
-                                    Log.d("RequestData1", "Success update my book");
-                                    bookApiService.deleteBookThumbnail(book.getId()).enqueue(new Callback<ResponseBody>() {
+                }
+            }
+        });
+    }
+    private void secondTask(Book requestBook,List<MultipartBody.Part> parts){
+        bookApiService.updateBook(book.getId(), requestBook).enqueue(new Callback<BookResponse>() {
+            public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
+                BookResponse bookResponse = response.body();
+                if(bookResponse !=null){
+                    Log.d("RequestData1", new Gson().toJson(bookResponse));
+                    if(bookResponse.getUser()!=null){
+                        Log.d("RequestData1", "Success update my book");
+                        bookApiService.deleteBookThumbnail(book.getId()).enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if(response.isSuccessful()){
+                                    bookImageApiService.deleteThumbnails(book.getId()).enqueue(new Callback<BookImageResponse>() {
                                         @Override
-                                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
+                                            BookImageResponse bookImageResponse = response.body();
                                             if(response.isSuccessful()){
-                                                bookImageApiService.deleteThumbnails(book.getId()).enqueue(new Callback<BookImageResponse>() {
-                                                    @Override
-                                                    public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
-                                                        BookImageResponse bookImageResponse = response.body();
-                                                        if(response.isSuccessful()){
-                                                            if(bookImageResponse.getEc().equals("0")){
-                                                                bookApiService.uploadFileImage(book.getId(), parts).enqueue(new Callback<BookImageResponse>() {
-                                                                    @Override
-                                                                    public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
-                                                                        BookImageResponse responseBody = response.body();
-                                                                        if(responseBody!=null){
-                                                                            if(responseBody.getEc().equals("0")){
-                                                                                Log.d("RequestData1", new Gson().toJson(responseBody));
-                                                                                progressDialog.dismiss();
-                                                                                Toasty.success(EditBookActivity.this, "Update my book success!!", Toasty.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
-                                                                                intent.putExtra("dataActivity", "fromEditBook");
-                                                                                startActivity(intent);
-                                                                                finish();
-                                                                            }
-                                                                        }
-                                                                        else {
-                                                                            progressDialog.dismiss();
-                                                                            Log.e("UploadError", "Upload failed with status: " + response.code());
-                                                                            try {
-                                                                                Log.e("UploadError", "Response error body: " + response.errorBody().string());
-                                                                            } catch (IOException e) {
-                                                                                throw new RuntimeException(e);
-                                                                            }
-                                                                            Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
-                                                                        }
-                                                                    }
-
-                                                                    @Override
-                                                                    public void onFailure(Call<BookImageResponse> call, Throwable t) {
-                                                                        progressDialog.dismiss();
-                                                                        String errorMessage = t.getMessage();
-                                                                        Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
-                                                                        Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-                                                                    }
-                                                                });
-                                                            }else {
+                                                if(bookImageResponse.getEc().equals("0")){
+                                                    bookApiService.uploadFileImage(book.getId(), parts).enqueue(new Callback<BookImageResponse>() {
+                                                        @Override
+                                                        public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
+                                                            BookImageResponse responseBody = response.body();
+                                                            if(responseBody!=null){
+                                                                if(responseBody.getEc().equals("0")){
+                                                                    Log.d("RequestData1", new Gson().toJson(responseBody));
+                                                                    progressDialog.dismiss();
+                                                                    Toasty.success(EditBookActivity.this, "Update my book success!!", Toasty.LENGTH_SHORT).show();
+                                                                    Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
+                                                                    intent.putExtra("dataActivity", "fromEditBook");
+                                                                    startActivity(intent);
+                                                                    finish();
+                                                                }
+                                                            }
+                                                            else {
                                                                 progressDialog.dismiss();
                                                                 Log.e("UploadError", "Upload failed with status: " + response.code());
                                                                 try {
@@ -306,48 +298,65 @@ public class EditBookActivity extends AppCompatActivity {
                                                                 Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
                                                             }
                                                         }
-                                                    }
 
-                                                    @Override
-                                                    public void onFailure(Call<BookImageResponse> call, Throwable t) {
-                                                        progressDialog.dismiss();
-                                                        String errorMessage = t.getMessage();
-                                                        Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
-                                                        Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                                                        @Override
+                                                        public void onFailure(Call<BookImageResponse> call, Throwable t) {
+                                                            progressDialog.dismiss();
+                                                            String errorMessage = t.getMessage();
+                                                            Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                                                            Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                                                        }
+                                                    });
+                                                }else {
+                                                    progressDialog.dismiss();
+                                                    Log.e("UploadError", "Upload failed with status: " + response.code());
+                                                    try {
+                                                        Log.e("UploadError", "Response error body: " + response.errorBody().string());
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
                                                     }
-                                                });
+                                                    Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
+                                                }
                                             }
                                         }
 
                                         @Override
-                                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        public void onFailure(Call<BookImageResponse> call, Throwable t) {
                                             progressDialog.dismiss();
                                             String errorMessage = t.getMessage();
                                             Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                         }
                                     });
-
-
-                                }else {
-                                    progressDialog.dismiss();
-                                    Toasty.success(EditBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
                                 }
-                            }else{
-                                progressDialog.dismiss();
-                                Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<BookResponse> call, Throwable t) {
-                            progressDialog.dismiss();
-                            String errorMessage = t.getMessage();
-                            Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
-                            Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                progressDialog.dismiss();
+                                String errorMessage = t.getMessage();
+                                Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                            }
+                        });
+
+
+                    }else {
+                        progressDialog.dismiss();
+                        Toasty.success(EditBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
+                    }
+                }else{
+                    progressDialog.dismiss();
+                    Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFailure(Call<BookResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                String errorMessage = t.getMessage();
+                Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
     }

@@ -8,6 +8,7 @@ import com.example.navigationbottom.response.book.GetBookResponse;
 import com.example.navigationbottom.response.order.GetOrderResponse;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
@@ -39,7 +40,10 @@ public class OrderApiService {
                 }
                 return chain.proceed(newRequest);
             }
-        }).build();
+        }).connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         api = new Retrofit.Builder()
                 .client(client)

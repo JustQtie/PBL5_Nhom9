@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
                 mViewPager2.setCurrentItem(2); // Navigate to the SellFragment page
             }else if("fromDetailHome".equals(fragmentName) || "fromDetailCart".equals(fragmentName)){
                 mViewPager2.setCurrentItem(1);
+            }else if("fromNotifyConfirm".equals(fragmentName)){
+                mViewPager2.setCurrentItem(3);
             }
         }
     }

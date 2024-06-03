@@ -49,6 +49,9 @@ public interface BookApi {
     @DELETE("api/v1/products/{id}")
     Call<ResponseBody> deleteBook(@Path("id") Long id);
 
+    @DELETE("api/v1/products/order_notify/{id}")
+    Call<ResponseBody> deleteBookInclurOrder(@Path("id") Long id);
+
     @PUT("api/v1/products/{id}")
     Call<BookResponse> updateBook(@Path("id") Long id, @Body Book requestData);
 

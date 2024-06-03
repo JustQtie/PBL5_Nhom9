@@ -70,7 +70,8 @@ public class CartFragment extends Fragment {
 
         rvBooks.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         orderApiService = new OrderApiService(getContext());
-        orders = new ArrayList<>();
+
+
 
         return mView;
     }
@@ -78,6 +79,12 @@ public class CartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        goiAPILayDuLieu();
+    }
+
+    private void goiAPILayDuLieu(){
+        orders = new ArrayList<>();
         User user = UserPreferences.getUser(getContext());
         orderApiService.getOrdersByUserNotPaid(user.getId()).enqueue(new Callback<GetOrderResponse>() {
             @Override
@@ -119,4 +126,5 @@ public class CartFragment extends Fragment {
             }
         });
     }
+
 }
