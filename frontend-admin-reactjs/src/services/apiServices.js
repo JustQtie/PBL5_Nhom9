@@ -88,7 +88,7 @@ const postUpdateImageUser = (id, image, token) => {
 
 const deleteProductById = (id, token) => {
 
-    return axios.delete(`api/v1/products/${id}`, {
+    return axios.delete(`api/v1/products/order_notify/${id}`, {
         headers: {
             Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
         }
