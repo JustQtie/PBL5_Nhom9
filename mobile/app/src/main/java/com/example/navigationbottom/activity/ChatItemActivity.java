@@ -59,8 +59,6 @@ public class ChatItemActivity extends AppCompatActivity {
     private UserApiService userApiService;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +90,8 @@ public class ChatItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         hisUid = intent.getLongExtra("hisUid", -1); // Giá trị mặc định là -1 nếu không có dữ liệu
+        User user = UserPreferences.getUser(this);
+        myId = user.getId();
 
         if (hisUid == -1) {
             Toasty.error(this, "ID người nhận không tồn tại", Toasty.LENGTH_SHORT).show();
@@ -124,9 +124,6 @@ public class ChatItemActivity extends AppCompatActivity {
     private void hienThiThongTinNguoiNhan() {
         // Khởi tạo UserApiService
         userApiService = new UserApiService(this);
-
-//        User user = UserPreferences.getUser(this);
-//        myId = user.getId();
 
         if (hisUid != null) {
             userApiService.getUser(hisUid).enqueue(new Callback<User>() {
