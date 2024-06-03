@@ -51,4 +51,9 @@ public class NotifyService implements INotifyService{
                 .build();
         return notifyRepository.save(notifyResponse);
     }
+
+    @Override
+    public void deleteNotifyByOrder(Long id) {
+        notifyRepository.deleteNotifyEntitiesByOrder(id);
+    }
 }

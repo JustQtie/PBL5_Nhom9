@@ -93,6 +93,10 @@ public class BookApiService {
         return api.deleteBook(id);
     }
 
+    public Call<ResponseBody> deleteBookIncludeOrder(Long id){
+        return api.deleteBookInclurOrder(id);
+    }
+
     public Call<BookResponse> updateBook(Long id, @Body Book requestData){
         Log.d("RequestData", new Gson().toJson(requestData));
         return api.updateBook(id, requestData);

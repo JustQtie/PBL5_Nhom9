@@ -136,17 +136,15 @@ public class BooksForSellAdapter extends RecyclerView.Adapter<BooksForSellAdapte
 
         holder.tvGia.setText(book.getPrice() + "VND");
         holder.tvNguoiBan.setText(book.getAuthor());
-        holder.tvSoLuong.setText( "SL: " + book.getQuantity());
+        holder.tvSoLuong.setText( "" + book.getQuantity());
         holder.tvTieude.setText(book.getName());
 
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // nho chuyen id qua de goi API
                 Intent intent = new Intent(mContext, EditBookActivity.class);
                 intent.putExtra("book", books.get(position));
                 mContext.startActivity(intent);
-
             }
         });
 

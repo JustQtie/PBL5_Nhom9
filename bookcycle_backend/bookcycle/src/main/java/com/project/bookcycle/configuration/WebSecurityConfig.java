@@ -53,6 +53,8 @@ public class WebSecurityConfig {
                                 String.format("%s/products/bynotuser/{id}", apiPrefix)).hasRole("USER")
                         .requestMatchers(DELETE,
                                 String.format("%s/products/{id}", apiPrefix)).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(DELETE,
+                                String.format("%s/products/order_notify/{id}", apiPrefix)).hasAnyRole("USER", "ADMIN")
                         .requestMatchers(PUT,
                                 String.format("%s/products/{id}", apiPrefix)).hasAnyRole("USER", "ADMIN")
                         .requestMatchers(POST,

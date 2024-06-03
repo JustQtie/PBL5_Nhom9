@@ -33,4 +33,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p where p.user.id <> :userId")
     List<Product> findAllByUserIdNot(@Param("userId") Long userId);
+
 }

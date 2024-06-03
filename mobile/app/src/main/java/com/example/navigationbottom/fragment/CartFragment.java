@@ -72,27 +72,6 @@ public class CartFragment extends Fragment {
         orderApiService = new OrderApiService(getContext());
 
 
-        rvBooks.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    // Kéo từ trên xuống
-                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int visibleItemCount = layoutManager.getChildCount();
-                    int totalItemCount = layoutManager.getItemCount();
-                    int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
-
-                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                        // Đã đến cuối danh sách, làm mới dữ liệu ở đây
-                        goiAPILayDuLieu();
-                    }
-                }
-            }
-
-
-        });
-
         return mView;
     }
 
@@ -102,6 +81,7 @@ public class CartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         goiAPILayDuLieu();
     }
 
@@ -148,4 +128,5 @@ public class CartFragment extends Fragment {
             }
         });
     }
+
 }

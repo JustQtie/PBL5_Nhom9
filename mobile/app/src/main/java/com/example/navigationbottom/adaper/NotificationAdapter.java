@@ -3,6 +3,7 @@ package com.example.navigationbottom.adaper;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -22,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.navigationbottom.R;
+import com.example.navigationbottom.activity.EditBookActivity;
+import com.example.navigationbottom.activity.NotificationConfirmActivity;
 import com.example.navigationbottom.model.Notification;
 import com.example.navigationbottom.utils.NotifyStatus;
 import com.example.navigationbottom.viewmodel.NotifyApplication;
@@ -61,7 +64,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotificationViewHolder holder, @SuppressLint("RecyclerView") int position) {
         notification = notifications.get(position);
         if(notification == null){
             return;
@@ -78,7 +81,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCustomAlertDialog(Gravity.CENTER, notification);
+                Intent intent = new Intent(mContext, NotificationConfirmActivity.class);
+                intent.putExtra("notifications", notifications.get(position));
+                mContext.startActivity(intent);
             }
         });
     }
@@ -109,7 +114,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     notification.setStatus(NotifyStatus.AGREE);
                     NotifyApplication notifyApplication = NotifyApplication.instance();
                     notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
-                    deleteNotify(notification.getId());
                     dialog.dismiss();
                 }
             });
@@ -120,7 +124,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     notification.setStatus(NotifyStatus.CANCEL);
                     NotifyApplication notifyApplication = NotifyApplication.instance();
                     notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
-                    deleteNotify(notification.getId());
                     dialog.dismiss();
                 }
             });
@@ -149,24 +152,5 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
     }
 
-    public void deleteNotify(Long id){
-        notifyServiceApi.deleteNotify(id).enqueue(new Callback<Notification>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onResponse(Call<Notification> call, Response<Notification> response) {
-                Notification notification1 = response.body();
-                if(notification1.getEc().equals("0")){
-                    Log.d("RequestData1", new Gson().toJson(notification1));
-                    notifyDataSetChanged();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Notification> call, Throwable t) {
-                String errorMessage = t.getMessage();
-                Toast.makeText(mContext.getApplicationContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
-                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
-            }
-        });
-    }
 }

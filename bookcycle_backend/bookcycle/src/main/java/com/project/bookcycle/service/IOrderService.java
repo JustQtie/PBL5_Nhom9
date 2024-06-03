@@ -19,4 +19,6 @@ public interface IOrderService {
     List<OrderResponse> findByUserAndStatusNotPaid(long userId, String status);
     List<OrderResponse> findByUserAndStatusPaid(long userId);
     List<OrderResponse> findGetOrders();
+    List<Order> findOrderByProduct(Long productId);
+    void deleteOrderByProduct(Long id);
 }
