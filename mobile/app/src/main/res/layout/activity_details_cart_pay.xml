@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.DetailsCartPayActivity">
 
     <LinearLayout
@@ -26,84 +27,94 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/bg_cart_pay"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                >
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/img_detail_cart_pay_activity"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:padding="3dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_round_person_24"
-                    app:shapeAppearanceOverlay="@style/RoundedImageView"
-                    app:strokeColor="@android:color/black"
-                    app:strokeWidth="2dp" />
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
+                    android:background="@drawable/bg_cart_pay"
+                    android:padding="10dp"
+                    android:layout_margin="10dp"
                     >
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_detail_cart_pay_activity"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:padding="3dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_round_person_24"
+                        app:shapeAppearanceOverlay="@style/RoundedImageView"
+                        app:strokeColor="@android:color/black"
+                        app:strokeWidth="2dp" />
 
-                    <TextView
-                        android:id="@+id/tv_tenNguoiDatHang_detail_cart_pay_activity"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Hồ Văn Thảo"
-                        android:textColor="#2B2B9E"
-                        android:textSize="16dp"
+                        android:orientation="vertical"
+                        >
 
-                        />
+                        <TextView
+                            android:id="@+id/tv_tenNguoiDatHang_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="Hồ Văn Thảo"
+                            android:textColor="#2B2B9E"
+                            android:textSize="16dp"
 
-                    <TextView
-                        android:id="@+id/tv_soDienThoaiNguoiDatHang_detail_cart_pay_activity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="0369276372"
-                        android:textColor="#2B2B9E"
-                        android:textSize="16dp"
+                            />
 
-                        />
+                        <TextView
+                            android:id="@+id/tv_soDienThoaiNguoiDatHang_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="0369276372"
+                            android:textColor="#2B2B9E"
+                            android:textSize="16dp"
 
-                    <TextView
-                        android:id="@+id/tv_diaChiNguoiDatHang_detail_cart_pay_activity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Địa chỉ: 193 Nguyễn Lương Bằng"
-                        android:textColor="#2B2B9E"
-                        android:textSize="16dp"
+                            />
 
-                        />
+                        <TextView
+                            android:id="@+id/tv_diaChiNguoiDatHang_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:text="Địa chỉ: 193 Nguyễn Lương Bằng"
+                            android:textColor="#2B2B9E"
+                            android:textSize="16dp"
+
+                            />
+
+                    </LinearLayout>
+
+
+
 
                 </LinearLayout>
 
-
-
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_cart_pay2"
@@ -113,304 +124,302 @@
                     android:orientation="vertical"
                     >
 
-                <TextView
+                    <TextView
 
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="Book Info"
-                    android:textColor="#2B2B9E"
-                    android:textSize="35sp"
-                    android:textStyle="bold" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="Book Info"
+                        android:textColor="#2B2B9E"
+                        android:textSize="35sp"
+                        android:textStyle="bold" />
 
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvd1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiêu đề: "
+                            android:textColor="#673AB7"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_tieuDe_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giải tích 1"
+                            android:textColor="#673AB7"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvd2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tác giả: "
+                            android:textColor="#673AB7"
+
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_tacGia_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nguyễn Văn A"
+                            android:textColor="#673AB7"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvd3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thể loại: "
+                            android:textColor="#673AB7"
+
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_loai_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đại cương"
+                            android:textColor="#673AB7"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvd4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số lượng: "
+                            android:textColor="#673AB7"
+
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_soluong_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="8"
+                            android:textColor="#673AB7"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvd5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giá: "
+                            android:textColor="#673AB7"
+
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_gia_detail_cart_pay_activity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="15.000 VND"
+                            android:textColor="#673AB7"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_status_detail_cart_pay_activity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Nguyên Seal"
+                        android:textColor="#673AB7"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_cart_pay3"
+                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-                        android:id="@+id/tvd1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tiêu đề: "
-                        android:textColor="#673AB7"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tv_tieuDe_detail_cart_pay_activity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Giải tích 1"
-                        android:textColor="#673AB7"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-                        android:id="@+id/tvd2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tác giả: "
-                        android:textColor="#673AB7"
-
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tv_tacGia_detail_cart_pay_activity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nguyễn Văn A"
-                        android:textColor="#673AB7"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-                        android:id="@+id/tvd3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thể loại: "
-                        android:textColor="#673AB7"
-
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tv_loai_detail_cart_pay_activity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Đại cương"
-                        android:textColor="#673AB7"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-                        android:id="@+id/tvd4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Số lượng: "
-                        android:textColor="#673AB7"
-
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tv_soluong_detail_cart_pay_activity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="8"
-                        android:textColor="#673AB7"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-                        android:id="@+id/tvd5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Giá: "
-                        android:textColor="#673AB7"
-
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tv_gia_detail_cart_pay_activity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="15.000 VND"
-                        android:textColor="#673AB7"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/tv_status_detail_cart_pay_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="15dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Nguyên Seal"
-                    android:textColor="#673AB7"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Số lượng:"
+                        android:textColor="#2B2B9E"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+
+                        android:id="@+id/edt_soLuong_detail_cart_pay_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:background="@drawable/editextstyle"
+                        android:padding="10dp"
+                        android:layout_margin="10dp"
+                        />
 
 
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_cart_pay3"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Thanh toán:"
+                        android:textColor="#2B2B9E"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinner_PhuongThucthanhtoan_detail_cart_pay_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/editextstyle"
+                        android:padding="10dp"
+                        android:textAlignment="viewStart"
+                        android:textColor="#5B5B5B"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_cart_pay3"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Tổng tiền:"
+                        android:textColor="#2B2B9E"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_tongTien_detail_cart_pay_activity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="2.4"
+                        android:background="@drawable/editextstyle"
+                        android:padding="10dp"
+                        android:textAlignment="viewStart"
+                        android:textColor="#5B5B5B"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+
+                    >
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_taogiaodich_cart_pay_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/background_login_btn3"
+                        android:text="Tạo giao dịch"
+                        android:textColor="#ffffff"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_chat_cart_pay_activity"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/background_login_btn3"
+                        android:text="Liên hệ người bán"
+                        android:textColor="#ffffff"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
             </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_cart_pay3"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Số lượng:"
-                android:textColor="#2B2B9E"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:layout_weight="2.2"
-                android:id="@+id/edt_soLuong_detail_cart_pay_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:background="@drawable/editextstyle"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                />
-
-
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_cart_pay3"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Thanh toán:"
-                android:textColor="#2B2B9E"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/spinner_PhuongThucthanhtoan_detail_cart_pay_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="2"
-                android:background="@drawable/editextstyle"
-                android:padding="10dp"
-                android:textAlignment="viewStart"
-                android:textColor="#5B5B5B"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_cart_pay3"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Tổng tiền:"
-                android:textColor="#2B2B9E"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_tongTien_detail_cart_pay_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="2.4"
-                android:background="@drawable/editextstyle"
-                android:padding="10dp"
-                android:textAlignment="viewStart"
-                android:textColor="#5B5B5B"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp"
-
-            >
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_taogiaodich_cart_pay_activity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/background_login_btn3"
-                android:text="Tạo giao dịch"
-                android:textColor="#ffffff"
-                android:textSize="16sp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_chat_cart_pay_activity"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/background_login_btn3"
-                android:text="Liên hệ người bán"
-                android:textColor="#ffffff"
-                android:textSize="16sp" />
-
-        </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

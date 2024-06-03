@@ -318,12 +318,12 @@
                 android:id="@+id/constraintLayout6"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="330dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
 
-                app:layout_constraintTop_toBottomOf="@+id/slider"
+                app:layout_constraintTop_toBottomOf="@+id/tv_activitydetail_Mota"
                 tools:ignore="UnknownIdInLayout">
 
 
