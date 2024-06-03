@@ -3,20 +3,15 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
-
-const WidgetThongKe = ({ type }) => {
+const WidgetThongKe = ({ type, balanceCount, orderCount }) => {
     let data = {};
-
-    // temorary
-    const amount = 60;
-
 
     switch (type) {
 
         case "order":
             data = {
                 title: "Tổng giao dịch thành công",
-
+                amount: orderCount,
                 icon: (
                     <ShoppingCartOutlinedIcon
                         className="icon"
@@ -28,8 +23,8 @@ const WidgetThongKe = ({ type }) => {
             break;
         case "balance":
             data = {
-                title: "Tổng giao dịch thất bại",
-
+                title: "Tổng giao dịch bị hủy",
+                amount: balanceCount,
                 icon: (
                     <AccountBalanceWalletOutlinedIcon
                         className="icon"
@@ -47,13 +42,11 @@ const WidgetThongKe = ({ type }) => {
 
 
 
-
-
     return (
         <div className="widget-thongke">
             <div className="left-thongke">
                 <span className="title-widget-thongke">{data.title}</span>
-                <span className="counter-thongke">{amount}</span>
+                <span className="counter-thongke">{data.amount}</span>
 
             </div>
             <div className="right-thongke">

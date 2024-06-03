@@ -105,6 +105,24 @@ const deleteProductThumbnailsById = (id, token) => {
 }
 
 
+const getGiaoDichThanhCongById = (id, token) => {
+
+    return axios.post(`api/v1/orders/statistical/${id}`, {}, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
+const getAllGiaoDichThanhCong = (token) => {
+
+    return axios.post(`api/v1/orders/statistical`, {}, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
 const putChangePassword = (id, oldPassword, newPassword, token) => {
     const data = {
         old_password: oldPassword,
@@ -119,6 +137,8 @@ const putChangePassword = (id, oldPassword, newPassword, token) => {
     });
 }
 
+
+
 export {
     postLogin,
     getAllUsers,
@@ -131,5 +151,8 @@ export {
     deleteProductThumbnailsById,
     postUpdateImageUser,
     putChangePassword,
+    getGiaoDichThanhCongById,
+    getAllGiaoDichThanhCong,
 
 }
+
