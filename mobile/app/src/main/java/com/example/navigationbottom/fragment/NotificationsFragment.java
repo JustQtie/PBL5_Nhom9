@@ -71,8 +71,6 @@ public class NotificationsFragment extends Fragment {
 
         notifyServiceApi = new NotifyServiceApi(getContext());
 
-
-        load();
         return mView;
     }
 
@@ -80,14 +78,9 @@ public class NotificationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setFragmentToolbar(view);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
         load();
     }
-
 
 
     @SuppressLint("CheckResult")

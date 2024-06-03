@@ -57,7 +57,7 @@ public class DetailsCartPayActivity extends AppCompatActivity {
 
     private Book book;
 
-    private Long orderId, bookUserId;
+    private Long orderId;
 
     private User user;
 
@@ -77,8 +77,6 @@ public class DetailsCartPayActivity extends AppCompatActivity {
         book = (Book) getIntent().getSerializableExtra("book");
         orderId =  getIntent().getLongExtra("order", -1);
 
-        Intent intent = getIntent();
-        bookUserId = intent.getLongExtra("bookUserId", -1);
 
         // Setup Spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -266,8 +264,8 @@ public class DetailsCartPayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailsCartPayActivity.this, ChatItemActivity.class);
-                Log.d("hovanthaocheck", bookUserId + "");
-                intent.putExtra("hisUid", bookUserId);
+                Log.d("hovanthaocheck", book.getUser_id() + "");
+                intent.putExtra("hisUid", book.getUser_id());
                 startActivity(intent);
             }
         });

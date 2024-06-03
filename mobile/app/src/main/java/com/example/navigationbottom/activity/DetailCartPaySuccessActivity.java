@@ -52,7 +52,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
 
     private TextView txtTieuDe, txtStatus, txtGia, txtMota, txtSoLuong, txtAuthor, txtDiaChi, txtLoai, txtThanhToan, txtTongTien;
 
-    private AppCompatButton btnTaoThanhToan, btnZalo;
+    private AppCompatButton btnThanhToan, btnZalo;
 
     private BookApiService bookApiService;
 
@@ -98,7 +98,6 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
         if (book != null && orderId != -1) {
             txtTieuDe.setText(book.getName());
             txtGia.setText(book.getPrice().toString() + " VND");
-            amount = String.valueOf(Float.parseFloat(book.getPrice().toString()) * 1000);
             txtStatus.setText(book.getStatus());
             txtAuthor.setText(book.getAuthor());
             txtMota.setText(book.getDescription());
@@ -127,6 +126,14 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
                             txtSoLuong.setText(String.valueOf(order.getNumber_of_product()));
                             txtThanhToan.setText(order.getPayment_method());
                             txtTongTien.setText(String.valueOf(order.getTotal_money()));
+                            amount = String.valueOf(Float.parseFloat(String.valueOf(order.getTotal_money())) * 1000);
+                            if(order.getPayment_method().equals("Chuyển khoản")){
+                                btnThanhToan.setVisibility(View.GONE);
+                                btnZalo.setVisibility(View.VISIBLE);
+                            }else{
+                                btnThanhToan.setVisibility(View.VISIBLE);
+                                btnZalo.setVisibility(View.GONE);
+                            }
                         }
                     }
                 }
@@ -138,7 +145,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
             });
         }
 
-        btnTaoThanhToan.setOnClickListener(new View.OnClickListener() {
+        btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -167,7 +174,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
         txtLoai = findViewById(R.id.tv_loai_cart_pay_success_activity);
         txtThanhToan = findViewById(R.id.tv_PhuongThucthanhtoan_detail_cart_pay_success_activity);
         txtTongTien = findViewById(R.id.tv_tongTien_detail_cart_pay_success_activity);
-        btnTaoThanhToan = findViewById(R.id.btn_thanhtoan_cart_pay_success_activity);
+        btnThanhToan = findViewById(R.id.btn_thanhtoan_cart_pay_success_activity);
         btnZalo = findViewById(R.id.btn_thanhtoan_zalopay);
     }
 
