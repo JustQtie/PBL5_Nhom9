@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.BooksAdapterForCart;
@@ -33,6 +34,7 @@ public class DetailHistoryProfileActivity extends AppCompatActivity {
 
     private RecyclerView rvBooks;
     private BooksAdapterForHistory booksAdapter;
+    private TextView soTienDaChiTieu;
 
     private ArrayList<Order> orders;
 
@@ -52,6 +54,9 @@ public class DetailHistoryProfileActivity extends AppCompatActivity {
         orderApiService = new OrderApiService(this);
 
         rvBooks = findViewById(R.id.rv_history_profile);
+        soTienDaChiTieu = findViewById(R.id.tvSoTienDaChiTieu_HistoryProfileActivity);
+
+
         rvBooks.setHasFixedSize(true);
         rvBooks.setLayoutManager(new LinearLayoutManager(this));
         rvBooks.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
