@@ -72,9 +72,11 @@ public class CartFragment extends Fragment {
         orderApiService = new OrderApiService(getContext());
 
 
-
         return mView;
     }
+
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class CartFragment extends Fragment {
         goiAPILayDuLieu();
     }
 
-    private void goiAPILayDuLieu(){
+    private void goiAPILayDuLieu() {
         orders = new ArrayList<>();
         User user = UserPreferences.getUser(getContext());
         orderApiService.getOrdersByUserNotPaid(user.getId()).enqueue(new Callback<GetOrderResponse>() {

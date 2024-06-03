@@ -125,11 +125,11 @@ public class ChatItemActivity extends AppCompatActivity {
         // Khởi tạo UserApiService
         userApiService = new UserApiService(this);
 
-        User user = UserPreferences.getUser(this);
-        myId = user.getId();
+//        User user = UserPreferences.getUser(this);
+//        myId = user.getId();
 
-        if (user != null) {
-            userApiService.getUser(user.getId()).enqueue(new Callback<User>() {
+        if (hisUid != null) {
+            userApiService.getUser(hisUid).enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
