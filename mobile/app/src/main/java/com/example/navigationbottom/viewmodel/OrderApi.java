@@ -22,6 +22,9 @@ public interface OrderApi {
     @GET("api/v1/orders/user_notpaid/{id}")
     Call<GetOrderResponse> getOrderByUserNotPaid(@Path("id") Long userId);
 
+    @GET("api/v1/orders/user_paid/{id}")
+    Call<GetOrderResponse> getOrderByUserPaid(@Path("id") Long userId);
+
     @PUT("api/v1/orders/{id}")
     Call<Order> updateOrder(@Path("id") Long id, @Body Order order);
 

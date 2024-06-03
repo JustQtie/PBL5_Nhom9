@@ -2,7 +2,7 @@ package com.example.navigationbottom.model;
 
 import java.io.Serializable;
 
-public class Order implements Serializable {
+public class    Order implements Serializable {
     private Long id;
     private Long user_id;
     private String status;
