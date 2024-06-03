@@ -21,6 +21,52 @@
             app:title="History"
             app:titleTextColor="@color/white" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_cart_pay2"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:text="Số tiền đã chi tiêu"
+            android:textColor="#2B2B9E"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:background="@drawable/editextstyle"
+            >
+
+            <TextView
+                android:id="@+id/tvSoTienDaChiTieu_HistoryProfileActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100.000 VND"
+                android:textColor="#673AB7"
+                android:textSize="28sp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_history_profile"
             android:layout_width="match_parent"
