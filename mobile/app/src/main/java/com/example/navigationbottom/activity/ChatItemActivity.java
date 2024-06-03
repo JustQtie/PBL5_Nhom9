@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -93,6 +94,7 @@ public class ChatItemActivity extends AppCompatActivity {
         User user = UserPreferences.getUser(this);
         myId = user.getId();
 
+
         if (hisUid == -1) {
             Toasty.error(this, "ID người nhận không tồn tại", Toasty.LENGTH_SHORT).show();
             finish(); // Kết thúc hoạt động nếu không có ID
@@ -124,6 +126,11 @@ public class ChatItemActivity extends AppCompatActivity {
     private void hienThiThongTinNguoiNhan() {
         // Khởi tạo UserApiService
         userApiService = new UserApiService(this);
+
+
+        User user = UserPreferences.getUser(this);
+        myId = user.getId();
+
 
         if (hisUid != null) {
             userApiService.getUser(hisUid).enqueue(new Callback<User>() {

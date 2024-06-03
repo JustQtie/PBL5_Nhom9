@@ -411,7 +411,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
-
                         android:background="@drawable/background_login_btn3"
                         android:text="Liên hệ người bán"
                         android:textColor="#ffffff"
