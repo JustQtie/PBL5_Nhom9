@@ -70,14 +70,43 @@ public class CartFragment extends Fragment {
 
         rvBooks.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         orderApiService = new OrderApiService(getContext());
-        orders = new ArrayList<>();
+
+
+        rvBooks.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    // Kéo từ trên xuống
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        // Đã đến cuối danh sách, làm mới dữ liệu ở đây
+                        goiAPILayDuLieu();
+                    }
+                }
+            }
+
+
+        });
 
         return mView;
     }
 
+
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        goiAPILayDuLieu();
+    }
+
+    private void goiAPILayDuLieu() {
+        orders = new ArrayList<>();
         User user = UserPreferences.getUser(getContext());
         orderApiService.getOrdersByUserNotPaid(user.getId()).enqueue(new Callback<GetOrderResponse>() {
             @Override
