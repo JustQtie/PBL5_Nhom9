@@ -282,8 +282,8 @@
                     >
 
                     <TextView
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
+
+                        android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="Số lượng:"
@@ -292,9 +292,9 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:layout_weight="2.2"
+
                         android:id="@+id/tv_soLuong_itemHistory"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:background="@drawable/editextstyle"
@@ -317,8 +317,8 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
+
+                        android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="Thanh toán:"
@@ -328,10 +328,9 @@
 
                     <TextView
                         android:id="@+id/tv_phuongThucThanhToan_itemHistory"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:layout_weight="3"
                         android:background="@drawable/editextstyle"
                         android:padding="10dp"
                         android:textAlignment="viewStart"
@@ -348,8 +347,8 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
+
+                        android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="Tổng tiền:"
@@ -359,7 +358,7 @@
 
                     <TextView
                         android:id="@+id/tv_tongTien_itemHistory"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="2.4"
