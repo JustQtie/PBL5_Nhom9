@@ -84,7 +84,17 @@ public class WebSocketController {
                     .status(product.getStatus())
                     .build();
             productService.updateProduct(product.getId(), productDTO);
-            orderService.deleteOrder(order.getId());
+            order.setStatus(OrderStatus.CANCELED);
+            OrderDTO orderDTO = OrderDTO.builder()
+                    .userId(order.getUser().getId())
+                    .productId(order.getProduct().getId())
+                    .status(order.getStatus())
+                    .numberOfProduct(order.getNumberOfProducts())
+                    .totalMoney(order.getTotalMoney())
+                    .shippingAddress(order.getShippingAddress())
+                    .paymentMethod(order.getPaymentMethod())
+                    .build();
+            orderService.updateOrder(order.getId(), orderDTO);
             NotifyDTO notifyDTO = NotifyDTO.builder()
                     .userId(user.getId())
                     .orderId(order.getId())

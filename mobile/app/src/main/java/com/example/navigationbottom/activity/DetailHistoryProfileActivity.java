@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -36,6 +37,8 @@ public class DetailHistoryProfileActivity extends AppCompatActivity {
     private BooksAdapterForHistory booksAdapter;
     private TextView soTienDaChiTieu;
 
+
+    private float totalMoney;
     private ArrayList<Order> orders;
 
     private Order order;
@@ -68,6 +71,7 @@ public class DetailHistoryProfileActivity extends AppCompatActivity {
     private void loadHistory() {
 
         orderApiService.getOrdersByUserPaid(user.getId()).enqueue(new Callback<GetOrderResponse>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<GetOrderResponse> call, Response<GetOrderResponse> response) {
                 GetOrderResponse getOrderResponse = response.body();
@@ -85,8 +89,10 @@ public class DetailHistoryProfileActivity extends AppCompatActivity {
                             getOrder.setShipping_address(order.getShipping_address());
                             getOrder.setNumber_of_product(order.getNumber_of_product());
                             getOrder.setTotal_money(order.getTotal_money());
+                            totalMoney+=order.getTotal_money();
                             orders.add(getOrder);
                         }
+                        soTienDaChiTieu.setText((int)totalMoney*1000 + " VND");
                         booksAdapter = new BooksAdapterForHistory(orders, getApplicationContext());
                         rvBooks.setAdapter(booksAdapter);
                     }else{

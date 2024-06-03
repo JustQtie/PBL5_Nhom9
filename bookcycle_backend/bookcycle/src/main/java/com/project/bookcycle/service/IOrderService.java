@@ -16,8 +16,11 @@ public interface IOrderService {
     Order updateOrder(long id, OrderDTO orderDTO) throws DataNotFoundException;
     void deleteOrder(long id) throws DataNotFoundException;
     List<OrderResponse> findOrderByUser(long userId);
-    List<OrderResponse> findByUserAndStatusNotPaid(long userId, String status);
+    List<OrderResponse> findByUserAndStatusNotPaid(long userId);
     List<OrderResponse> findByUserAndStatusPaid(long userId);
+    List<OrderResponse> findByUserAndStatusCanceled(long userId);
+    List<OrderResponse> findByStatusCanceled();
+    List<OrderResponse> findByStatusPaid();
     List<OrderResponse> findGetOrders();
     List<Order> findOrderByProduct(Long productId);
     void deleteOrderByProduct(Long id);
