@@ -1,20 +1,54 @@
 import "./single.scss"
 import Sidebar from "../../components/sidebar/Sidebar"
 import Navbar from "../../components/navbar/Navbar"
-import Chart from "../../components/chart/Chart"
-import Chart2 from "../../components/chart2/Chart2"
-// import Chart3 from "../../components/chart3/Chart3"
+import Chart from "../../components/chart_single/Chart"
+import Chart2 from "../../components/chart2__single/Chart2"
 import WidgetSingle from "../../components/widgets/WidgetSingle"
 import { useLocation } from "react-router-dom";
-
+import { getGiaoDichThanhCongById } from "../../services/apiServices"
+import { toast } from "react-toastify";
+import { useState, useEffect } from "react"
 
 
 const Single = () => {
     const location = useLocation();
+    const [dataChuyenDi, setDatachuyenDi] = useState();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+
+
+
     const userDetail = location.state?.user;
     if (!userDetail) {
         return <div>No user data available</div>;
     }
+
+    const fetchData = async () => {
+        try {
+            // Lấy token từ localStorage
+            const token = localStorage.getItem("token");
+
+
+            // Nếu không có token, không gọi API và kết thúc hàm
+            if (!token) {
+                toast.error("Token not found");
+                return;
+            }
+
+            // Gọi API với token được đính kèm trong header Authorization
+
+            const res = await getGiaoDichThanhCongById(userDetail.id, token);
+
+            if (res && res.EC === "0") {
+                setDatachuyenDi(res);
+            }
+        } catch (error) {
+            toast.error("Error fetching list of users", error);
+        }
+    };
 
 
 
@@ -57,19 +91,17 @@ const Single = () => {
 
                     </div>
                     <div className="right">
-                        <Chart aspect={3 / 1} title="Mức chi tiêu của người dùng trong 6 tháng qua" />
-                        {/* <Chart aspect={3 / 1} title="Biểu đồ hoạt động của người dùng trong 6 tháng qua" /> */}
-                        {/* <Chart aspect={3 / 1} title="Biểu đồ thống kê số lượng giao dịch trong 6 tháng qua" /> */}
+                        <Chart aspect={3 / 1} title="Mức chi tiêu của người dùng trong năm" dataChuyenDi={dataChuyenDi} />
                     </div>
                 </div>
                 <div className="widgets-single">
-                    <WidgetSingle type="order" />
-                    <WidgetSingle type="balance" />
+                    <WidgetSingle type="chitieu" dataChuyenDi={dataChuyenDi} />
+                    <WidgetSingle type="thanhcong" dataChuyenDi={dataChuyenDi} />
+                    <WidgetSingle type="thatbai" dataChuyenDi={dataChuyenDi} />
                 </div>
 
-
                 <div className="bottom">
-                    <Chart2 title="Biểu đồ hoạt động của người dùng trong 6 tháng qua" aspect={3 / 1} />
+                    <Chart2 title="Biểu đồ hoạt động của người dùng trong năm" aspect={3 / 1} dataChuyenDi={dataChuyenDi} />
                 </div>
             </div>
         </div>

@@ -11,40 +11,72 @@ import {
 
 import "./chart3.scss";
 
-const data = [
-  {
-    "name": "Tháng 1",
-    "Thành công": 666,
-    "Thất bại": 68,
-  },
-  {
-    "name": "Tháng 2",
-    "Thành công": 999,
-    "Thất bại": 138,
-  },
-  {
-    "name": "Tháng 3",
-    "Thành công": 1237,
-    "Thất bại": 363,
-  },
-  {
-    "name": "Tháng 4",
-    "Thành công": 777,
-    "Thất bại": 98,
-  },
-  {
-    "name": "Tháng 5",
-    "Thành công": 872,
-    "Thất bại": 580,
-  },
-  {
-    "name": "Tháng 6",
-    "Thành công": 2690,
-    "Thất bại": 586,
-  },
+const Chart3 = ({ aspect, title, orderCount, balanceCount }) => {
 
-]
-const Chart3 = ({ aspect, title }) => {
+  const data = [
+    {
+      "name": "Tháng 1",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 2",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 3",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 4",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 5",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 6",
+      "Thành công": orderCount,
+      "Bị hủy": balanceCount,
+    },
+    {
+      "name": "Tháng 7",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 8",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 9",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 10",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 11",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+    {
+      "name": "Tháng 12",
+      "Thành công": 0,
+      "Bị hủy": 0,
+    },
+
+  ]
+
   return (
     <div className="chart3">
       <div className="title-chart3">{title}</div>
@@ -69,7 +101,7 @@ const Chart3 = ({ aspect, title }) => {
             className="chatGrid-chart3" />
           <Tooltip />
           <Area type="monotone" dataKey="Thành công" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-          <Area type="monotone" dataKey="Thất bại" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+          <Area type="monotone" dataKey="Bị hủy" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
         </AreaChart>
       </ResponsiveContainer>
     </div>

@@ -10,45 +10,45 @@ import Paper from '@mui/material/Paper';
 const List = () => {
     const rows = [
         {
-            id: 1254899,
+            id: 4,
             product: "Bài giảng giải tích 1",
             img: "https://i.imgur.com/3nK2sud.jpeg",
             customer: "Võ Viết Trường",
-            date: "04/04/2024",
+            date: "11/06/2024",
             amount: 5,
-            method: "Cash on Delivery",
+            method: "Chuyển khoản",
             status: "Approved",
 
         },
         {
-            id: 4569873,
+            id: 1,
             product: "Giáo trình giải tích 2",
             img: "https://i.imgur.com/5ckLztH.jpeg",
             customer: "Hoàng Nguyễn Nhật Minh",
-            date: "04/04/2024",
+            date: "11/06/2024",
             amount: 4,
-            method: "online Payment",
+            method: "Chuyển khoản",
             status: "Pending",
 
         },
         {
-            id: 2569871,
+            id: 6,
             product: "Giáo trình Đại số tuyến tính",
             img: "https://i.imgur.com/JrKLZfZ.jpeg",
             customer: "Hồ Văn Thảo",
-            date: "04/04/2024",
+            date: "11/06/2024",
             amount: 2,
-            method: "online Payment",
+            method: "Chuyển khoản",
             status: "Approved",
 
         }, {
-            id: 6541973,
+            id: 3,
             product: "Giáo trình lịch sử đảng",
             img: "https://i.imgur.com/FLbs9DP.jpeg",
             customer: "Nguyễn Anh Quân",
-            date: "04/04/2024",
+            date: "11/06/2024",
             amount: 5,
-            method: "Cash on Delivery",
+            method: "Chuyển khoản",
             status: "Pending",
 
         }
@@ -58,13 +58,13 @@ const List = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell className="tableCell">Tracking ID</TableCell>
-                        <TableCell className="tableCell">Product</TableCell>
-                        <TableCell className="tableCell">Customer</TableCell>
-                        <TableCell className="tableCell">Date</TableCell>
-                        <TableCell className="tableCell">Amount</TableCell>
-                        <TableCell className="tableCell">Payment Method</TableCell>
-                        <TableCell className="tableCell">Status</TableCell>
+                        <TableCell className="tableCell">ID</TableCell>
+                        <TableCell className="tableCell">Tiêu đề</TableCell>
+                        <TableCell className="tableCell">Người bán</TableCell>
+                        <TableCell className="tableCell">Ngày</TableCell>
+                        <TableCell className="tableCell">Số lượng</TableCell>
+                        <TableCell className="tableCell">Phương thức thanh toán</TableCell>
+                        <TableCell className="tableCell">Trạng thái</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
