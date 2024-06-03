@@ -189,8 +189,7 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(orders.get(position).getStatus().equals(OrderStatus.PENDING) && orders.get(position).getNumber_of_product() == 0 && orders.get(position).getPayment_method() == null){
+                if(orders.get(position).getStatus().equals(OrderStatus.PENDING) && orders.get(position).getNumber_of_product() != 0){
                     Toasty.info(mContext.getApplicationContext(), "Order is awaiting confirmation from the seller", Toast.LENGTH_SHORT).show();
                 }else if(orders.get(position).getStatus().equals(OrderStatus.CONFIRMED)){
                     Intent intent = new Intent(mContext, DetailCartPaySuccessActivity.class);
@@ -201,7 +200,6 @@ public class BooksAdapterForCart extends RecyclerView.Adapter<BooksAdapterForCar
                     Intent intent = new Intent(mContext, DetailsCartPayActivity.class);
                     intent.putExtra("book", book);
                     intent.putExtra("order", orders.get(position).getId());
-                    intent.putExtra("bookUserId", book.getUser_id());
                     mContext.startActivity(intent);
                 }
             }

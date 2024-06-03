@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
@@ -44,7 +45,10 @@ public class BookApiService {
                 }
                 return chain.proceed(newRequest);
             }
-        }).build();
+        })      .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         api = new Retrofit.Builder()
                 .client(client)
