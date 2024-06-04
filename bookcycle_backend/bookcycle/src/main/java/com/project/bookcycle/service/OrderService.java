@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,8 +97,9 @@ public class OrderService implements IOrderService{
     }
 
     @Override
-    public List<OrderResponse> findByUserAndStatusNotPaid(long userId, String status) {
-        return orderRepository.findOrderByUserAndStatusNotPaid(userId, status)
+    public List<OrderResponse> findByUserAndStatusNotPaid(long userId) {
+        List<String> statusesToExclude = Arrays.asList(OrderStatus.PAID, OrderStatus.CANCELED);
+        return orderRepository.findOrderByUserAndStatusNotIn(userId, statusesToExclude)
                 .stream()
                 .map(OrderResponse::convertFromOrder)
                 .collect(Collectors.toList());
@@ -105,7 +107,31 @@ public class OrderService implements IOrderService{
 
     @Override
     public List<OrderResponse> findByUserAndStatusPaid(long userId) {
-        return orderRepository.findOrderByUserAndStatusPaid(userId, OrderStatus.PAID)
+        return orderRepository.findOrderByUserAndStatus(userId, OrderStatus.PAID)
+                .stream()
+                .map(OrderResponse::convertFromOrder)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponse> findByUserAndStatusCanceled(long userId) {
+        return orderRepository.findOrderByUserAndStatus(userId, OrderStatus.CANCELED)
+                .stream()
+                .map(OrderResponse::convertFromOrder)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponse> findByStatusCanceled() {
+        return orderRepository.findOrderByStatus(OrderStatus.CANCELED)
+                .stream()
+                .map(OrderResponse::convertFromOrder)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponse> findByStatusPaid() {
+        return orderRepository.findOrderByStatus(OrderStatus.PAID)
                 .stream()
                 .map(OrderResponse::convertFromOrder)
                 .collect(Collectors.toList());

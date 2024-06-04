@@ -4,10 +4,7 @@ import com.project.bookcycle.dto.OrderDTO;
 import com.project.bookcycle.exceptions.DataNotFoundException;
 import com.project.bookcycle.model.Order;
 import com.project.bookcycle.model.OrderStatus;
-import com.project.bookcycle.response.OrderListResponse;
-import com.project.bookcycle.response.OrderResponse;
-import com.project.bookcycle.response.ProductListResponse;
-import com.project.bookcycle.response.ProductResponse;
+import com.project.bookcycle.response.*;
 import com.project.bookcycle.service.IOrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -109,7 +106,7 @@ public class OrderController {
             @PathVariable("id") Long id
     ){
         try {
-            List<OrderResponse> orderResponses = orderService.findByUserAndStatusNotPaid(id, OrderStatus.PAID);
+            List<OrderResponse> orderResponses = orderService.findByUserAndStatusNotPaid(id);
             return ResponseEntity.ok(OrderListResponse.builder()
                     .orderResponseList(orderResponses)
                     .ec("0").build());
@@ -173,5 +170,52 @@ public class OrderController {
         // Xóa mềm => cập nhật trường active => false.
         orderService.deleteOrder(id);
         return ResponseEntity.ok("Delete successfully");
+    }
+
+    @PostMapping("/statistical/{id}")
+    public ResponseEntity<?> resStatisticalOfUser(
+            @Valid @PathVariable long id
+    ){
+        try {
+            float totalMoney = 0;
+            List<OrderResponse> orderResponses = orderService.findByUserAndStatusPaid(id);
+            for(OrderResponse orderResponse : orderResponses){
+                totalMoney+=orderResponse.getTotalMoney();
+            }
+            int totalOrderSuccessOfUser = orderService.findByUserAndStatusPaid(id).size();
+            int totalOrderCanceledOfUser = orderService.findByUserAndStatusCanceled(id).size();
+            int totalOrderUser = orderService.findOrderByUser(id).size();
+            return ResponseEntity.ok().body(SoLieuThongKeResponse.builder()
+                    .tongGiaoDichThanhCongOfUser(totalOrderSuccessOfUser)
+                    .tongGiaoDichBiHuyOfUser(totalOrderCanceledOfUser)
+                    .tongTatCaGiaoDichOfUser(totalOrderUser)
+                    .tongTienChiTieuOfUser(totalMoney)
+                    .EC("0")
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(SoLieuThongKeResponse.builder()
+                    .EC("-1")
+                    .build());
+        }
+    }
+
+    @PostMapping("/statistical")
+    public ResponseEntity<?> resStatistical(
+    ){
+        try {
+            int totalOrderSuccess = orderService.findByStatusPaid().size();
+            int totalOrderCanceled = orderService.findByStatusCanceled().size();
+            int totalOrder = orderService.findGetOrders().size();
+            return ResponseEntity.ok().body(SoLieuThongKeResponse.builder()
+                    .tongGiaoDichThanhCong(totalOrderSuccess)
+                    .tongGiaoDichBiHuy(totalOrderCanceled)
+                    .tongTatCaGiaoDich(totalOrder)
+                    .EC("0")
+                .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(SoLieuThongKeResponse.builder()
+                    .EC("-1")
+                    .build());
+        }
     }
 }
