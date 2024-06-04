@@ -25,6 +25,12 @@ const ModalDoiMatKhau = (props) => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleChangePassword = async () => {
+
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            toast.error("Vui lòng điền vào tất cả các trường");
+            return;
+        }
+
         if (newPassword !== confirmPassword) {
             toast.error("Mật khẩu mới và xác nhận mật khẩu không khớp");
             return;
@@ -32,21 +38,21 @@ const ModalDoiMatKhau = (props) => {
 
         const token = localStorage.getItem("token");
         if (!token) {
-            toast.error("Token không được tìm thấy");
+
             return;
         }
 
         setIsLoading(true);
 
         try {
-            console.log("check users doi mat khau: ", userData.id, oldPassword, newPassword, token);
+
             let response = await putChangePassword(userData.id, oldPassword, newPassword, token);
 
             if (response && response.EC === 0) {
                 toast.success("Đổi mật khẩu thành công");
                 handleClose();
             } else {
-                toast.error(response.EM);
+                toast.error("Mật khẩu cũ không đúng");
             }
         } catch (error) {
             toast.error("Đã xảy ra lỗi khi đổi mật khẩu", error);

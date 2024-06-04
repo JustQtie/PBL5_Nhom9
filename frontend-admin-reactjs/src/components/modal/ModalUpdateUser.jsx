@@ -48,7 +48,28 @@ const ModalUpdateUser = (props) => {
     const handSubmitUpdateUser = async () => {
         const token = localStorage.getItem("token");
         if (!token) {
-            toast.error("Token không được tìm thấy");
+            return;
+        }
+
+        // Validate required fields
+        if (!fullname && !phoneNumber && !address) {
+            toast.error("Xin vui lòng nhập thông tin!!");
+            return;
+        }
+        if (!fullname) {
+            toast.error("Họ và tên không được để trống!");
+            return;
+        }
+        if (!phoneNumber) {
+            toast.error("Số điện thoại không được để trống!");
+            return;
+        }
+        if (!address) {
+            toast.error("Địa chỉ không được để trống!");
+            return;
+        }
+        if (!gender) {
+            toast.error("Giới tính không được để trống!");
             return;
         }
 
@@ -59,27 +80,26 @@ const ModalUpdateUser = (props) => {
             let response = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
 
             if (response && response.EC === 0) {
-                toast.success(response.EM);
+                let response_image = await postUpdateImageUser(id, image, token);
+
+                if (response_image && response_image.EC === 0) {
+                    toast.success("Cập nhật thông tin thành công!");
+                } else {
+                    toast.error("Cập nhật ảnh thất bại!");
+                    return; // Nếu gặp lỗi, dừng luôn
+                }
             } else {
-                toast.error(response.EM);
+                toast.error("Lỗi khi cập nhật thông tin!");
                 return; // Nếu gặp lỗi, dừng luôn
             }
 
-            // Gọi API cập nhật ảnh người dùng
-            let response_image = await postUpdateImageUser(id, image, token);
 
-            if (response_image && response_image.EC === 0) {
-                toast.success("Cập nhật ảnh thành công");
-            } else {
-                toast.error("Cập nhật ảnh thất bại");
-                return; // Nếu gặp lỗi, dừng luôn
-            }
 
             // Nếu cả hai API đều thành công, đóng modal và gọi fetchUser
             await fetchUser();
             handleClose();
         } catch (error) {
-            toast.error("Đã xảy ra lỗi khi cập nhật người dùng", error);
+            toast.error("Đã xảy ra lỗi khi cập nhật người dùng!");
         } finally {
             setIsLoading(false); // Dừng hiển thị trạng thái loading
         }

@@ -18,7 +18,6 @@ const ModalDeleteProduct = (props) => {
 
         const token = localStorage.getItem("token");
         if (!token) {
-            toast.error("Token không được tìm thấy");
             return;
         }
 
@@ -29,11 +28,11 @@ const ModalDeleteProduct = (props) => {
             if (data) {
                 try {
                     let data_2 = await deleteProductById(dataDelete.id, token);
-                    toast.success(`${data_2} : ${dataDelete.name}`);
+                    toast.success(`${data_2} : ${dataDelete.name}, Xóa giáo trình thành công!`);
                     handleClose();
                     navigate(`/qlgiaotrinh`);
                 } catch (error) {
-                    toast.error(error);
+                    toast.error("Xóa giáo trình thất bại! Vui lòng thử lại!");
                     handleClose();
                     navigate(`/qlgiaotrinh/${dataDelete.id}`);
                 }
@@ -43,11 +42,11 @@ const ModalDeleteProduct = (props) => {
         } else {
             try {
                 let data_2 = await deleteProductById(dataDelete.id, token);
-                toast.success(`${data_2} : ${dataDelete.name}`);
+                toast.success(`${data_2} : ${dataDelete.name}, Xóa giáo trình thành công!`);
                 handleClose();
                 navigate(`/qlgiaotrinh`);
             } catch (error) {
-                toast.error(error);
+                toast.error("Xóa giáo trình thất bại! Vui lòng thử lại!");
                 handleClose();
                 navigate(`/qlgiaotrinh/${dataDelete.id}`);
             }
