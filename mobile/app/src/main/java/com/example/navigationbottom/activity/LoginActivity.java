@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void clickLogin() {
-//        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         progressDialog.show();
         edtTaiKhoan = findViewById(R.id.edt_taikhoan_login);
         edtMauKhau = findViewById(R.id.edt_matkhau_login);
@@ -85,26 +84,24 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(response1 != null){
                     progressDialog.dismiss();
-                    if(response1.getEc().equals("0")){
-                        if(response1.getUser().getActive() && response1.getUser().getId() != 1L) {
+                    if(response1.getEc().equals("0")) {
+                        if (response1.getUser().getActive() && response1.getUser().getId() != 1L) {
                             UserDataSingleton.getInstance().setUser(response1.getUser());
                             UserPreferences.saveUser(LoginActivity.this, response1.getUser());
-                            Log.d("RequestData1", new Gson().toJson(response1));
                             SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
-                            Toasty.success(LoginActivity.this, "Login success!!", Toasty.LENGTH_SHORT).show();
+                            Toasty.success(LoginActivity.this, "Đăng nhập thành công.", Toasty.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        }else if(response1.getUser().getId() == 1L){
-                            Toasty.warning(LoginActivity.this, "You do not have access", Toasty.LENGTH_SHORT).show();
-                        }else{
-                            Toasty.warning(LoginActivity.this, "Your account has been banned", Toasty.LENGTH_SHORT).show();
+                        } else if (response1.getUser().getId() == 1L) {
+                            Toasty.warning(LoginActivity.this, "Admin không có quyền truy cập. Vui lòng tạo tài khoản người dùng.", Toasty.LENGTH_SHORT).show();
                         }
-
-                    }else{
-                        Toasty.error(LoginActivity.this, "Username or Password invalid", Toasty.LENGTH_SHORT).show();
+                    }else if(response1.getEc().equals("-2")){
+                        Toasty.warning(LoginActivity.this, "Tài khoản của bạn đã bị cấm hoạt động.", Toasty.LENGTH_SHORT).show();
+                    }else {
+                        Toasty.error(LoginActivity.this, "Xin vui lòng kiểm tra lại tài khoản mật khẩu!", Toasty.LENGTH_SHORT).show();
                     }
                 }else{
                     progressDialog.dismiss();
-                    Toasty.error(LoginActivity.this, "Username or Password invalid", Toasty.LENGTH_SHORT).show();
+                    Toasty.error(LoginActivity.this, "Xin vui lòng kiểm tra lại tài khoản mật khẩu!", Toasty.LENGTH_SHORT).show();
                 }
             }
 

@@ -98,7 +98,7 @@ public class OrderService implements IOrderService{
 
     @Override
     public List<OrderResponse> findByUserAndStatusNotPaid(long userId) {
-        List<String> statusesToExclude = Arrays.asList(OrderStatus.PAID, OrderStatus.CANCELED);
+        List<String> statusesToExclude = Arrays.asList(OrderStatus.PAID, OrderStatus.CANCELED, OrderStatus.PAIDING);
         return orderRepository.findOrderByUserAndStatusNotIn(userId, statusesToExclude)
                 .stream()
                 .map(OrderResponse::convertFromOrder)

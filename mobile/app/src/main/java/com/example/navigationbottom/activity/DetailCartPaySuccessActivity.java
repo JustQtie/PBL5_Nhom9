@@ -148,7 +148,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                CompletedOrder();
             }
         });
 
@@ -251,7 +251,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
 
                     @Override
                     public void onPaymentCanceled(String zpTransToken, String appTransID) {
-                        Toasty.warning(DetailCartPaySuccessActivity.this, "Thanh toán bị hủy", Toast.LENGTH_SHORT).show();
+                            Toasty.warning(DetailCartPaySuccessActivity.this, "Thanh toán bị hủy", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -273,7 +273,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
     }
 
     private void CompletedOrder(){
-        order.setStatus(OrderStatus.PAID);
+        order.setStatus(OrderStatus.PAIDING);
         orderApiService.updateOrder(orderId, order).enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {
@@ -282,6 +282,7 @@ public class DetailCartPaySuccessActivity extends AppCompatActivity {
                     NotifyApplication notifyApplication = NotifyApplication.instance();
                     notifyApplication.getStompClient().send("/app/success_order_notify", new Gson().toJson(order)).subscribe();
                     Log.d("RequestData1", new Gson().toJson(order));
+                    Toasty.info(DetailCartPaySuccessActivity.this,"Người bán sẽ xác nhận thanh toán đơn hàng. Xin vui lòng chờ!", Toasty.LENGTH_LONG).show();
                     Intent intent = new Intent(DetailCartPaySuccessActivity.this, DetailHistoryProfileActivity.class);
                     intent.putExtra("order", order);
                     startActivity(intent);

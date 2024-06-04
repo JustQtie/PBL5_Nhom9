@@ -81,56 +81,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, NotificationConfirmActivity.class);
-                intent.putExtra("notifications", notifications.get(position));
-                mContext.startActivity(intent);
+                if(notification.getStatus().equals(NotifyStatus.NOT_RESPONDED)){
+                    Intent intent = new Intent(mContext, NotificationConfirmActivity.class);
+                    intent.putExtra("notifications", notifications.get(position));
+                    mContext.startActivity(intent);
+                }
             }
         });
     }
 
-    private void showCustomAlertDialog(int gravity, Notification notification) {
-        Dialog dialog = new Dialog(mContext);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.custom_dialog_notification);
-        Window window = dialog.getWindow();
-        if(window == null){
-            return;
-        }
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        windowAttributes.gravity = gravity;
-        window.setAttributes(windowAttributes);
 
-
-        AppCompatButton appCompatButtonDongY = dialog.findViewById(R.id.btn_digDongY_notification);
-        AppCompatButton appCompatButtonTuChoi = dialog.findViewById(R.id.btn_digTuchoi_notification);
-
-
-        if(notification.getStatus().equals(NotifyStatus.NOT_RESPONDED)){
-            appCompatButtonDongY.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    notification.setStatus(NotifyStatus.AGREE);
-                    NotifyApplication notifyApplication = NotifyApplication.instance();
-                    notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
-                    dialog.dismiss();
-                }
-            });
-
-            appCompatButtonTuChoi.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    notification.setStatus(NotifyStatus.CANCEL);
-                    NotifyApplication notifyApplication = NotifyApplication.instance();
-                    notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-        }
-    }
     @Override
     public int getItemCount() {
         if(notifications != null){

@@ -95,7 +95,7 @@ public class AddBookActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private User user;
 
-    String url1 = "https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200-1.png";
+    String url1 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAA81BMVEX///8ZVoLzgSD+/v7Dw8O+vr4aVoH///2Ysb8AUHzW5u/78+MAQ3AGUoIZWINpiaDtewP2/vzb5+oASHRykaj1gR7vp23pdwr/69T1fRPO4OVcfZzsrnkATXwASXnxeADo8PUATX8AQXQoWn5DbItQdpP9+O3vnFrulEvvgiLy9/mWlpbAy9MALmMxZIevwc0nXYlnjKqOp7q7ztr67uX78uyDnrbycgD3jDb0pm72uI71zK4YUHb42L/3wp30r4D3kkX/6c0/bZOhs8hZf5b207H44tL2rXn759jrl03zyJz32bfX3uCmusfuuozmfBOUprL94f88AAALZElEQVR4nO2djV/aOhfHU3JvQoFWyotatC+AoO12QaljblOnTDenY/f+/3/Nc05aEBAGbKKEJ7/5cYptkm/PyUlaOUfy5q/N1hvyF9ls/Q2EFP+NfdCJF3713XofTBPCzZUilF+KUH4pQvmlCOWXIpRfilB+KUL5pQjllyKUX4pQfilC+aUI5ZcilF+KUH4pQvmlCOWXIpRfilB+KUL5pQjllyKUX4pQfilC+aUI5ZcilF+KUH6thNB/Cw1zSvhSZ3HCKeUcTqbPOZ5VEPLMP622xTldjhCuCCeZUu3meYfz/IQ4zJzhal/C5Zut7NV0YwubeD6tgJAAoakxnfXBjotZEg+jvLLn6iZDwmcczuoIQe5xGz1v/ng5fhROXJ1pTB5Cppmm5h5Ukpd+dQJehLBTdeAUJpcNQXqxFIoIOdOSXOQrRS3gE5KMEP6rsgjXgZmAyB9u5bQEUDZCoVyJzgw34ieR7gCZnDaMDem0MnzGIk4h3HZqIwfLSagZxWjGqDkP91y2hoQcd1jDL2kcLpJXnhAy+MZNw1aMTzYChvVbuqmZ0wnFYpp8iIkMXS0P/3uEIjqe3p2evnuHhDh4PoiXU2zI6prbjdM6RwnhnELdwDViJqG4atg+f3d6endnzZ7Rz0yI159vv/c8L58Pzo4+fPz0tckfG5mwIQCYrNidcD7cDGTOMYayGYSEWM27i8vPh1dBPg99ee+zdNaEfm5CdBe+b5dTZVAqVbah++DDpztiCV8cJ4RR4/rvdsbXDLhG/rkBeGz8WCREzyTNi89HAGbbNnYB/ZTz2d9w0z8iTA0VpGAA3vvg865FnxLGqqXH+oEggy46qZiQNm8PkS41JiBcPgo9EyFaEjjL9s61NZ2Q1VkuGmuDNqYADmy47ZUDaDCIG14DQmCMP+/skhk2hJBa9wmN9zfYYbqosRk25GTbDsqpMbxXJ0zNJWTM2RJROO63UjSnmDCxIRA+bXztCSGg5qJkTYGIeKCzaYgSEwq1rPiOkZK2O/0I2QmL/XiM3KrPOEJyQmbWMVBCuJllQtkJwYgR8nFyMOsA6QmrJRLvejaW0DjHpxok7WwsoZarIOGNsamEjOmwO+WWvrmEpo6bskxu8pZiYwjh9YbFeZRj2qYSMtjWwGo4M9BIT4iMISdpXZvpxxtAaCnCVyMUD9XEUzb4wqK/Scj+lJDHz8E4XfDXjMsRYpt+1O3d4P75dQhJ5fzkS8aKH6I+MyEe5Ld7jqs7N3iv/lqEruG4x90KWdBjlyHkmZJexc2IsYfb59ciLOJhunvQD5+bMNwqJg/H1oDQ1IyqGc0b8pKEhZyZ7ETWgBAHopcWGfgyhMOnf+tAiMMokQVGLjvhfClCRagIFeGfEqpYqggVoSJUhIpwPqFaLRShIlSEivDPCVUsVYSKUBEqQkU4n1CtFopQESpCRfjnhK8SSynP5Ga9a20Rwpu1tyHlYWPWu7jnEjLDbccZJWtMyDm30jMR5xA6BwVMZlxbwkDMQ3wTSKWuT02JmUPoluK3XsVZQWtIWI4jDYj7DWdZQqaBh4qxCC9dR0IY0852M26X025tatbPbELjvBJn5xP6cJaa4qbrEEtTMLBbblki07Of00zTMCeyLacR4qVgesvn4k15VvbQK08x4RrYMDak9yFLRNoIj1yDTeYYzrAh06qNEPN+4ercpkTW6NoSghmD2+Tv1EaOZk6iTLWhqek3aHhYJ7LbXky3jvMwMWKqnN9vgrNxLJcwmXYwjRCc1NmKs9Oti8AOZly5tSEUnnq1S0UKV1Sc2N5MtSFzTjBXiIfNnzADU7MQ14VQeFc+/wnfgwqIYo/KfknIqnuiRhSFEJOaPgXXijDB9LYtCz0vyrHRnPtphPoBVlzi1vWUVX4O4SusFomCcjl/1BQxFXZw5488UwiNuo9lKPj9zmRq88RVe1EbQlTYL4tKA55nx2UHxqYP5prbZ3fizdilKlaOmE6IP9ALokqNmIJPXAHrGcTdlINg9wUJ47pB796dfr24/HYU4ACeJJfD+B4sXMMbBhuabNKGppnDwie0ue3ZwfgMLItiDfmrw4+fLu5O34lyWS9qQ5GbgGXnLMqzF5+PbM+eRIQNDkYbv/5Y3eOJDd00btWbh14wEWLKeS84vBQFN2DhsUSlE3D6lyZ8rFdGsw/fAvTYsVF69xbH3PuhEccJmanfoJWb373hDEbOoOzljy7vBm9VFx0l5aaAMGlsxYRxiS5xLyfOhm/AI7/ul0ctCaPN32MxkPTwwo8Tmlodc0qzR14SRmE2wxeed/Qpi6YbZI0I/4wLxFRyWuIRK42l1PcLIN8Pw+HPRY4H5ReH70fvfGzvHkZKG/p0L3UjOCd7NHIGrDPB5Z1F49YSK9Iw7rDgh+ilj4Tz9VuEsII5bixH144bJ512xbcGpfNI9mNq5N4ArAhzyNe0uoinI4SmKOlCafPIHsRNjC2HF4/1fMJMlO7u9Y6H/bkjeX0rJRyRyQzDcVznuNGJfBo7b/PyDJ01cbz8AybgF+Nlf5SQaa0Q9q/fBwtrULbz21+Toknhj36pp7tVR9dn5Ju+FKEhfAYGbFRdp9eNQjF3mrdX3oAwlb8GqhudjRKiBbViBg7+MAgyyLcrSnvywpc9rerMTBZ+WcJxOa5+0xaQzftUPgms9tkupX6cgv9IyMxqCQ786eH+AOOn92FXXJ1Kp+dW59C9HiHKre5FFBfxj54oflQO7O9NSjru2DwEq5+H3LrNIx5WKLr6imVB/M5xzWEmaG5fr0WINVmMGuv4RNwr2FgoCLbhsGa3jLF5yNw2p9c7MaAXfMIHUNFerSrKSi3S1QpXiwVkVotbGQitD2e40sECfo8PNUbnoWYcQBi9EuuELW6Zw37LXcA5xwjna1WE+GSpuJeB6bift3Gi/XtNKVZSeLRhsUI4PjQEA15dWMRKM3eZ9ldJaCblAhxcpBx23Or1Go1er9cy9WoNXkE7mHisUdwqEHJ9hbHEPmryDK4Y5wmhfkKsWw9jkbffJLRdF4/JsWEjblg7hjYbB9gwM8TSKy4QGxYrWBmhWABdvdXopts/YFdjDc6mYegX3rY7Jz1NrMwwFMPthqT5De+LvJ+EnDhMSwi1YoFkMYTaZxeERAcuzF+4kXKqsLB2+1EGdkt0rOGo39nqmY4Dewwz3piuhBAfqbhOq9Sv+IP9FI833+KRBU+q6oaFqNNgEPIZc+ptwm/hhri8c00LWJw2JtRhpdgG43qHTeJvuRozdNdtdfs/fNEsT0QHXxDx2wJaiNKN82QtWQEh091ar/M2HLKJJ/DJKEhcKHDwGUfTPmG1qlFr+AS21ilYMkhJNxJCN0MewEe9S0r6mNn72PBgLzqsXRtfvCTRWoykf+LUdM0pLVL5ewnCyj9aKfLjdPFFjhfHZdINp+h+ofyjl/IusfJO7KX6FoE4ap9dE79Rc81SFJKkjubcZuP+K52D3NaTapNTtASh/xatYw2LXM5TfH8Mm+4ve2jGW88+OyUn+jnM27Rey5BLzzvMkn7tuFuJbzPpQin2j26L1dvnr4jL1lT4jeKpOJZ0I6K7ZxBsKjnhpdUbCDMQQ/3SyY+kOj3nC44iqWS6aPcv8pcD8IL/KMBt4E6WHOhYRKkWkY9w4xhG8VO2VXb+AoRxjMBw2/ywT6Ic2rBOs/8+WMMSs6vs/oX/+sPPXUtEmjS536VLuNof6IUJeci7Ief/+c2mKM37Ah2/MCG4qh9y+oNbw/LHK+9S/Y0S6aUI5ZcilF+KUH4pQvmlCOWXIpRfilB+KUL5pQjllyKUX4pQfilC+aUI5ZcilF+KUH4pQvmlCOWXIpRfilB+KUL5pQjllyKUX4pQfilC+aUI5df/DeEmSxBuspDwzd+brTf/Aw89m/wI8H+KAAAAAElFTkSuQmCC";
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,6 @@ public class AddBookActivity extends AppCompatActivity {
 
         fillImageSlide();
 
-    // Inside your AddBookActivity.java
         Spinner spinnerBookCategory = findViewById(R.id.spinner_book_category);
         Spinner spinnerBookStatus = findViewById(R.id.spinner_book_status);
 
@@ -133,11 +132,8 @@ public class AddBookActivity extends AppCompatActivity {
                     spinnerBookCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            // Lấy đối tượng Category tương ứng với vị trí được chọn
                             Category selectedCategory = categories.get(position);
-
                             categoryId = selectedCategory.getId();
-                            Log.d("Selected Category ID", "ID: " + categoryId);
                         }
 
                         @Override
@@ -297,16 +293,16 @@ public class AddBookActivity extends AppCompatActivity {
 
                 if(imageUris == null){
                     progressDialog.dismiss();
-                    Toasty.warning(AddBookActivity.this, "Please upload photos before posting books for sale", Toasty.LENGTH_SHORT).show();
+                    Toasty.info(AddBookActivity.this, "Vui lòng upload hình ảnh trước khi đăng tải sách!", Toasty.LENGTH_SHORT).show();
                 } else if (imageUris.size()>5) {
                     progressDialog.dismiss();
-                    Toasty.warning(AddBookActivity.this, "Only a maximum of 5 photos can be selected", Toasty.LENGTH_SHORT).show();
+                    Toasty.warning(AddBookActivity.this, "Chỉ được chọn tối đa 5 hình ảnh!", Toasty.LENGTH_SHORT).show();
                 } else if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtGia.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtSoLuong.getText().toString().trim())){
                     progressDialog.dismiss();
-                    Toasty.warning(AddBookActivity.this, "Please fill in the blank fields", Toasty.LENGTH_SHORT).show();
+                    Toasty.info(AddBookActivity.this, "Vui lòng điền đầy đủ các trường thông tin!", Toasty.LENGTH_SHORT).show();
                 }else {
                     user = UserPreferences.getUser(getApplicationContext());
                     User exitsuser = UserPreferences.getUser(getApplicationContext());
@@ -317,7 +313,7 @@ public class AddBookActivity extends AppCompatActivity {
                             if(user.getEc().equals("0")){
                                 if(user.getAddress() == null){
                                     progressDialog.dismiss();
-                                    Toasty.info(AddBookActivity.this, "You need to add an address before posting books for sale!", Toasty.LENGTH_SHORT).show();
+                                    Toasty.info(AddBookActivity.this, "Bạn chưa cập nhật địa chỉ của mình. Vui lòng cập nhật địa chỉ trước khi đăng bán sản phẩm!", Toasty.LENGTH_SHORT).show();
                                 }else{
                                     Book book = new Book();
                                     book.setName(edtTieude.getText().toString().trim());
@@ -333,10 +329,7 @@ public class AddBookActivity extends AppCompatActivity {
                                         public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
                                             BookResponse bookResponse = response.body();
                                             if(bookResponse !=null){
-                                                Log.d("RequestData1", new Gson().toJson(bookResponse));
-                                                //Log.e("RequestData1", bookResponse.getUser().getAddress());
                                                 if(bookResponse.getUser()!=null){
-                                                        Log.d("RequestData1", "Success post my book");
                                                         idBookPost = bookResponse.getId();
                                                         bookApiService.uploadFileImage(idBookPost, prepareFileParts("files", imageUris)).enqueue(new Callback<BookImageResponse>() {
                                                             @Override
@@ -346,8 +339,7 @@ public class AddBookActivity extends AppCompatActivity {
 
                                                                     if(responseBody.getEc().equals("0")){
                                                                         progressDialog.dismiss();
-                                                                        Log.d("RequestData1", new Gson().toJson(responseBody));
-                                                                        Toasty.success(AddBookActivity.this, "Post my book success!!", Toasty.LENGTH_SHORT).show();
+                                                                        Toasty.success(AddBookActivity.this, "Đã đăng sách thành công!", Toasty.LENGTH_SHORT).show();
                                                                         Intent intent = new Intent(AddBookActivity.this, MainActivity.class);
                                                                         intent.putExtra("dataFromActivity", "fromAddBook");
                                                                         startActivity(intent);
@@ -362,7 +354,7 @@ public class AddBookActivity extends AppCompatActivity {
                                                                     } catch (IOException e) {
                                                                         throw new RuntimeException(e);
                                                                     }
-                                                                    Toasty.error(AddBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
+                                                                    Toasty.error(AddBookActivity.this, "Đăng bán sách không thành công!", Toasty.LENGTH_SHORT).show();
                                                                 }
                                                             }
 
@@ -370,25 +362,23 @@ public class AddBookActivity extends AppCompatActivity {
                                                             public void onFailure(Call<BookImageResponse> call, Throwable t) {
                                                                 progressDialog.dismiss();
                                                                 String errorMessage = t.getMessage();
-                                                                Toasty.error(AddBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                                                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                                             }
                                                         });
                                                     }else{
                                                         progressDialog.dismiss();
-                                                        Toasty.error(AddBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
+                                                        Toasty.error(AddBookActivity.this, "Đăng bán sách không thành công!", Toasty.LENGTH_SHORT).show();
                                                     }
 
                                                 }else {
                                                     progressDialog.dismiss();
-                                                    Toasty.error(AddBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
+                                                    Toasty.error(AddBookActivity.this, "Đăng bán sách không thành công!", Toasty.LENGTH_SHORT).show();
                                                 }
                                         }
                                         @Override
                                         public void onFailure(Call<BookResponse> call, Throwable t) {
                                             progressDialog.dismiss();
                                             String errorMessage = t.getMessage();
-                                            Toasty.error(AddBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                                             Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
                                         }
                                     });
@@ -566,7 +556,7 @@ public class AddBookActivity extends AppCompatActivity {
                 int count = data.getClipData().getItemCount();
                 if (count > 5) {
                     // Hiển thị thông báo nếu người dùng chọn nhiều hơn 5 ảnh
-                    Toasty.info(this, "You can select up to 5 images only", Toasty.LENGTH_SHORT).show();
+                    Toasty.info(this, "Bạn chỉ được chọn tối đa 5 ảnh!", Toasty.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i < count; i++) {
                         Uri imageUri = data.getClipData().getItemAt(i).getUri();

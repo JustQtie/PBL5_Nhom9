@@ -41,7 +41,6 @@ public class DetailHistoryProfileActivity extends AppCompatActivity {
     private float totalMoney;
     private ArrayList<Order> orders;
 
-    private Order order;
 
     private OrderApiService orderApiService;
 
@@ -52,7 +51,6 @@ public class DetailHistoryProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_history_profile);
 
-        order =  (Order) getIntent().getSerializableExtra("order");
         user = UserPreferences.getUser(this);
         orderApiService = new OrderApiService(this);
 
