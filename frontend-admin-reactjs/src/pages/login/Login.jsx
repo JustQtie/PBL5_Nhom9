@@ -3,7 +3,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import RotateIcon from '@mui/icons-material/RotateRight';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 
@@ -23,34 +23,33 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        setIsLoading(true); // Kích hoạt hiệu ứng xoay khi bắt đầu gọi API
+        setIsLoading(true);
         const callAPI = async () => {
             try {
 
                 const data = await postLogin(username, password);
-                console.log("check res", data);
                 if (data && data.EC === 0) {
                     if (data.role === "Admin") {
                         localStorage.setItem("token", data.token);
                         localStorage.setItem("userData", JSON.stringify(data.user));
-                        toast.success(data.message);
+                        toast.success("Đăng nhập thành công!");
                         setTimeout(() => {
                             setIsLoading(false);
                             navigate('/bangdieukhien');
                         }, 500);
                     } else {
-                        toast.error("Bạn không có quyền truy cập.");
+                        toast.error("Bạn không có quyền truy cập!");
                         setIsLoading(false);
                     }
                 }
                 if (data && data.EC !== 0) {
-                    toast.error(data.message);
+                    toast.error('Xin vui lòng kiểm tra lại tài khoản mật khẩu!');
                     setIsLoading(false);
                 }
 
             }
             catch (e) {
-                toast.error('Login failed');
+                toast.error('Xin vui lòng kiểm tra lại tài khoản mật khẩu!');
                 setIsLoading(false);
             }
             finally {

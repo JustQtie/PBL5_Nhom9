@@ -82,7 +82,7 @@ const Bangdieukhien = () => {
 
                 <div className="bangdieukhien-charts">
                     <Featured />
-                    <Chart3 title="Lịch sử giao dịch trong 6 tháng qua" aspect={2 / 1} orderCount={orderCount} balanceCount={balanceCount} />
+                    <Chart3 title="Lịch sử giao dịch trong năm" aspect={2 / 1} orderCount={orderCount} balanceCount={balanceCount} />
                 </div>
                 <div className="bangdieukhien-listContainer">
                     <div className="bangdieukhien-listTitle">Giao dịch mới nhất</div>
