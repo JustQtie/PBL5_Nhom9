@@ -170,7 +170,7 @@ public class EditBookActivity extends AppCompatActivity {
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                     if(response.isSuccessful()){
                                         progressDialog.dismiss();
-                                        Toasty.success(EditBookActivity.this, "Delete success!" , Toasty.LENGTH_SHORT).show();
+                                        Toasty.success(EditBookActivity.this, "Xoá giáo trình thành công!" , Toasty.LENGTH_SHORT).show();
                                         Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
                                         intent.putExtra("dataFromActivity", "fromEditBook");
                                         startActivity(intent);
@@ -179,7 +179,7 @@ public class EditBookActivity extends AppCompatActivity {
                                         progressDialog.dismiss();
                                         String errorMessage = "Unsuccessful response: " + response.code();
                                         Log.e("UploadError", errorMessage);
-                                        Toasty.warning(EditBookActivity.this, "Can't delete", Toasty.LENGTH_SHORT).show();
+                                        Toasty.warning(EditBookActivity.this, "Xóa giáo trình thất bại! Vui lòng thử lại!", Toasty.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -188,14 +188,13 @@ public class EditBookActivity extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     String errorMessage = "Request failed: " + t.getMessage();
                                     Log.e("Hello", errorMessage);
-                                    Toasty.error(EditBookActivity.this, errorMessage, Toasty.LENGTH_SHORT).show();
                                 }
                             });
                         } else {
                             progressDialog.dismiss();
                             String errorMessage = "Unsuccessful response: " + response.code();
                             Log.e("UploadError", errorMessage);
-                            Toasty.error(EditBookActivity.this, "Can't delete", Toasty.LENGTH_SHORT).show();
+                            Toasty.error(EditBookActivity.this, "Xóa giáo trình thất bại! Vui lòng thử lại!", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
@@ -222,7 +221,7 @@ public class EditBookActivity extends AppCompatActivity {
                         TextUtils.isEmpty(edtGia.getText().toString().trim()) ||
                         TextUtils.isEmpty(edtSoLuong.getText().toString().trim())){
                     progressDialog.dismiss();
-                    Toasty.warning(EditBookActivity.this, "Please fill in the blank fields", Toasty.LENGTH_SHORT).show();
+                    Toasty.warning(EditBookActivity.this, "Vui lòng điền tất cả các trường đang trống", Toasty.LENGTH_SHORT).show();
                 }else {
                     Book requestBook = new Book();
                     requestBook.setName(edtTieude.getText().toString().trim());
@@ -248,7 +247,7 @@ public class EditBookActivity extends AppCompatActivity {
                             // Thực hiện tác vụ tiếp theo
                             secondTask(requestBook, parts);
                         }
-                    }, 10000);
+                    }, 7000);
 
                 }
             }
@@ -280,7 +279,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                                 if(responseBody.getEc().equals("0")){
                                                                     Log.d("RequestData1", new Gson().toJson(responseBody));
                                                                     progressDialog.dismiss();
-                                                                    Toasty.success(EditBookActivity.this, "Update my book success!!", Toasty.LENGTH_SHORT).show();
+                                                                    Toasty.success(EditBookActivity.this, "Đã cập nhật thành công sách giáo trình", Toasty.LENGTH_SHORT).show();
                                                                     Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
                                                                     intent.putExtra("dataActivity", "fromEditBook");
                                                                     startActivity(intent);
@@ -295,7 +294,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                                 } catch (IOException e) {
                                                                     throw new RuntimeException(e);
                                                                 }
-                                                                Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
+                                                                Toasty.error(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
                                                             }
                                                         }
 
@@ -315,7 +314,7 @@ public class EditBookActivity extends AppCompatActivity {
                                                     } catch (IOException e) {
                                                         throw new RuntimeException(e);
                                                     }
-                                                    Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
+                                                    Toasty.error(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
                                                 }
                                             }
                                         }
@@ -343,11 +342,11 @@ public class EditBookActivity extends AppCompatActivity {
 
                     }else {
                         progressDialog.dismiss();
-                        Toasty.success(EditBookActivity.this, "Post my book not success", Toasty.LENGTH_SHORT).show();
+                        Toasty.success(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
                     }
                 }else{
                     progressDialog.dismiss();
-                    Toasty.error(EditBookActivity.this, "Post book fails", Toasty.LENGTH_SHORT).show();
+                    Toasty.error(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
                 }
             }
 
@@ -788,7 +787,7 @@ public class EditBookActivity extends AppCompatActivity {
                 int count = data.getClipData().getItemCount();
                 if (count > 5) {
                     // Hiển thị thông báo nếu người dùng chọn nhiều hơn 5 ảnh
-                    Toasty.warning(this, "You can select up to 5 images only", Toasty.LENGTH_SHORT).show();
+                    Toasty.warning(this, "Bạn chỉ được chọn tối đa 5 ảnh!", Toasty.LENGTH_SHORT).show();
                 } else {
                     for (int i = 0; i < count; i++) {
                         Uri imageUri = data.getClipData().getItemAt(i).getUri();

@@ -76,7 +76,7 @@
             android:paddingLeft="20dp"
             android:hint="Phone Number"
             android:textColor="@color/black"
-            android:inputType="text"
+            android:inputType="number"
             android:background="@drawable/btn_background"
             />
 

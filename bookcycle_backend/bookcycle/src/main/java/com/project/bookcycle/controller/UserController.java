@@ -91,7 +91,7 @@ public class UserController {
                 return ResponseEntity.ok().body(loginResponse);
             }else{
                 return ResponseEntity.ok().body(LoginResponse.builder()
-                        .message(MessageKeys.LOGIN_FAILED).ec(-1)
+                        .message(MessageKeys.LOGIN_FAILED).ec(-2)
                         .build());
             }
         }catch (Exception e){

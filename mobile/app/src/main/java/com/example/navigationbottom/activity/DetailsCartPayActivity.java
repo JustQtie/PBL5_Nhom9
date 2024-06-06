@@ -199,9 +199,10 @@ public class DetailsCartPayActivity extends AppCompatActivity {
                 progressDialog.show();
                 if(edtSoLuong.getText().toString().isEmpty()) {
                     progressDialog.dismiss();
-                    Toasty.warning(DetailsCartPayActivity.this, "Please enter quantity before ordering");
+                    Toasty.warning(DetailsCartPayActivity.this, "Hãy nhập số lượng trước khi đặt hàng!", Toasty.LENGTH_SHORT).show();
                 }else if(Integer.parseInt(edtSoLuong.getText().toString()) > book.getQuantity()){
-                    Toasty.warning(DetailsCartPayActivity.this, "The current number of books is not enough", Toasty.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Toasty.warning(DetailsCartPayActivity.this, "Số lượng sách không đủ!", Toasty.LENGTH_SHORT).show();
                 }else{
                     Order requestOrder = new Order();
                     requestOrder.setProduct_id(book.getId());
@@ -264,7 +265,6 @@ public class DetailsCartPayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailsCartPayActivity.this, ChatItemActivity.class);
-                Log.d("hovanthaocheck", book.getUser_id() + "");
                 intent.putExtra("hisUid", book.getUser_id());
                 startActivity(intent);
             }

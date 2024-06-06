@@ -19,6 +19,7 @@ import com.example.navigationbottom.response.user.RegisterResponse;
 import com.example.navigationbottom.viewmodel.UserApiService;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,11 +75,17 @@ public class SignUpActivity extends AppCompatActivity {
         String phone = edt_phone.getText().toString();
         String pass_confim = edt_pass_confi.getText().toString();
 
-        if (TextUtils.isEmpty(username.trim()) || TextUtils.isEmpty(password.trim()) || TextUtils.isEmpty(phone.trim()) || TextUtils.isEmpty(phone.trim()) || TextUtils.isEmpty(pass_confim.trim())) {
-            Toasty.info(SignUpActivity.this, "Please enter complete information!", Toasty.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(username.trim()) || TextUtils.isEmpty(password.trim()) || TextUtils.isEmpty(phone.trim()) ||  TextUtils.isEmpty(pass_confim.trim())) {
+            progressDialog.dismiss();
+            Toasty.info(SignUpActivity.this, "Vui lòng điền đầy đủ thông tin để đăng ký!", Toasty.LENGTH_SHORT).show();
         } else if (isValidPhoneNumber(phone.trim()) == false) {
-            Toasty.error(SignUpActivity.this, "Invalid phone number!", Toasty.LENGTH_SHORT).show();
-        }else{
+            progressDialog.dismiss();
+            Toasty.info(SignUpActivity.this, "Vui lòng nhập đúng định dạng số điện thoại!", Toasty.LENGTH_SHORT).show();
+        }else if(!password.trim().equals(pass_confim.trim())){
+            progressDialog.dismiss();
+            Toasty.warning(SignUpActivity.this, "Nhập lại mật khẩu không đúng. Vui lòng nhập lại mật khẩu!", Toasty.LENGTH_SHORT).show();
+        }
+        else{
             userApiService = new UserApiService(this);
             User user = new User();
             user.setFullname(username);
@@ -89,28 +96,36 @@ public class SignUpActivity extends AppCompatActivity {
             userApiService.signUpUser(user).enqueue(new Callback<RegisterResponse>() {
                 @Override
                 public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                    RegisterResponse registerResponse = response.body();
-                    if (registerResponse != null) {
-                        progressDialog.dismiss();
-                        if (registerResponse.getEc().equals("0")) {
-                            Log.d("RequestData1", new Gson().toJson(registerResponse));
-
-                            Toasty.success(SignUpActivity.this, "Login success!!", Toasty.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                    if (response.isSuccessful()) {
+                        RegisterResponse registerResponse = response.body();
+                        if (registerResponse != null) {
+                            progressDialog.dismiss();
+                            if (registerResponse.getEc().equals("0")) {
+                                Toasty.success(SignUpActivity.this, "Đăng ký thành công!", Toasty.LENGTH_SHORT).show();
+                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                            } else {
+                                Toasty.error(SignUpActivity.this, "Đăng ký không thành công!", Toasty.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toasty.error(SignUpActivity.this, "Sign up not success", Toasty.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            Toasty.error(SignUpActivity.this, "Đăng ký không thành công!", Toasty.LENGTH_SHORT).show();
                         }
                     } else {
                         progressDialog.dismiss();
-                        Toasty.error(SignUpActivity.this, "Create user fails", Toasty.LENGTH_SHORT).show();
+                        try {
+                            String errorMessage = response.errorBody().string();
+                            if(errorMessage.equals("Phone number already exists"))
+                                Toasty.info(SignUpActivity.this, "Số điện thoại này đã được sử dụng. Vui lòng nhập số điện thoại khác!", Toasty.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toasty.error(SignUpActivity.this, "Đăng ký không thành công!", Toasty.LENGTH_SHORT).show();
+                        }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                    String errorMessage = t.getMessage();
-                    Toasty.error(SignUpActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
-                    Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                    progressDialog.dismiss();
                 }
             });
 

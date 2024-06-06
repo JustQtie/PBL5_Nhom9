@@ -160,7 +160,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
                 if(user.getEc().equals("0")){
                     if(user.getAddress() == null){
                         progressDialog.dismiss();
-                        Toasty.warning(DetailsHomeActivity.this, "You need to add an address before order", Toasty.LENGTH_SHORT).show();
+                        Toasty.warning(DetailsHomeActivity.this, "Bạn cần cập nhật địa chỉ của mình trước khi đặt hàng!", Toasty.LENGTH_SHORT).show();
                     }else{
                         order.setUser_id(user.getId());
                         order.setShipping_address(user.getAddress());
@@ -193,7 +193,6 @@ public class DetailsHomeActivity extends AppCompatActivity {
                                         } catch (IOException e) {
                                             throw new RuntimeException(e);
                                         }
-                                        Toasty.error(DetailsHomeActivity.this, "Create order fails", Toasty.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -206,6 +205,7 @@ public class DetailsHomeActivity extends AppCompatActivity {
                                 }
                             });
                         }else{
+                            progressDialog.dismiss();
                             Toasty.warning(DetailsHomeActivity.this,"Hiện tại sách giáo trình này đang hết hàng", Toasty.LENGTH_SHORT).show();
                         }
 

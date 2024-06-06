@@ -20,6 +20,7 @@ import com.example.navigationbottom.model.Order;
 import com.example.navigationbottom.model.SliderData;
 import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.utils.NotifyStatus;
+import com.example.navigationbottom.utils.OrderStatus;
 import com.example.navigationbottom.viewmodel.ApiService;
 import com.example.navigationbottom.viewmodel.BookApiService;
 import com.example.navigationbottom.viewmodel.BookImageApiService;
@@ -59,6 +60,8 @@ public class NotificationConfirmActivity extends AppCompatActivity {
 
     private BookImageApiService bookImageApiService;
 
+    private Order order;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +80,7 @@ public class NotificationConfirmActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {
-                Order order = response.body();
+                order = response.body();
                 if(order.getEC().equals("0")){
                     txtThanhToan.setText(order.getPayment_method());
                     txtSoLuong.setText(order.getNumber_of_product()+"");
@@ -142,26 +145,47 @@ public class NotificationConfirmActivity extends AppCompatActivity {
         btnXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notification.setStatus(NotifyStatus.AGREE);
-                NotifyApplication notifyApplication = NotifyApplication.instance();
-                notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
-                deleteNotify(notification.getId());
-                Intent intent = new Intent(NotificationConfirmActivity.this, MainActivity.class);
-                intent.putExtra("dataFromActivity", "fromNotifyConfirm");
-                startActivity(intent);
+                if(order.getStatus().equals(OrderStatus.PENDING)){
+                    notification.setStatus(NotifyStatus.AGREE);
+                    NotifyApplication notifyApplication = NotifyApplication.instance();
+                    notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
+                    deleteNotify(notification.getId());
+                    Intent intent = new Intent(NotificationConfirmActivity.this, MainActivity.class);
+                    intent.putExtra("dataFromActivity", "fromNotifyConfirm");
+                    startActivity(intent);
+                }else if(order.getStatus().equals((OrderStatus.PAIDING))){
+                    notification.setStatus(NotifyStatus.AGREE);
+                    NotifyApplication notifyApplication = NotifyApplication.instance();
+                    notifyApplication.getStompClient().send("/app/res_paid", new Gson().toJson(notification)).subscribe();
+                    deleteNotify(notification.getId());
+                    Intent intent = new Intent(NotificationConfirmActivity.this, MainActivity.class);
+                    intent.putExtra("dataFromActivity", "fromNotifyConfirm");
+                    startActivity(intent);
+                }
+
             }
         });
 
         btnHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notification.setStatus(NotifyStatus.CANCEL);
-                NotifyApplication notifyApplication = NotifyApplication.instance();
-                notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
-                deleteNotify(notification.getId());
-                Intent intent = new Intent(NotificationConfirmActivity.this, MainActivity.class);
-                intent.putExtra("dataFromActivity", "fromNotifyConfirm");
-                startActivity(intent);
+                if(order.getStatus().equals(OrderStatus.PENDING)){
+                    notification.setStatus(NotifyStatus.CANCEL);
+                    NotifyApplication notifyApplication = NotifyApplication.instance();
+                    notifyApplication.getStompClient().send("/app/res_notify", new Gson().toJson(notification)).subscribe();
+                    deleteNotify(notification.getId());
+                    Intent intent = new Intent(NotificationConfirmActivity.this, MainActivity.class);
+                    intent.putExtra("dataFromActivity", "fromNotifyConfirm");
+                    startActivity(intent);
+                }else if(order.equals(OrderStatus.PAIDING)){
+                    notification.setStatus(NotifyStatus.CANCEL);
+                    NotifyApplication notifyApplication = NotifyApplication.instance();
+                    notifyApplication.getStompClient().send("/app/res_paid", new Gson().toJson(notification)).subscribe();
+                    deleteNotify(notification.getId());
+                    Intent intent = new Intent(NotificationConfirmActivity.this, MainActivity.class);
+                    intent.putExtra("dataFromActivity", "fromNotifyConfirm");
+                    startActivity(intent);
+                }
             }
         });
 

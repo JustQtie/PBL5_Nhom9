@@ -113,7 +113,7 @@ public class WebSocketController {
     public void handleSuccessOrderNotify(OrderResponse order) throws DataNotFoundException {
         User user = userService.getUser(order.getUserId());
         Product product = productService.getProduct(order.getProductId());
-        String message = "Người dùng với đầu số điện thoại: '" + user.getPhoneNumber() + "' đã thanh toán thành công sách giá trình '" + product.getName() + "'. Hãy nhấn vào thông báo này để xác nhận!";
+        String message = "Người dùng với đầu số điện thoại: '" + user.getPhoneNumber() + "' đã thanh toán thành công sách giáo trình '" + product.getName() + "'. Hãy nhấn vào thông báo này để xác nhận!";
         NotifyDTO notifyDTO = NotifyDTO.builder()
                 .userId(product.getUser().getId())
                 .orderId(order.getId())
@@ -122,6 +122,74 @@ public class WebSocketController {
                 .build();
         notifyService.createNotify(notifyDTO);
         simpMessagingTemplate.convertAndSend("/topic/" + product.getUser().getId(), notifyDTO);
+    }
+
+    @MessageMapping("/res_paid")
+    public void handleResSuccessOrderNotify(NotifyResponse notifyResponse) throws DataNotFoundException{
+        if(notifyResponse.getStatus().equals(NotifyStatus.AGREE)){
+            Order order = orderService.getOrderById(notifyResponse.getOrderId());
+            User user = userService.getUser(order.getUser().getId());
+            Product product = productService.getProduct(order.getProduct().getId());
+            order.setStatus(OrderStatus.PAID);
+            OrderDTO orderDTO = OrderDTO.builder()
+                    .userId(order.getUser().getId())
+                    .productId(order.getProduct().getId())
+                    .status(order.getStatus())
+                    .numberOfProduct(order.getNumberOfProducts())
+                    .totalMoney(order.getTotalMoney())
+                    .shippingAddress(order.getShippingAddress())
+                    .paymentMethod(order.getPaymentMethod())
+                    .build();
+            orderService.updateOrder(order.getId(), orderDTO);
+            NotifyDTO notifyDTO = NotifyDTO.builder()
+                    .userId(user.getId())
+                    .orderId(order.getId())
+                    .content("Người bán với tiêu đề sách là " + product.getName() + " đã xác nhận đơn hàng đã thanh toán thành công. Hãy vào lịch sử đơn hàng để xem chi tiết!")
+                    .status(NotifyStatus.AGREE)
+                    .build();
+            notifyService.createNotify(notifyDTO);
+            notifyResponse.setContent(notifyDTO.getContent());
+            notifyResponse.setStatus(notifyDTO.getStatus());
+            System.out.println("*****" + notifyDTO.getContent());
+            simpMessagingTemplate.convertAndSend("/topic/" + user.getId(), notifyResponse);
+        }else if(notifyResponse.getStatus().equals(NotifyStatus.CANCEL)){
+            Order order = orderService.getOrderById(notifyResponse.getOrderId());
+            User user = userService.getUser(order.getUser().getId());
+            Product product = productService.getProduct(order.getProduct().getId());
+            product.setQuantity(product.getQuantity() + order.getNumberOfProducts());
+            ProductDTO productDTO = ProductDTO.builder()
+                    .author(product.getAuthor())
+                    .categoryId(product.getCategory().getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .quantity(product.getQuantity())
+                    .status(product.getStatus())
+                    .build();
+            productService.updateProduct(product.getId(), productDTO);
+            order.setStatus(OrderStatus.CANCELED);
+            OrderDTO orderDTO = OrderDTO.builder()
+                    .userId(order.getUser().getId())
+                    .productId(order.getProduct().getId())
+                    .status(order.getStatus())
+                    .numberOfProduct(order.getNumberOfProducts())
+                    .totalMoney(order.getTotalMoney())
+                    .shippingAddress(order.getShippingAddress())
+                    .paymentMethod(order.getPaymentMethod())
+                    .build();
+            orderService.updateOrder(order.getId(), orderDTO);
+            NotifyDTO notifyDTO = NotifyDTO.builder()
+                    .userId(user.getId())
+                    .orderId(order.getId())
+                    .content("Người bán với tiêu đề sách là " + product.getName() + " đã xác nhận rằng đơn hàng thanh toán không thành công. Đơn hàng của bạn đã bị hủy")
+                    .status(NotifyStatus.CANCEL)
+                    .build();
+            notifyService.createNotify(notifyDTO);
+            notifyResponse.setContent(notifyDTO.getContent());
+            notifyResponse.setStatus(notifyDTO.getStatus());
+            System.out.println("*****" + notifyDTO.getContent());
+            simpMessagingTemplate.convertAndSend("/topic/" + user.getId(), notifyResponse);
+        }
     }
 
 }
