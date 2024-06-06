@@ -22,6 +22,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -162,10 +163,6 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
 
     private void capNhatThongTinNguoiDung() {
 
-        // Tạo đối tượng User để gửi yêu cầu cập nhật
-
-
-
         String name = edtHoVaTen.getText().toString();
         String phone = edtSoDienThoai.getText().toString();
         String address = edtDiaChi.getText().toString();
@@ -177,6 +174,25 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
         userCapNhat.setPhone_number(phone);
         userCapNhat.setAddress(address);
         userCapNhat.setGender(gioiTinh);
+
+
+
+        if(TextUtils.isEmpty(name)){
+            Toasty.warning(DetailSettingProfileActivity.this, "Họ và tên không được để trống!", Toasty.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(phone)){
+            Toasty.warning(DetailSettingProfileActivity.this, "Số điện thoại không được để trống!", Toasty.LENGTH_SHORT).show();
+            return;
+        }
+        if(!isValidPhoneNumber(phone)){
+            Toasty.warning(DetailSettingProfileActivity.this, "Số điện thoại không hợp lệ!", Toasty.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(address)){
+            Toasty.warning(DetailSettingProfileActivity.this, "Địa chỉ không được để trống!", Toasty.LENGTH_SHORT).show();
+            return;
+        }
 
 
 
@@ -208,7 +224,7 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
                 }
             });
         }else{
-            Toasty.warning(DetailSettingProfileActivity.this, "Số điện thoại không hợp lệ!", Toasty.LENGTH_SHORT).show();
+            Toasty.error(DetailSettingProfileActivity.this, "Cập nhật thông tin không thành công!", Toasty.LENGTH_SHORT).show();
         }
 
 
@@ -335,9 +351,6 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private String getRealPathFromURI(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -358,10 +371,6 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
         RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
-
-
-
-
 
     private void updateImageOnServer(Uri imageUriUpdate) {
         MultipartBody.Part imagePart = prepareFilePart("file", imageUriUpdate);
