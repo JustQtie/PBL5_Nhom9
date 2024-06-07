@@ -3,10 +3,11 @@ package com.example.navigationbottom.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Book {
+public class Book implements Serializable {
     private Long id;
     private String name;
     private String author;
@@ -23,6 +24,16 @@ public class Book {
     private long user_id;
 
     private long category_id;
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     private List<Integer> created_at;  // Thay đổi từ Object sang List<Integer>
     private List<Integer> updated_at;
 
@@ -155,5 +166,26 @@ public class Book {
         this.status = status;
         this.description = description;
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", point=" + point +
+                ", status='" + status + '\'' +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                ", user_id=" + user_id +
+                ", category_id=" + category_id +
+                ", categoryName='" + categoryName + '\'' +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                ", ec='" + ec + '\'' +
+                '}';
     }
 }

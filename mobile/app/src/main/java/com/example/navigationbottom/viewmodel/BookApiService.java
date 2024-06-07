@@ -4,15 +4,14 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.navigationbottom.model.Book;
-import com.example.navigationbottom.model.User;
 import com.example.navigationbottom.response.book.BookImageResponse;
 import com.example.navigationbottom.response.book.GetBookResponse;
-import com.example.navigationbottom.response.book.PostBookResponse;
-import com.example.navigationbottom.response.user.LoginResponse;
+import com.example.navigationbottom.response.book.BookResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
@@ -46,7 +45,10 @@ public class BookApiService {
                 }
                 return chain.proceed(newRequest);
             }
-        }).build();
+        })      .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         api = new Retrofit.Builder()
                 .client(client)
@@ -57,7 +59,7 @@ public class BookApiService {
                 .create(BookApi.class);
     }
 
-    public Call<PostBookResponse> postBook(@Body Book requestData){
+    public Call<BookResponse> postBook(@Body Book requestData){
         Log.d("RequestData", new Gson().toJson(requestData));
         return api.postBook(requestData);
     }
@@ -71,11 +73,37 @@ public class BookApiService {
         return api.getAllBookByUser(id);
     }
 
+    public Call<GetBookResponse> getBooksNotUser(Long id){
+        return api.getBooksNotUser(id);
+    }
+
     public Call<GetBookResponse> getAllBook(){
+        return api.getAllBook();
+    }
+
+    public Call<GetBookResponse> getAllBook(String key){
         return api.getAllBook();
     }
 
     public Call<Book> getBookById(Long id){
         return api.getBookById(id);
     }
+
+    public Call<ResponseBody> deleteBook(Long id){
+        return api.deleteBook(id);
+    }
+
+    public Call<ResponseBody> deleteBookIncludeOrder(Long id){
+        return api.deleteBookInclurOrder(id);
+    }
+
+    public Call<BookResponse> updateBook(Long id, @Body Book requestData){
+        Log.d("RequestData", new Gson().toJson(requestData));
+        return api.updateBook(id, requestData);
+    }
+
+    public Call<ResponseBody> deleteBookThumbnail(Long id){
+        return api.deleteBookImgae(id);
+    }
+
 }

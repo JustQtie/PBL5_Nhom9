@@ -36,7 +36,9 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,7 +65,11 @@ public class SellFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_sell, container, false);
+
         btn_fab = mView.findViewById(R.id.btn_fab_Sell);
+        rvBooks = mView.findViewById(R.id.rv_sell_fragment);
+
+
         return mView;
     }
     @Override
@@ -71,7 +77,7 @@ public class SellFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setFragmentToolbar(view);
 
-        rvBooks = mView.findViewById(R.id.rv_sell_fragment);
+
         progressDialog = new ProgressDialog(getActivity());
 
         rvBooks.setHasFixedSize(true);
@@ -123,14 +129,14 @@ public class SellFragment extends Fragment {
                         }
                     }
                 }else{
-                    Toast.makeText(getContext(), "Book invalid", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Book invalid", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetBookResponse> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(getContext(), "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });

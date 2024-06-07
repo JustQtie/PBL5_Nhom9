@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="orders")
@@ -22,8 +23,12 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name="order_date")
-    private LocalDate orderDate;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @Column(name = "number_of_product", nullable = false)
+    private int numberOfProducts;
 
     @Column(name = "status")
     private String status;
@@ -33,15 +38,6 @@ public class Order {
 
     @Column(name = "shipping_address")
     private String shippingAddress;
-
-    @Column(name = "shipping_date")
-    private LocalDate shippingDate;
-
-    @Column(name = "shipping_method")
-    private LocalDate shippingMethod;
-
-    @Column(name = "tracking_number")
-    private String trackingNumber;
 
     @Column(name = "payment_method")
     private String paymentMethod;

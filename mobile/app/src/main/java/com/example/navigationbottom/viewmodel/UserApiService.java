@@ -4,15 +4,20 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.user.ChangePassResponse;
+import com.example.navigationbottom.response.user.GetUsersResponse;
 import com.example.navigationbottom.response.user.LoginResponse;
 import com.example.navigationbottom.response.user.RegisterResponse;
+import com.example.navigationbottom.response.user.UserUpdateImageResponse;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -20,6 +25,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.Path;
 
 public class UserApiService {
 
@@ -42,7 +48,10 @@ public class UserApiService {
                 }
                 return chain.proceed(newRequest);
             }
-        }).build();
+        }).connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         api = new Retrofit.Builder()
                 .client(client)
@@ -58,8 +67,30 @@ public class UserApiService {
         return api.postUserLogin(requestData);
     }
     public Call<RegisterResponse> signUpUser(@Body User requestData){
-        Log.d("RequestData", new Gson().toJson(requestData));
+
         return api.signUpUser(requestData);
+    }
+    public Call<User> getUser(@Path("id") Long id){
+        return api.getUser(id);
+    }
+
+    public Call<GetUsersResponse> getAllUserTruIdNay(@Path("id") Long id){
+        return api.getAllUserTruIdNay(id);
+    }
+
+    public Call<ChangePassResponse> changePassword(@Path("id") Long id, @Body ChangePassResponse requestData) {
+
+        return api.changePassword(id, requestData);
+    }
+
+    public Call<User> updateUser(@Path("id") Long id, @Body User requestData) {
+        Log.d("thao", "update" + new Gson().toJson(requestData));
+        return api.updateUser(id, requestData);
+    }
+
+    public Call<UserUpdateImageResponse> updateUserImage(Long userId, MultipartBody.Part imageFile) {
+        Log.d("hovanthao", "2" + imageFile.toString());
+        return api.updateUserImage(userId, imageFile);
     }
 
 }

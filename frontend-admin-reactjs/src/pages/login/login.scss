@@ -7,7 +7,6 @@
     background-size: cover;
     background-position: center;
 
-
     .login-wrapper {
         width: 420px;
         background: transparent;
@@ -40,7 +39,7 @@
                 font-size: 16px;
                 color: #fff;
                 padding: 2px 35px 2px 20px;
-
+                transition: all 0.3s ease;
 
                 &::placeholder {
                     color: #fff;
@@ -57,13 +56,7 @@
                     top: 0;
                     font-size: 15px;
                     color: #fff;
-                    // width: 65px; // Chiều rộng của hình chữ nhật
-                    // height: auto; // Chiều cao của hình chữ nhật
-
-                    // background: linear-gradient(to right, #806442, #816847);
-
                 }
-
             }
 
             span {
@@ -75,9 +68,8 @@
                 color: #fff;
                 padding: 0 15px;
                 pointer-events: none;
-                transition: .5s;
+                transition: all 0.3s ease;
             }
-
 
             .login-icon {
                 position: absolute;
@@ -109,8 +101,6 @@
                     text-decoration: underline;
                 }
             }
-
-
         }
 
         button {
@@ -125,12 +115,28 @@
             font-size: 16px;
             color: #333;
             font-weight: 700;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
 
             &:hover {
-                background-color: #e4dfdf; // Màu sáng hơn cho hover
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); // Đổ bóng nhẹ hơn
-                border: 1.5px solid #A78E6A;
+                background-color: #e4dfdf;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                border: 1.5px solid #a78e6a;
+            }
+
+            // Thêm class rotate-icon vào icon trong button khi isLoading được kích hoạt
+
+            @keyframes rotate {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .rotate-icon {
+                animation: rotate 1s linear infinite;
             }
         }
     }

@@ -3,8 +3,11 @@ package com.example.navigationbottom.viewmodel;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.navigationbottom.response.book.BookImageResponse;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import okhttp3.Headers;
@@ -36,7 +39,10 @@ public class BookImageApiService {
                 }
                 return chain.proceed(newRequest);
             }
-        }).build();
+        }).connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         api = new Retrofit.Builder()
                 .client(client)
@@ -49,5 +55,9 @@ public class BookImageApiService {
 
     public Call<List<String>> getThumbnailsByProductId(Long productId){
         return api.getThumbnailsByProductId(productId);
+    }
+
+    public Call<BookImageResponse> deleteThumbnails(Long productId){
+        return api.deleteThumbnails(productId);
     }
 }

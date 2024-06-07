@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import ModalUpdateUser from "../../components/modal/ModalUpdateUser";
 import { getUserById } from "../../services/apiServices";
 import { toast } from 'react-toastify';
+import ModalDoiMatKhau from "../../components/modal/ModalDoiMatKhau";
 
 const Hoso = () => {
     const [showModalUpdateuser, setShowModalUpdate] = useState(false);
+    const [showModalDoiMatKhau, setShowModalDoiMatKhau] = useState(false);
     const [userData, setUserData] = useState({});
     const [userId, setUserId] = useState("");
 
@@ -44,13 +46,14 @@ const Hoso = () => {
             const res = await getUserById(userId, token);
             if (res.EC === 0) {
                 const user = res;
+
                 setUserData(user);
                 setId(user.id);
                 setFullName(user.fullname);
                 setPhoneNumber(user.phone_number);
                 setAddress(user.address);
                 setGender(user.gender);
-                setPreviewImage(user.image ? `data:image/jpeg;base64,${user.image}` : "");
+                setPreviewImage(user.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${user.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg");
             } else {
                 toast.error("Không thể lấy dữ liệu người dùng");
             }
@@ -64,13 +67,17 @@ const Hoso = () => {
         setShowModalUpdate(true);
     }
 
+    const handClickBtnDoiMatKhau = () => {
+        setShowModalDoiMatKhau(true);
+    }
+
     return (
         <div className="hoso-list">
             <Sidebar />
             <div className="hoso-listContainer">
                 <Navbar />
                 <div className="hoso-top">
-                    <h1>Hồ sơ cá nhân</h1>
+                    Hồ sơ cá nhân
                 </div>
                 <div className="hoso-bottom">
                     <div className="hoso-left">
@@ -97,9 +104,12 @@ const Hoso = () => {
                             <label className="form-label">Giới tính</label>
                             <input type="text" disabled className="form-control" value={gender ? "Nam" : "Nữ"} />
                         </div>
-                        <div className="col-md-6 d-flex justify-content-center">
-                            <button onClick={handClickBtnUpdate}>
+                        <div className="col-md-12 d-flex justify-content-center">
+                            <button className="btn btn-primary mx-2" onClick={handClickBtnUpdate}>
                                 Chỉnh sửa
+                            </button>
+                            <button className="btn btn-secondary mx-2" onClick={handClickBtnDoiMatKhau}>
+                                Đổi mật khẩu
                             </button>
                         </div>
                         <ModalUpdateUser
@@ -107,6 +117,12 @@ const Hoso = () => {
                             setShow={setShowModalUpdate}
                             userData={userData}
                             fetchUser={fetchUser}
+                        />
+
+                        <ModalDoiMatKhau
+                            show={showModalDoiMatKhau}
+                            setShow={setShowModalDoiMatKhau}
+                            userData={userData}
                         />
                     </div>
                 </div>

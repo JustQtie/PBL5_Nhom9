@@ -8,7 +8,7 @@ CREATE TABLE Role(
 
 CREATE TABLE Users(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255),
     password VARCHAR(100) NOT NULL DEFAULT '',
     fullname VARCHAR(100) DEFAULT '',
     phone_number VARCHAR(10) NOT NULL,
@@ -45,12 +45,13 @@ CREATE TABLE Categories(
 CREATE TABLE Products(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL DEFAULT '',
-    price FLOAT NOT NULL CHECK(price >= 0),
+    author VARCHAR(255) NOT NULL DEFAULT '',
+    price FLOAT NOT NULL,
     thumbnail VARCHAR(300) DEFAULT '',
     description LONGTEXT DEFAULT '' ,
     point FLOAT DEFAULT 0, 
-    quantity INT NOT NULL DEFAULT 1 CHECK(quantity > 0),
-    status ENUM('Been using for 6 months', 'Been using for more than 1 year', 'Been using for 3 to 5 years', 'Been using for more than 5 years') COMMENT 'Tình trạng sách',
+    quantity INT NOT NULL,
+    status ENUM('Đã sử dụng trong vòng 6 tháng', 'Đã sử dụng hơn 1 năm', 'Đã sử dụng từ 3 đến 5 năm', 'Đã sử dụng hơn 5 năm') COMMENT 'Tình trạng sách',
     created_at DATETIME,
     updated_at DATETIME,
     category_id INT,
@@ -73,28 +74,26 @@ CREATE TABLE orders(
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    address VARCHAR(255) NOT NULL,
-    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('pending', 'processing', 'shipped', 'delivered', 'cancelled')
+    product_id INT,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    status ENUM('saving', 'pending', 'confirmed', 'paid')
 COMMENT 'Trạng thái đơn hàng',
-    total_money FLOAT CHECK (total_money >= 0),
+    number_of_product INT,
+    total_money FLOAT,
     shipping_address VARCHAR(200),
-    shipping_date DATE,
-    tracking_number VARCHAR(100),
     payment_method VARCHAR(100),
     active TINYINT(1),
 );
 
-
-CREATE TABLE order_details(
+CREATE TABLE Notify(
     id INT PRIMARY KEY AUTO_INCREMENT,
+    content TEXT DEFAULT '',
+    status ENUM('agree', 'cancel', 'have not responded yet'),
     order_id INT,
     FOREIGN KEY (order_id) REFERENCES orders(id),
-    product_id INT,
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    number_of_product INT CHECK(number_of_product > 0),
-    total_money FLOAT CHECK(total_money>=0),
-);
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+)
 
 CREATE TABLE Comment(
     id INT PRIMARY KEY AUTO_INCREMENT,

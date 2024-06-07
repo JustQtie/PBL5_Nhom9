@@ -71,8 +71,25 @@ public class ProductService implements IProductService{
     }
 
     @Override
+    public List<ProductResponse> getListProduct() {
+        return productRepository
+                .findAll()
+                .stream()
+                .map(ProductResponse::convertToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ProductResponse> getProductByUserId(Long userId) {
         return productRepository.findByUserId(userId)
+                .stream()
+                .map(ProductResponse::convertToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getProductNotUserId(Long userId) {
+        return productRepository.findAllByUserIdNot(userId)
                 .stream()
                 .map(ProductResponse::convertToProductResponse)
                 .collect(Collectors.toList());
@@ -89,12 +106,13 @@ public class ProductService implements IProductService{
                     .orElseThrow(() ->
                             new DataNotFoundException(
                                     "Cannot find category with id: "+productDTO.getCategoryId()));
+            existingProduct.setName(productDTO.getName());
+            existingProduct.setAuthor(productDTO.getAuthor());
             existingProduct.setCategory(existingCategory);
             existingProduct.setStatus(productDTO.getStatus());
             existingProduct.setQuantity(productDTO.getQuantity());
             existingProduct.setPrice(productDTO.getPrice());
             existingProduct.setDescription(productDTO.getDescription());
-            existingProduct.setThumbnail(productDTO.getThumbnail());
             return productRepository.save(existingProduct);
         }
         return null;
@@ -136,4 +154,6 @@ public class ProductService implements IProductService{
         }
         return productImageRepository.save(newProductImage);
     }
+
+
 }

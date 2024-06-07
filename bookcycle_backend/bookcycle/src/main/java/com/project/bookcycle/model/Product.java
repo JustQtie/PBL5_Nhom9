@@ -3,6 +3,8 @@ package com.project.bookcycle.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="products")
 @Data//toString
@@ -42,4 +44,5 @@ public class Product extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
 }

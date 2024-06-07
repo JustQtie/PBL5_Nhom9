@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".viewmodel.NotifyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -30,7 +31,34 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="29">
         <activity
-            android:name=".activity.DetailsCartActivity"
+            android:name=".activity.NotificationConfirmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ChatItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ChatListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailCartPaySuccessActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="app"
+                    android:scheme="demozpdk" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.ItemHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailsCartPayActivity"
             android:exported="false" />
         <activity
             android:name=".activity.DetailHistoryProfileActivity"
@@ -47,7 +75,6 @@
         <activity
             android:name=".activity.AddBookActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.SignUpActivity"
             android:exported="false" />

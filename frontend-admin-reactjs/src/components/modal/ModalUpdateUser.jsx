@@ -3,7 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
 import { toast } from 'react-toastify';
-import { putUpdateUser } from '../../services/apiServices';
+import Spinner from 'react-bootstrap/Spinner';
+import { putUpdateUser, postUpdateImageUser } from '../../services/apiServices';
 import _ from 'lodash';
 import "./modalUpdateUser.scss"
 
@@ -11,9 +12,11 @@ const ModalUpdateUser = (props) => {
     const { show, setShow, userData, fetchUser } = props;
 
     const handleClose = () => {
-        setShow(false);
+        if (!isLoading) {
+            setShow(false);
+        }
     };
-
+    const [isLoading, setIsLoading] = useState(false);
     const [id, setId] = useState("");
     const [fullname, setFullName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -45,35 +48,71 @@ const ModalUpdateUser = (props) => {
     const handSubmitUpdateUser = async () => {
         const token = localStorage.getItem("token");
         if (!token) {
-            toast.error("Token không được tìm thấy");
             return;
         }
 
-        console.log("check", id, fullname, phoneNumber, address, gender, token);
-
-        let response = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
-
-        if (response && response.EC === 0) { // Điều chỉnh cho cấu trúc dữ liệu đúng
-            toast.success(response.EM); // Đảm bảo bạn đang truy cập phản hồi đúng cách
-            handleClose();
-            await fetchUser();
-        } else {
-            toast.error(response.EM); // Đảm bảo bạn đang truy cập thông báo lỗi đúng cách
+        // Validate required fields
+        if (!fullname && !phoneNumber && !address) {
+            toast.error("Xin vui lòng nhập thông tin!!");
+            return;
+        }
+        if (!fullname) {
+            toast.error("Họ và tên không được để trống!");
+            return;
+        }
+        if (!phoneNumber) {
+            toast.error("Số điện thoại không được để trống!");
+            return;
+        }
+        if (!address) {
+            toast.error("Địa chỉ không được để trống!");
+            return;
+        }
+        if (!gender) {
+            toast.error("Giới tính không được để trống!");
+            return;
+        }
+        if (!image) {
+            toast.error("Xin hãy chọn ảnh!");
+            return;
         }
 
-        // try {
+        setIsLoading(true); // Bắt đầu hiển thị trạng thái loading
 
-        // } catch (error) {
-        //     console.error(error);
-        //     toast.error("Đã xảy ra lỗi khi cập nhật người dùng");
-        // }
+        try {
+            // Gọi API cập nhật thông tin người dùng
+            let response = await putUpdateUser(id, fullname, phoneNumber, address, gender, token);
 
+            if (response && response.EC === 0) {
+                let response_image = await postUpdateImageUser(id, image, token);
+
+                if (response_image && response_image.EC === 0) {
+                    toast.success("Cập nhật thông tin thành công!");
+                } else {
+                    toast.error("Cập nhật ảnh thất bại!");
+                    return; // Nếu gặp lỗi, dừng luôn
+                }
+            } else {
+                toast.error("Lỗi khi cập nhật thông tin!");
+                return; // Nếu gặp lỗi, dừng luôn
+            }
+
+
+
+            // Nếu cả hai API đều thành công, đóng modal và gọi fetchUser
+            await fetchUser();
+            handleClose();
+        } catch (error) {
+            toast.error("Đã xảy ra lỗi khi cập nhật người dùng!");
+        } finally {
+            setIsLoading(false); // Dừng hiển thị trạng thái loading
+        }
     };
 
     return (
         <>
             <Modal className='modal-add-user' backdrop="static" show={show} onHide={handleClose} size='xl'>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={!isLoading}>
                     <Modal.Title>Chỉnh sửa thông tin</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -111,11 +150,24 @@ const ModalUpdateUser = (props) => {
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleClose} disabled={isLoading}>
                         Đóng
                     </Button>
-                    <Button variant="primary" onClick={handSubmitUpdateUser}>
-                        Lưu thông tin
+                    <Button variant="primary" onClick={handSubmitUpdateUser} disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                <span className="visually-hidden">Đang cập nhật...</span>
+                            </>
+                        ) : (
+                            'Lưu thông tin'
+                        )}
                     </Button>
                 </Modal.Footer>
             </Modal>

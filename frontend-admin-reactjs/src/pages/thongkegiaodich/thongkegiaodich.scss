@@ -1,11 +1,14 @@
 .thongkegiaodich {
     display: flex;
+    border-radius: 10px;
 
     .thongkegiaodichContainer {
         // background-color: lightblue;
         flex: 6;
 
+
         .thongkegiaodichTitle {
+
             padding: 20px;
             width: 100%;
             font-size: 24px;
@@ -20,6 +23,7 @@
             display: flex;
             padding-left: 120px;
             padding-right: 120px;
+            margin-bottom: 20px;
             gap: 200px;
         }
 
