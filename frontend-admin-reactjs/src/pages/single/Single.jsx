@@ -67,7 +67,7 @@ const Single = () => {
                             <img src={userDetail.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${userDetail.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="users" className="itemImg" />
 
                             <div className="details">
-                                <h1 className="itemTitle">{userDetail.phone_number}</h1>
+                                <h1 className="itemTitle">{userDetail.fullname}</h1>
 
                                 <div className="detailItem">
                                     <span className="itemKey">Trạng thái:</span>

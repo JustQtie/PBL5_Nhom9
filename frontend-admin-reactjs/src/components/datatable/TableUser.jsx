@@ -41,7 +41,7 @@ const TableUser = () => {
 
             const res = await getAllUsers(token);
 
-
+            console.log(res);
 
             if (res && res.EC === 0) {
                 setListUsers(res.userResponseList);
@@ -75,12 +75,12 @@ const TableUser = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell className="tableCell">STT</TableCell>
-                            <TableCell className="tableCell">Username</TableCell>
-                            <TableCell className="tableCell">Address</TableCell>
-                            <TableCell className="tableCell">Gender</TableCell>
-                            <TableCell className="tableCell">Phone Number</TableCell>
-                            <TableCell className="tableCell">Active</TableCell>
-                            <TableCell className="tableCell">Action</TableCell>
+                            <TableCell className="tableCell">Họ và tên</TableCell>
+                            <TableCell className="tableCell">Địa chỉ</TableCell>
+                            <TableCell className="tableCell">Giới tính</TableCell>
+                            <TableCell className="tableCell">Số điện thoại</TableCell>
+                            <TableCell className="tableCell">Trạng thái</TableCell>
+                            <TableCell className="tableCell">Thao tác</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -92,7 +92,7 @@ const TableUser = () => {
                                         <TableCell className="tableCell">
                                             <div className="cellWrapper-user">
                                                 <img src={item.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/users/images/${item.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="User" className="image" />
-                                                {item.phone_number}
+                                                {item.fullname}
                                             </div>
                                         </TableCell>
                                         <TableCell className="tableCell">{item.address}</TableCell>

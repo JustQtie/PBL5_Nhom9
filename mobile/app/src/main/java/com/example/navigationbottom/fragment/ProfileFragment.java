@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -175,6 +176,19 @@ public class ProfileFragment extends Fragment {
                 String newPassword = edtMatKhauMoi.getText().toString();
                 String confirmPassword = edtNhapLaiMatKhauMoi.getText().toString();
 
+                if(TextUtils.isEmpty(oldPassword)){
+                    Toasty.warning(getActivity(), "Vui lòng điền mật khẩu cũ!", Toasty.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(newPassword)){
+                    Toasty.warning(getActivity(), "Vui lòng điền mật khẩu mới!", Toasty.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(confirmPassword)){
+                    Toasty.warning(getActivity(), "Vui lòng điền xác nhận lại mật khẩu!", Toasty.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (!newPassword.equals(confirmPassword)) {
                     Toasty.warning(getActivity(), "Mật khẩu mới không khớp!", Toasty.LENGTH_SHORT).show();
                     return;
@@ -183,8 +197,6 @@ public class ProfileFragment extends Fragment {
                 ChangePassResponse requestData = new ChangePassResponse();
                 requestData.setOldPassword(oldPassword);
                 requestData.setNewPassword(newPassword);
-
-
 
                 UserApiService apiService = new UserApiService(getActivity());
 

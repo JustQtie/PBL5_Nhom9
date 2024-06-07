@@ -72,6 +72,10 @@ const ModalUpdateUser = (props) => {
             toast.error("Giới tính không được để trống!");
             return;
         }
+        if (!image) {
+            toast.error("Xin hãy chọn ảnh!");
+            return;
+        }
 
         setIsLoading(true); // Bắt đầu hiển thị trạng thái loading
 

@@ -110,7 +110,7 @@ public class ChatItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String message = edtSendMess.getText().toString().trim();
                 if(TextUtils.isEmpty(message)){
-                    Toasty.warning(ChatItemActivity.this, "Cannot send the empty message...", Toasty.LENGTH_SHORT).show();
+                    Toasty.warning(ChatItemActivity.this, "Xin vui lòng nhập nội dung", Toasty.LENGTH_SHORT).show();
                 }else{
                     sendMessage(message);
                 }
