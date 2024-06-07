@@ -148,10 +148,7 @@ public class UserController {
                     .build();
             return ResponseEntity.ok(userResponse);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(UserResponse.builder()
-                    .ec(-1)
-                    .message("Update error!")
-                    .build()
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()
             );
         }
     }

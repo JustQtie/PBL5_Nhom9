@@ -32,7 +32,7 @@ public class NotifyApplication extends Application {
     @SuppressLint("CheckResult")
     private void initWebsocket() {
         if (!isWebsocketInitialized) {
-            stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://54c6-171-225-184-143.ngrok-free.app/notify");
+            stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "wss://c5c9-171-225-184-143.ngrok-free.app/notify");
             stompClient.lifecycle().subscribe(lifecycleEvent -> {
                 switch (lifecycleEvent.getType()) {
                     case OPENED:

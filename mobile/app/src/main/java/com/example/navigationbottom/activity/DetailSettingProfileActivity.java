@@ -192,10 +192,14 @@ public class DetailSettingProfileActivity extends AppCompatActivity {
                         setResult(RESULT_OK, resultIntent);
                         finish();
                     } else {
-                        // Xử lý lỗi nếu có
-                        Toasty.error(DetailSettingProfileActivity.this, "Cập nhật thông tin thất bại", Toasty.LENGTH_SHORT).show();
-                        finish();
-                        Log.e("API Error", "Response Code: " + response.code());
+                        try {
+                            String errorMessage = response.errorBody().string();
+                            if(errorMessage.equals("Phone number already exists"))
+                                Toasty.info(DetailSettingProfileActivity.this, "Số điện thoại này đã được sử dụng. Vui lòng nhập số điện thoại khác!", Toasty.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toasty.error(DetailSettingProfileActivity.this, "Cập nhật thông tin thất bại!", Toasty.LENGTH_SHORT).show();
+                        }
                     }
                 }
 

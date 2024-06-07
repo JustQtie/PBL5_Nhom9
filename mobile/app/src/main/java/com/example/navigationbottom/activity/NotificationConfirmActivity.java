@@ -177,7 +177,7 @@ public class NotificationConfirmActivity extends AppCompatActivity {
                     Intent intent = new Intent(NotificationConfirmActivity.this, MainActivity.class);
                     intent.putExtra("dataFromActivity", "fromNotifyConfirm");
                     startActivity(intent);
-                }else if(order.equals(OrderStatus.PAIDING)){
+                }else if(order.getStatus().equals(OrderStatus.PAIDING)){
                     notification.setStatus(NotifyStatus.CANCEL);
                     NotifyApplication notifyApplication = NotifyApplication.instance();
                     notifyApplication.getStompClient().send("/app/res_paid", new Gson().toJson(notification)).subscribe();
