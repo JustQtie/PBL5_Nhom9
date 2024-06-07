@@ -18,8 +18,14 @@ import com.example.navigationbottom.response.user.LoginResponse;
 import com.example.navigationbottom.viewmodel.SessionManager;
 import com.example.navigationbottom.viewmodel.UserApiService;
 import com.example.navigationbottom.viewmodel.UserPreferences;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,13 +68,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void clickLogin() {
-
         progressDialog.show();
         edtTaiKhoan = findViewById(R.id.edt_taikhoan_login);
         edtMauKhau = findViewById(R.id.edt_matkhau_login);
 
         User user = new User();
-        user.setPhoneNumber(edtTaiKhoan.getText().toString().trim());
+        user.setPhone_number(edtTaiKhoan.getText().toString().trim());
         user.setPassword(edtMauKhau.getText().toString().trim());
 
         userApiService = new UserApiService(this);
@@ -79,27 +84,31 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(response1 != null){
                     progressDialog.dismiss();
-                    if(response1.getEc().equals("0")){
-                        UserDataSingleton.getInstance().setUser(response1.getUser());
-                        UserPreferences.saveUser(LoginActivity.this, response1.getUser());
-                        Log.d("RequestData1", new Gson().toJson(response1));
-                        SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
-                        Toast.makeText(LoginActivity.this, "Login success!!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-                    }else{
-                        Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
+                    if(response1.getEc().equals("0")) {
+                        if (response1.getUser().getActive() && response1.getUser().getId() != 1L) {
+                            UserDataSingleton.getInstance().setUser(response1.getUser());
+                            UserPreferences.saveUser(LoginActivity.this, response1.getUser());
+                            SessionManager.getInstance(getApplicationContext()).saveToken(response1.getToken());
+                            Toasty.success(LoginActivity.this, "Đăng nhập thành công.", Toasty.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        } else if (response1.getUser().getId() == 1L) {
+                            Toasty.warning(LoginActivity.this, "Admin không có quyền truy cập. Vui lòng tạo tài khoản người dùng.", Toasty.LENGTH_SHORT).show();
+                        }
+                    }else if(response1.getEc().equals("-2")){
+                        Toasty.warning(LoginActivity.this, "Tài khoản của bạn đã bị cấm hoạt động.", Toasty.LENGTH_SHORT).show();
+                    }else {
+                        Toasty.error(LoginActivity.this, "Xin vui lòng kiểm tra lại tài khoản mật khẩu!", Toasty.LENGTH_SHORT).show();
                     }
                 }else{
                     progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "Username or Password invalid", Toast.LENGTH_SHORT).show();
+                    Toasty.error(LoginActivity.this, "Xin vui lòng kiểm tra lại tài khoản mật khẩu!", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(LoginActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(LoginActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });

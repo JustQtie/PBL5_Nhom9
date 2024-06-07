@@ -2,14 +2,31 @@ import "./single_giaotrinh.scss"
 import Sidebar from "../../components/sidebar/Sidebar"
 import Navbar from "../../components/navbar/Navbar"
 import { useLocation } from "react-router-dom";
+import ModalDeleteProduct from "../../components/modal/ModalDeleteProduct";
+import { useState, useEffect } from "react";
 
 const Single = () => {
 
+    const [showModalDeleteProduct, setShowModalDelete] = useState(false);
+    const [dataDelete, setDataDelete] = useState({});
 
     const location = useLocation();
     const productDetail = location.state?.product;
+
+    useEffect(() => {
+        if (productDetail) {
+            setDataDelete(productDetail);
+        }
+    }, [productDetail]);
+
     if (!productDetail) {
         return <div>No user data available</div>;
+    }
+
+
+
+    const handClickBtnDelete = () => {
+        setShowModalDelete(true);
     }
 
     return (
@@ -18,25 +35,21 @@ const Single = () => {
             <div className="single-giaotrinhContainer">
                 <Navbar />
                 <div className="single-giaotrinhtop">
-                    <h1>Thông tin chi tiết giáo trình</h1>
+                    Thông tin chi tiết giáo trình
                 </div>
                 <div className="single-giaotrinhbottom">
                     <div className="single-giaotrinhleft">
-                        <img
-                            src="https://i.imgur.com/2zLfMh6.jpeg"
-                            alt=""
-                            className="single-giaotrinhimg"
-                        />
+                        <img src={productDetail.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/products/images/${productDetail.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="products" className="single-giaotrinhimg" />
                     </div>
                     <div className="single-giaotrinhright">
                         <div className="single-giaotrinh-fill">
                             <div className="col-md-5">
                                 <label className="form-label">Mã giáo trình</label>
-                                <div className="form-control">22222</div>
+                                <div className="form-control">{productDetail.id}</div>
                             </div>
                             <div className="col-md-5">
                                 <label className="form-label">Tiêu đề</label>
-                                <div className="form-control">Giáo trình giải tích 1</div>
+                                <div className="form-control">{productDetail.name}</div>
                             </div>
                         </div>
 
@@ -47,14 +60,14 @@ const Single = () => {
                             </div>
                             <div className="col-md-5">
                                 <label className="form-label">Trạng thái</label>
-                                <div className="form-control">Còn mới</div>
+                                <div className="form-control">{productDetail.status}</div>
                             </div>
                         </div>
 
                         <div className="single-giaotrinh-fill">
                             <div className="col-md-5">
                                 <label className="form-label">Giá bán</label>
-                                <div className="form-control">5$</div>
+                                <div className="form-control">{productDetail.price}</div>
                             </div>
                             <div className="col-md-5">
                                 <label className="form-label">Người bán</label>
@@ -65,22 +78,25 @@ const Single = () => {
                         <div className="card-body">
                             <label className="form-label">Mô tả</label>
                             <p className="card-text">
-                                Đây là mô tả của bạn. Nội dung này sẽ tự động điều chỉnh kích thước và tự xuống dòng nếu cần thiết để hiển thị đúng.d
-                                Đây là mô tả của bạn. Nội dung này sẽ tự động điều chỉnh kích thước và tự xuống dòng nếu cần thiết để hiển thị đúng.d
-                                Đây là mô tả của bạn. Nội dung này sẽ tự động điều chỉnh kích thước và tự xuống dòng nếu cần thiết để hiển thị đúng.d
-                                Đây là mô tả của bạn. Nội dung này sẽ tự động điều chỉnh kích thước và tự xuống dòng nếu cần thiết để hiển thị đúng.d
-
+                                {productDetail.description}
                             </p>
                         </div>
 
-
-
                         <div className="d-flex justify-content-center">
-                            <button>Xóa bài</button>
+                            <button onClick={handClickBtnDelete}>
+                                Xóa bài
+                            </button>
                         </div>
+
                     </div>
                 </div>
             </div>
+
+            <ModalDeleteProduct
+                show={showModalDeleteProduct}
+                setShow={setShowModalDelete}
+                dataDelete={dataDelete}
+            />
         </div>
     )
 };

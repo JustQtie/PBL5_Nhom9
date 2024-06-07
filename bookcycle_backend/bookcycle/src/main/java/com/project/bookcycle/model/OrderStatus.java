@@ -1,9 +1,10 @@
 package com.project.bookcycle.model;
 
 public class OrderStatus {
+    public static final String SAVING = "saving";
     public static final String PENDING = "pending";
-    public static final String PROCESSING = "processing";
-    public static final String SHIPPED = "shipped";
-    public static final String DELIVERED = "delivered";
-    public static final String CANCELLED = "cancelled";
+    public static final String CONFIRMED = "confirmed";
+    public static final String PAID = "paid";
+    public static final String PAIDING = "paiding";
+    public static final String CANCELED = "canceled";
 }

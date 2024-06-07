@@ -8,6 +8,7 @@ import com.project.bookcycle.exceptions.DataNotFoundException;
 
 import com.project.bookcycle.model.User;
 import com.project.bookcycle.response.*;
+import com.project.bookcycle.service.INotifyService;
 import com.project.bookcycle.service.IUserService;
 import com.project.bookcycle.utils.MessageKeys;
 import jakarta.validation.Valid;
@@ -18,6 +19,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -38,7 +41,8 @@ import java.util.UUID;
 @RequiredArgsConstructor // Tự động tạo Constructor cho các biến final,...
 public class UserController {
     private final IUserService userService;
-
+    private final INotifyService notifyService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(
@@ -80,10 +84,14 @@ public class UserController {
             if(loginResponse.getUser().isActive()){
                 loginResponse.setMessage(MessageKeys.LOGIN_SUCCESSFULLY);
                 loginResponse.setEc(0);
+                List<NotifyResponse> notifyResponses = notifyService.findByUserId(loginResponse.getUser().getId());
+                for(NotifyResponse notifyResponse : notifyResponses){
+                    simpMessagingTemplate.convertAndSend("/topic/notification/" + loginResponse.getUser().getId(), notifyResponse.getContent());
+                }
                 return ResponseEntity.ok().body(loginResponse);
             }else{
                 return ResponseEntity.ok().body(LoginResponse.builder()
-                        .message(MessageKeys.LOGIN_FAILED).ec(-1)
+                        .message(MessageKeys.LOGIN_FAILED).ec(-2)
                         .build());
             }
         }catch (Exception e){
@@ -98,16 +106,14 @@ public class UserController {
             @PathVariable Long id
     ){
         try{
-
             User user = userService.getUser(id);
             UserResponse userResponse = UserResponse.builder()
                     .id(user.getId())
-                    .password(user.getPassword())
                     .fullname(user.getFullname())
                     .phoneNumber(user.getPhoneNumber())
                     .address(user.getAddress())
                     .active(user.isActive())
-                    .dateOfBirth(user.getDateOfBirth())
+                    .thumbnail(user.getThumbnail())
                     .gender(user.isGender())
                     .role(user.getRole())
                     .ec(0)
@@ -142,10 +148,7 @@ public class UserController {
                     .build();
             return ResponseEntity.ok(userResponse);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(UserResponse.builder()
-                    .ec(-1)
-                    .message("Update error!")
-                    .build()
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()
             );
         }
     }
@@ -159,7 +162,7 @@ public class UserController {
         }
     }
     @PutMapping("/changepass/{id}")
-    public ResponseEntity<String> changePass(
+    public ResponseEntity<?> changePass(
             @PathVariable long id,
             @Valid @RequestBody UserChangePassDTO userChangePassDTO,
             BindingResult result
@@ -173,11 +176,25 @@ public class UserController {
                 return ResponseEntity.badRequest().body(messageError.toString());
             }
             String response = userService.changePassword(id, userChangePassDTO);
-            ResponseEntity.ok().body(response);
+            if(response.equals("Change password complete")){
+                User user = userService.getUser(id);
+                return ResponseEntity.ok().body(UserResponse.builder()
+                        .id(user.getId())
+                        .password(user.getPassword())
+                        .fullname(user.getFullname())
+                        .address(user.getAddress())
+                        .active(user.isActive())
+                        .gender(user.isGender())
+                        .thumbnail(user.getThumbnail())
+                        .phoneNumber(user.getPhoneNumber())
+                        .ec(0)
+                        .build());
+            }else{
+                return ResponseEntity.ok().body(UserResponse.builder().ec(-1).build());
+            }
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return null;
     }
 
     @PostMapping ("")
@@ -215,9 +232,14 @@ public class UserController {
                 }
                 String filename = storeFile(file);
                 User user = userService.updateImage(userId, filename);
-            return ResponseEntity.ok().body(user);
+            return ResponseEntity.ok().body(UserResponse.builder()
+                    .thumbnail(user.getThumbnail())
+                    .ec(0)
+                    .build());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(UserResponse.builder()
+                    .ec(-1)
+                    .build());
         }
     }
     @PutMapping(value = "ban/{id}")
@@ -272,8 +294,6 @@ public class UserController {
             throw new IOException("Invalid image format");
         }
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
-        String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         java.nio.file.Path uploadDir = Paths.get("uploads/user_image");
         // Kiểm tra và tạo thư mục nếu nó không tồn tại
@@ -281,13 +301,30 @@ public class UserController {
             Files.createDirectories(uploadDir);
         }
         // Đường dẫn đầy đủ đến file
-        java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
+        java.nio.file.Path destination = Paths.get(uploadDir.toString(), filename);
         // Sao chép file vào thư mục đích
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-        return uniqueFilename;
+        return filename;
     }
     private boolean isImageFile(MultipartFile file) {
         String contentType = file.getContentType();
         return contentType != null && contentType.startsWith("image/");
     }
+
+    @GetMapping("/notuser/{id}")
+    public ResponseEntity<?> getAllNotUser(
+            @PathVariable("id") Long id
+    ){
+        try {
+            UserListResponse userListResponse = new UserListResponse();
+            userListResponse.setUserResponseList(userService.getAllNotUser(id));
+            userListResponse.setEC(0);
+            return ResponseEntity.ok().body(userListResponse);
+        }catch (Exception e){
+            return ResponseEntity.ok().body(UserListResponse.builder()
+                    .EC(-1)
+                    .build());
+        }
+    }
+
 }

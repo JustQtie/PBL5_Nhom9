@@ -15,7 +15,9 @@ public interface IProductService {
     Product createProduct(ProductDTO productDTO) throws DataNotFoundException;
     Product getProduct(long id) throws DataNotFoundException;
     List<ProductResponse> getAllProducts(String keyword, Long categoryId);
+    List<ProductResponse> getListProduct();
     List<ProductResponse> getProductByUserId(Long userId);
+    List<ProductResponse> getProductNotUserId(Long userId);
     Product updateProduct(long id, ProductDTO productDTO) throws DataNotFoundException;
     void deleteProduct(long id);
     boolean existsByName(String name);
@@ -24,4 +26,5 @@ public interface IProductService {
             long productId,
             ProductImageDTO productImageDTO
     ) throws DataNotFoundException, InvalidParamException;
+
 }

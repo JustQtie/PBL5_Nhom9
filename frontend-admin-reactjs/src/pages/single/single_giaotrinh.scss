@@ -5,10 +5,28 @@
     .single-giaotrinhContainer {
         flex: 6;
 
-        .single-giaotrinhtop,
+        .single-giaotrinhtop {
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 24px;
+            margin: 20px;
+            padding: 10px;
+
+            color: #333;
+            display: flex;
+            /* Thêm dòng này */
+            justify-content: center;
+            /* Thêm dòng này */
+            align-items: center;
+            /* Thêm dòng này */
+        }
+
+
         .single-giaotrinhbottom {
             -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
             padding: 10px;
             margin: 20px;
             display: flex;
@@ -20,15 +38,23 @@
             }
 
             .single-giaotrinhleft {
+
                 flex: 1;
                 text-align: center;
+                overflow: hidden; // Ẩn phần thừa của hình ảnh nếu có
+                padding: 20px;
 
                 .single-giaotrinhimg {
-                    width: 200px;
-                    height: 260px;
+                    width: 300px;
+                    height: 360px;
                     border-radius: 2%;
                     border: 2px solid gray;
                     object-fit: cover;
+                    transition: transform 0.5s ease; // Hiệu ứng hoạt động khi hover
+                }
+
+                .single-giaotrinhimg:hover {
+                    transform: scale(1.1); // Phóng to hình ảnh khi hover
                 }
             }
 

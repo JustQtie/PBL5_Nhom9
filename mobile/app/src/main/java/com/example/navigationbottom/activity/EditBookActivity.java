@@ -19,11 +19,14 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,15 +38,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.SliderAdapter;
+import com.example.navigationbottom.adaper.UserDataSingleton;
 import com.example.navigationbottom.model.Book;
 import com.example.navigationbottom.model.Category;
 import com.example.navigationbottom.model.SliderData;
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.book.BookImageResponse;
+import com.example.navigationbottom.response.book.BookResponse;
 import com.example.navigationbottom.response.book.GetBookResponse;
 import com.example.navigationbottom.response.category.GetCategoryResponse;
 import com.example.navigationbottom.utils.Status;
@@ -57,6 +64,11 @@ import com.google.gson.Gson;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -65,18 +77,25 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import es.dmoral.toasty.Toasty;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditBookActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private EditText edtTieude, edtTacgia, edtSoLuong, edtGia, edtMota;
+    private EditText edtTieude, edtTacgia, edtGia, edtMota, edtSoLuong;
+
 
     private AppCompatButton btnUpload;
+
+    private AppCompatButton btnDelete;
     private FloatingActionButton btnCamera;
     private Uri imageUri;
     private Dialog dialog;
@@ -84,26 +103,21 @@ public class EditBookActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 123;
     private static final int GALLERY_PERMISSION_CODE = 124;
     private static final int CAMERA_REQUEST_CODE = 125;
-    private static final int GALLERY_REQUEST_CODE = 126;
 
     private static final int PICK_IMAGES_REQUEST = 1;
-    List<Uri> imageUris = new ArrayList<>();
+    private List<Uri> imageUris;
 
     BookApiService bookApiService;
     BookImageApiService bookImageApiService;
-    Long bookIdNhan;
     Long categoryId;
     String selectedStatus;
     private ProgressDialog progressDialog;
-    private User user;
     private Book book;
 
-    List<String> imageUrls = new ArrayList<>();
+    List<String> imageUrlString = new ArrayList<>();
 
-    String imageUrl;
-    private ExecutorService executorService;
-    private Handler mainHandler;
-    @SuppressLint("MissingInflatedId")
+    private Handler handler = new Handler();
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,74 +126,28 @@ public class EditBookActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarEditBookActivity);
         setSupportActionBar(toolbar);
 
-        this.executorService = Executors.newSingleThreadExecutor();
-        this.mainHandler = new Handler(Looper.getMainLooper());
+
 
         edtTacgia = findViewById(R.id.edt_tacgia_EditBookActivity);
         edtTieude = findViewById(R.id.edt_Title_EditBookActivity);
-        edtSoLuong = findViewById(R.id.edt_Soluong_EditBookActivity);
+        edtSoLuong = findViewById(R.id.number_so_luong);
         edtGia = findViewById(R.id.edt_gia_EditBookActivity);
         edtMota = findViewById(R.id.edt_mota_EditBookActivity);
+        btnDelete = findViewById(R.id.btn_Delete_EditBookActivity);
         btnUpload = findViewById(R.id.btn_upload_EditBookActivity);
         btnCamera = findViewById(R.id.btn_camera_EditBookActivity);
 
+        progressDialog = new ProgressDialog(EditBookActivity.this);
 
-        if (getIntent() != null && getIntent().hasExtra("book")) {
-            bookIdNhan = getIntent().getLongExtra("book", -1);  // Mặc định -1 nếu không có dữ liệu
-        }
+        bookApiService = new BookApiService(this);
 
-        Callable<Book> callable = new Callable<Book>() {
-            @Override
-            public Book call() throws Exception {
-                BookApiService bookApiService = new BookApiService(getApplicationContext());
-                Call<Book> call = bookApiService.getBookById(bookIdNhan);
-                Response<Book> response = call.execute();
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d("RequestData1", new Gson().toJson(response));
-                    return response.body();
-                } else {
-                    Log.d("RequestData1", "Failed to get book with status: " + response.code());
-                    throw new Exception("Failed to get book with status: " + response.code());
-                }
-            }
-        };
+        book = (Book) getIntent().getSerializableExtra("book");
 
-        Future<Book> future = executorService.submit(callable);
 
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final Book bookResponse = future.get();
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            book.setName(bookResponse.getName());
-                            book.setAuthor(bookResponse.getAuthor());
-                            book.setPoint(bookResponse.getPoint());
-                            book.setDescription(bookResponse.getDescription());
-                            book.setStatus(bookResponse.getStatus());
-                            book.setQuantity(bookResponse.getQuantity());
-                            book.setThumbnail(bookResponse.getThumbnail());
-                            book.setPrice(bookResponse.getPrice());
-                            book.setUser_id(bookResponse.getUser_id());
-                            book.setCategory_id(bookResponse.getCategory_id());
-                            fillImageSlide();
-                            AddSpinner();
-                            setEdText();
-                        }
-                    });
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
+        fillImageSlide();
+        AddSpinner();
+        setEdText();
 
-                        }
-                    });
-                }
-            }
-        });
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,17 +155,214 @@ public class EditBookActivity extends AppCompatActivity {
             }
         });
 
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.setMessage("Delete...");
+                progressDialog.show();
+
+                bookApiService.deleteBookThumbnail(book.getId()).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful()){
+                            bookApiService.deleteBookIncludeOrder(book.getId()).enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                    if(response.isSuccessful()){
+                                        progressDialog.dismiss();
+                                        Toasty.success(EditBookActivity.this, "Xoá giáo trình thành công!" , Toasty.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
+                                        intent.putExtra("dataFromActivity", "fromEditBook");
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        progressDialog.dismiss();
+                                        String errorMessage = "Unsuccessful response: " + response.code();
+                                        Log.e("UploadError", errorMessage);
+                                        Toasty.warning(EditBookActivity.this, "Xóa giáo trình thất bại! Vui lòng thử lại!", Toasty.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    progressDialog.dismiss();
+                                    String errorMessage = "Request failed: " + t.getMessage();
+                                    Log.e("Hello", errorMessage);
+                                }
+                            });
+                        } else {
+                            progressDialog.dismiss();
+                            String errorMessage = "Unsuccessful response: " + response.code();
+                            Log.e("UploadError", errorMessage);
+                            Toasty.error(EditBookActivity.this, "Xóa giáo trình thất bại! Vui lòng thử lại!", Toasty.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        progressDialog.dismiss();
+                        String errorMessage = "Request failed: " + t.getMessage();
+                        Log.e("Hello", errorMessage);
+                        Toasty.error(EditBookActivity.this, errorMessage, Toasty.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.setMessage("Upload...");
+                progressDialog.show();
 
+                if(TextUtils.isEmpty(edtTacgia.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtTieude.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtGia.getText().toString().trim()) ||
+                        TextUtils.isEmpty(edtSoLuong.getText().toString().trim())){
+                    progressDialog.dismiss();
+                    Toasty.warning(EditBookActivity.this, "Vui lòng điền tất cả các trường đang trống", Toasty.LENGTH_SHORT).show();
+                }else {
+                    Book requestBook = new Book();
+                    requestBook.setName(edtTieude.getText().toString().trim());
+                    requestBook.setAuthor(edtTacgia.getText().toString().trim());
+                    requestBook.setPrice(Float.parseFloat(edtGia.getText().toString()));
+                    requestBook.setQuantity(Integer.parseInt(edtSoLuong.getText().toString()));
+                    requestBook.setDescription(edtMota.getText().toString().trim());
+                    requestBook.setCategory_id(categoryId);
+                    requestBook.setStatus(selectedStatus);
+                    List<MultipartBody.Part> parts;
+                    if (imageUris != null) {
+                        parts = prepareFileParts("files", imageUris);
+                    } else {
+                        try {
+                            parts = getRealPath("files", imageUrlString);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Thực hiện tác vụ tiếp theo
+                            secondTask(requestBook, parts);
+                        }
+                    }, 7000);
+
+                }
+            }
+        });
+    }
+    private void secondTask(Book requestBook,List<MultipartBody.Part> parts){
+        bookApiService.updateBook(book.getId(), requestBook).enqueue(new Callback<BookResponse>() {
+            public void onResponse(Call<BookResponse> call, Response<BookResponse> response) {
+                BookResponse bookResponse = response.body();
+                if(bookResponse !=null){
+                    Log.d("RequestData1", new Gson().toJson(bookResponse));
+                    if(bookResponse.getUser()!=null){
+                        Log.d("RequestData1", "Success update my book");
+                        bookApiService.deleteBookThumbnail(book.getId()).enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if(response.isSuccessful()){
+                                    bookImageApiService.deleteThumbnails(book.getId()).enqueue(new Callback<BookImageResponse>() {
+                                        @Override
+                                        public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
+                                            BookImageResponse bookImageResponse = response.body();
+                                            if(response.isSuccessful()){
+                                                if(bookImageResponse.getEc().equals("0")){
+                                                    bookApiService.uploadFileImage(book.getId(), parts).enqueue(new Callback<BookImageResponse>() {
+                                                        @Override
+                                                        public void onResponse(Call<BookImageResponse> call, Response<BookImageResponse> response) {
+                                                            BookImageResponse responseBody = response.body();
+                                                            if(responseBody!=null){
+                                                                if(responseBody.getEc().equals("0")){
+                                                                    Log.d("RequestData1", new Gson().toJson(responseBody));
+                                                                    progressDialog.dismiss();
+                                                                    Toasty.success(EditBookActivity.this, "Đã cập nhật thành công sách giáo trình", Toasty.LENGTH_SHORT).show();
+                                                                    Intent intent = new Intent(EditBookActivity.this, MainActivity.class);
+                                                                    intent.putExtra("dataActivity", "fromEditBook");
+                                                                    startActivity(intent);
+                                                                    finish();
+                                                                }
+                                                            }
+                                                            else {
+                                                                progressDialog.dismiss();
+                                                                Log.e("UploadError", "Upload failed with status: " + response.code());
+                                                                try {
+                                                                    Log.e("UploadError", "Response error body: " + response.errorBody().string());
+                                                                } catch (IOException e) {
+                                                                    throw new RuntimeException(e);
+                                                                }
+                                                                Toasty.error(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<BookImageResponse> call, Throwable t) {
+                                                            progressDialog.dismiss();
+                                                            String errorMessage = t.getMessage();
+                                                            Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                                                            Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                                                        }
+                                                    });
+                                                }else {
+                                                    progressDialog.dismiss();
+                                                    Log.e("UploadError", "Upload failed with status: " + response.code());
+                                                    try {
+                                                        Log.e("UploadError", "Response error body: " + response.errorBody().string());
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                    Toasty.error(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<BookImageResponse> call, Throwable t) {
+                                            progressDialog.dismiss();
+                                            String errorMessage = t.getMessage();
+                                            Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                                            Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                progressDialog.dismiss();
+                                String errorMessage = t.getMessage();
+                                Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+                            }
+                        });
+
+
+                    }else {
+                        progressDialog.dismiss();
+                        Toasty.success(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
+                    }
+                }else{
+                    progressDialog.dismiss();
+                    Toasty.error(EditBookActivity.this, "Cập nhật sách giáo trình thất bại.", Toasty.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                String errorMessage = t.getMessage();
+                Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
     }
     private void setEdText(){
         edtGia.setText(book.getPrice().toString());
         edtTieude.setText(book.getName());
-        edtSoLuong.setText(book.getQuantity());
+        edtSoLuong.setText(String.valueOf(book.getQuantity()));
         edtTacgia.setText(book.getAuthor());
         edtMota.setText(book.getDescription());
         edtGia.addTextChangedListener(new TextWatcher() {
@@ -245,6 +410,56 @@ public class EditBookActivity extends AppCompatActivity {
                 }
             }
         });
+
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                try {
+                    String input = dest.toString() + source.toString();
+                    int value = Integer.parseInt(input);
+                    if (value >= 1) {
+                        return null; // Accept the input
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                return ""; // Reject the input
+            }
+        };
+
+
+        edtSoLuong.setFilters(new InputFilter[]{filter});
+
+
+        edtSoLuong.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    String input = s.toString();
+                    if (!input.isEmpty()) {
+                        int value = Integer.parseInt(input);
+                        if (value < 1) {
+                            edtSoLuong.setError("Please enter a number greater than 1");
+                        } else {
+                            edtSoLuong.setError(null); // Clear the error
+
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    edtSoLuong.setError("Invalid number");
+                }
+            }
+        });
     }
     private void AddSpinner(){
         // Inside your AddBookActivity.java
@@ -262,10 +477,10 @@ public class EditBookActivity extends AppCompatActivity {
                     List<Category> categories = categoryResponse.getListCategory();
                     List<String> categoryNames = new ArrayList<>();
                     for (Category category : categories) {
-                        i++;
                         if(book.getCategory_id() == category.getId()){
                             defaulPo = i;
                         }
+                        i++;
                         categoryNames.add(category.getName());
                     }
 
@@ -290,16 +505,16 @@ public class EditBookActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(EditBookActivity.this, "Category not found", Toast.LENGTH_SHORT).show();
+                    Toasty.error(EditBookActivity.this, "Category not found", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetCategoryResponse> call, Throwable t) {
-                Toast.makeText(EditBookActivity.this, "Failed to load categories", Toast.LENGTH_SHORT).show();
+                Toasty.error(EditBookActivity.this, "Failed to load categories", Toast.LENGTH_SHORT).show();
             }
         });
-        String[] bookStatuses = {Status.BEEN_USING_FOR_6_MONTHS, Status.BEEN_USING_FOR_3_5_YEARS, Status.BEEN_USING_FOR_5_YEARS, Status.BEEN_USING_FOR_3_5_YEARS};
+        String[] bookStatuses = {Status.BEEN_USING_FOR_6_MONTHS, Status.BEEN_USING_FOR_1_YEARS, Status.BEEN_USING_FOR_3_5_YEARS, Status.BEEN_USING_FOR_5_YEARS};
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, bookStatuses);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBookStatus.setAdapter(statusAdapter);
@@ -336,6 +551,73 @@ public class EditBookActivity extends AppCompatActivity {
         }
         return parts;
     }
+    private class DownloadTask extends AsyncTask<String, Void, File> {
+
+        private DownloadCallback callback;
+
+        public DownloadTask(DownloadCallback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected File doInBackground(String... urls) {
+            try {
+                return saveFileToCache(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            if (callback != null) {
+                callback.onDownloadComplete(file);
+            }
+        }
+    }
+
+    // Tạo interface callback
+    public interface DownloadCallback {
+        void onDownloadComplete(File file);
+    }
+    private File saveFileToCache(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.connect();
+
+        // Tạo tệp tạm thời
+        File cacheDir = getCacheDir();
+        File tempFile = File.createTempFile("temp", null, cacheDir);
+
+        // Lưu tệp từ URL vào tệp tạm thời
+        try (InputStream inputStream = connection.getInputStream();
+             FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return tempFile;
+    }
+    private List<MultipartBody.Part> getRealPath(String partName, List<String> flieStrings) throws IOException {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+        for (String path : flieStrings) {
+            DownloadTask task = new DownloadTask(new DownloadCallback() {
+                @Override
+                public void onDownloadComplete(File file) {
+                    if (file != null) {
+                        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+                        parts.add(MultipartBody.Part.createFormData(partName, file.getName(), requestFile));
+                    }
+                }
+            });
+            task.execute(ApiService.BASE_URL + "api/v1/products/images/" + path);
+        }
+        return parts;
+    }
     private void reloadImageSlider(List<Uri> imageUris) {
         // Chuyển đổi danh sách Uri thành danh sách đường dẫn chuỗi
         List<String> imagePaths = convertUrisToPaths(imageUris);
@@ -358,20 +640,19 @@ public class EditBookActivity extends AppCompatActivity {
     }
     private void fillImageSlide(){
         // Chuyển đổi danh sách Uri thành danh sách đường dẫn chuỗi
-        // we are creating array list for storing our image urls.
         bookImageApiService = new BookImageApiService(this);
         bookImageApiService.getThumbnailsByProductId(book.getId()).enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 if(response.isSuccessful()){
-                    imageUrls = response.body();
+                    imageUrlString = response.body();
                     ArrayList<SliderData> sliderDataArrayList = new ArrayList<>();
 
                     // initializing the slider view.
                     SliderView sliderView = findViewById(R.id.slider);
 
                     // adding the urls inside array list
-                    for (String path : imageUrls) {
+                    for (String path : imageUrlString) {
                         path = ApiService.BASE_URL + "api/v1/products/images/" + path;
                         sliderDataArrayList.add(new SliderData(path));
                     }
@@ -405,12 +686,10 @@ public class EditBookActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
                 String errorMessage = t.getMessage();
-                Toast.makeText(EditBookActivity.this, "Request failed: " + errorMessage, Toast.LENGTH_SHORT).show();
+                Toasty.error(EditBookActivity.this, "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
                 Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
             }
         });
-
-
     }
 
 
@@ -474,8 +753,10 @@ public class EditBookActivity extends AppCompatActivity {
     }
 
     private void moThuVien() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Pictures"), PICK_IMAGES_REQUEST);
         dialog.dismiss();
     }
 
@@ -494,39 +775,34 @@ public class EditBookActivity extends AppCompatActivity {
             moThuVien();
         }
         else {
-            Toast.makeText(this, "Quyền truy cập bị từ chối.", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Quyền truy cập bị từ chối.", Toasty.LENGTH_SHORT).show();
         }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGES_REQUEST && resultCode == RESULT_OK && data != null) {
+            imageUris = new ArrayList<>();
             if (data.getClipData() != null) { // Chọn nhiều ảnh
                 int count = data.getClipData().getItemCount();
-                for (int i = 0; i < count; i++) {
-                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                    imageUris.add(imageUri);
+                if (count > 5) {
+                    // Hiển thị thông báo nếu người dùng chọn nhiều hơn 5 ảnh
+                    Toasty.warning(this, "Bạn chỉ được chọn tối đa 5 ảnh!", Toasty.LENGTH_SHORT).show();
+                } else {
+                    for (int i = 0; i < count; i++) {
+                        Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                        imageUris.add(imageUri);
+                    }
+                    // Gọi phương thức để upload ảnh
+                    reloadImageSlider(imageUris);
                 }
             } else if (data.getData() != null) { // Chọn một ảnh
                 Uri imageUri = data.getData();
                 imageUris.add(imageUri);
+                // Gọi phương thức để upload ảnh
+                reloadImageSlider(imageUris);
             }
-            // Gọi phương thức để upload ảnh
-            uploadImages(imageUris);
         }
-    }
-
-    private void uploadImages(List<Uri> imageUris) {
-        List<MultipartBody.Part> parts = new ArrayList<>();
-        for (Uri uri : imageUris) {
-            File file = new File(getRealPathFromURI(uri));
-            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), requestBody);
-            parts.add(part);
-        }
-        reloadImageSlider(imageUris);
-        // Gọi API upload với Retrofit
-        //uploadToServer(parts);
     }
 
     private String getRealPathFromURI(Uri uri) {
@@ -551,4 +827,7 @@ public class EditBookActivity extends AppCompatActivity {
         }
         return paths;
     }
+
+
+
 }

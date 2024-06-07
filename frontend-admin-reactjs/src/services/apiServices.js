@@ -16,12 +16,14 @@ const getAllUsers = (token) => {
 
 const getAllProducts = (token) => {
 
-    return axios.post('api/v1/products', {}, {
+    return axios.post('api/v1/products/get_list', {}, {
         headers: {
             Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
 
         }
     });
+
+    // return axios.get('api/v1/products/get_list');
 
 }
 
@@ -70,6 +72,73 @@ const putUpdateUser = (id, fullname, phone_number, address, gender, token) => {
     });
 }
 
+
+const postUpdateImageUser = (id, image, token) => {
+    const data = new FormData();
+    data.append('file', image);
+
+    return axios.post(`api/v1/users/uploads/${id}`, data, {
+        headers: {
+            Authorization: `Bearer ${token}`, // Đính kèm token vào header Authorization
+            'Content-Type': 'application/json' // Đảm bảo kiểu nội dung là JSON
+        }
+    });
+}
+
+
+const deleteProductById = (id, token) => {
+
+    return axios.delete(`api/v1/products/order_notify/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
+const deleteProductThumbnailsById = (id, token) => {
+
+    return axios.delete(`api/v1/products/thumbnails/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
+
+const getGiaoDichThanhCongById = (id, token) => {
+
+    return axios.post(`api/v1/orders/statistical/${id}`, {}, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
+const getAllGiaoDichThanhCong = (token) => {
+
+    return axios.post(`api/v1/orders/statistical`, {}, {
+        headers: {
+            Authorization: `Bearer ${token}` // Đính kèm token vào header Authorization
+        }
+    });
+}
+
+const putChangePassword = (id, oldPassword, newPassword, token) => {
+    const data = {
+        old_password: oldPassword,
+        new_password: newPassword,
+    };
+
+    return axios.put(`api/v1/users/changepass/${id}`, data, {
+        headers: {
+            Authorization: `Bearer ${token}`, // Đính kèm token vào header Authorization
+            'Content-Type': 'application/json' // Đảm bảo kiểu nội dung là JSON
+        }
+    });
+}
+
+
+
 export {
     postLogin,
     getAllUsers,
@@ -78,4 +147,12 @@ export {
     putUnbanUser,
     getAllProducts,
     getUserById,
+    deleteProductById,
+    deleteProductThumbnailsById,
+    postUpdateImageUser,
+    putChangePassword,
+    getGiaoDichThanhCongById,
+    getAllGiaoDichThanhCong,
+
 }
+

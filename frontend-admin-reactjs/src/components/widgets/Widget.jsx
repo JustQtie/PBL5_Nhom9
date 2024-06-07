@@ -3,20 +3,21 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import React from "react";
 
 
-const Widget = ({ type }) => {
+const Widget = ({ type, userCount, orderCount, balanceCount }) => {
+
+
+
     let data = {};
 
-    // temorary
-    const amount = 100;
-    const diff = 20;
 
     switch (type) {
         case "user":
             data = {
                 title: "Người dùng",
-                link: "Xem tất cả",
+                amount: userCount,
                 icon: (
                     <PersonOutlineOutlinedIcon
                         className="icon"
@@ -31,7 +32,7 @@ const Widget = ({ type }) => {
         case "order":
             data = {
                 title: "Tổng giao dịch thành công",
-                link: "Xem tất cả",
+                amount: orderCount,
                 icon: (
                     <ShoppingCartOutlinedIcon
                         className="icon"
@@ -43,8 +44,8 @@ const Widget = ({ type }) => {
             break;
         case "balance":
             data = {
-                title: "Tổng giao dịch thất bại",
-                link: "Xem tất cả",
+                title: "Tổng giao dịch bị hủy",
+                amount: balanceCount,
                 icon: (
                     <AccountBalanceWalletOutlinedIcon
                         className="icon"
@@ -61,15 +62,11 @@ const Widget = ({ type }) => {
     }
 
 
-
-
-
     return (
         <div className="widget">
             <div className="left">
                 <span className="title-widget">{data.title}</span>
-                <span className="counter">{amount}</span>
-                <span className="link">{data.link}</span>
+                <span className="counter">{data.amount}</span>
             </div>
             <div className="right">
                 <div className="percentage positive">

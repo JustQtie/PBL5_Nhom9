@@ -30,4 +30,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("keyword") String keyword,
             @Param("categoryId") Long categoryId
     );
+
+    @Query("select p from Product p where p.user.id <> :userId")
+    List<Product> findAllByUserIdNot(@Param("userId") Long userId);
+
 }

@@ -28,4 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.active = :isActive WHERE u.id = :userId")
     void updateIsActiveById(@Param("isActive") boolean isActive, @Param("userId") Long userId);
+
+    @Query("select u from User u WHERE u.id <> :id AND u.id <> 1")
+    List<User> getAllNotUser(@Param("id") Long id);
 }

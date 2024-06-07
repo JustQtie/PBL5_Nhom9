@@ -2,29 +2,51 @@ package com.example.navigationbottom.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.BooksAdapterForCart;
 import com.example.navigationbottom.adaper.BooksAdapterForHome;
 import com.example.navigationbottom.model.Book;
+import com.example.navigationbottom.model.Order;
+import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.response.book.GetBookResponse;
+import com.example.navigationbottom.response.order.GetOrderResponse;
+import com.example.navigationbottom.viewmodel.OrderApiService;
+import com.example.navigationbottom.viewmodel.UserPreferences;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class CartFragment extends Fragment {
     private RecyclerView rvBooks;
     private BooksAdapterForCart booksAdapter;
-    private ArrayList<Book> books;
+
+    private ArrayList<Order> orders;
     private View mView;
-    public CartFragment() {
+
+    private OrderApiService orderApiService;
+
+    public CartFragment(){
 
     }
 
@@ -47,19 +69,64 @@ public class CartFragment extends Fragment {
         rvBooks.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         rvBooks.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        orderApiService = new OrderApiService(getContext());
 
-        books = new ArrayList<>();
-        books.add(new Book("1", "Lập Trình Java", "Nguyễn Văn A", "Programming", "1", "Sách hướng dẫn lập trình Java cơ bản", "50000", ""));
-        books.add(new Book("2", "Học Python", "Trần Văn B", "Programming", "1", "Sách hướng dẫn lập trình Python", "60000", ""));
-        getBooks();
 
         return mView;
     }
 
-    private void getBooks() {
-        booksAdapter = new BooksAdapterForCart(books, getActivity());
-        rvBooks.setAdapter(booksAdapter);
+
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        goiAPILayDuLieu();
     }
 
+    private void goiAPILayDuLieu() {
+        orders = new ArrayList<>();
+        User user = UserPreferences.getUser(getContext());
+        orderApiService.getOrdersByUserNotPaid(user.getId()).enqueue(new Callback<GetOrderResponse>() {
+            @Override
+            public void onResponse(Call<GetOrderResponse> call, Response<GetOrderResponse> response) {
+                GetOrderResponse getOrderResponse = response.body();
+                if(getOrderResponse!=null){
+                    Log.d("RequestData1", new Gson().toJson(getOrderResponse));
+                    if(getOrderResponse.getEc().equals("0")){
+                        List<Order> orderResponseList = getOrderResponse.getOrderResponseList();
+                        for (Order order : orderResponseList) {
+                            Order getOrder = new Order();
+                            getOrder.setId(order.getId());
+                            getOrder.setUser_id(order.getUser_id());
+                            getOrder.setProduct_id(order.getProduct_id());
+                            getOrder.setStatus(order.getStatus());
+                            getOrder.setNumber_of_product(order.getNumber_of_product());
+                            orders.add(getOrder);
+                        }
+                        booksAdapter = new BooksAdapterForCart(orders, getActivity());
+                        rvBooks.setAdapter(booksAdapter);
+                    }else{
+                        Log.e("UploadError", "Upload failed with status: " + response.code());
+                        try {
+                            Log.e("UploadError", "Response error body: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }else{
+                    Toasty.error(getContext(), "Book invalid", Toasty.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOrderResponse> call, Throwable t) {
+                String errorMessage = t.getMessage();
+                Toasty.error(getContext(), "Request failed: " + errorMessage, Toasty.LENGTH_SHORT).show();
+                Log.e("Hello", String.valueOf("Request failed: " + errorMessage));
+            }
+        });
+    }
 
 }

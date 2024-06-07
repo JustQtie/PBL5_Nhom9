@@ -1,18 +1,34 @@
 package com.example.navigationbottom.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.navigationbottom.R;
 import com.example.navigationbottom.adaper.MyViewPagerAdapter;
-import com.example.navigationbottom.fragment.SellFragment;
+import com.example.navigationbottom.model.Notification;
 import com.example.navigationbottom.model.User;
+import com.example.navigationbottom.utils.Subscriptions;
+import com.example.navigationbottom.viewmodel.NotifyApplication;
+import com.example.navigationbottom.viewmodel.UserPreferences;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import es.dmoral.toasty.Toasty;
+import ua.naiksoftware.stomp.Stomp;
+import ua.naiksoftware.stomp.StompClient;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -20,23 +36,20 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 mViewPager2;
     private BottomNavigationView mbottomNavigationView;
 
+
+    private NotifyApplication notifyApplication;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras.containsKey("dataFromAddBookActivity")) {
-                // Sau đó, chuyển đến SellFragment
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.rv_sell_fragment, new SellFragment())
-                        .commit();
-            }
-        }
+        notifyApplication = NotifyApplication.instance();
 
         mViewPager2 = findViewById(R.id.view_pager_2);
         mbottomNavigationView = findViewById(R.id.bottom_navigation);
+
+
 
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter(this);
         mViewPager2.setAdapter(myViewPagerAdapter);
@@ -96,5 +109,30 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        // Check for the intent data and navigate to the correct fragment
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("dataFromActivity")) {
+            String fragmentName = intent.getStringExtra("dataFromActivity");
+            if ("fromAddBook".equals(fragmentName) || "fromEditBook".equals(fragmentName)) {
+                mViewPager2.setCurrentItem(2); // Navigate to the SellFragment page
+            }else if("fromDetailHome".equals(fragmentName) || "fromDetailCart".equals(fragmentName)){
+                mViewPager2.setCurrentItem(1);
+            }else if("fromNotifyConfirm".equals(fragmentName)){
+                mViewPager2.setCurrentItem(3);
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        notifyApplication = NotifyApplication.instance();
+        User user = UserPreferences.getUser(this);
+        notifyApplication.getSubscriptions().addSubscription("/topic/" + user.getId(), stompMessage -> {
+            String payload = stompMessage.getPayload();
+            Log.d("StompMessage", payload);
+        });
+        return super.onCreateView(parent, name, context, attrs);
     }
 }

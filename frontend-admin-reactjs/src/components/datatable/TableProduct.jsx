@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import { getAllProducts } from "../../services/apiServices";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-
-
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import "./tableProduct.scss";
 
 
 const TableProduct = () => {
@@ -31,14 +37,18 @@ const TableProduct = () => {
 
             const res = await getAllProducts(token);
 
-            console.log("check>>> res", res);
+            // console.log("API Response:", res.EC);
 
-            if (res.EC === 0) {
-                setListProducts(res.userResponseList); ///cho nay can sua
+            if (res && res.EC === "0") {
+                setListProducts(res.productResponseList);
 
+            }
+            else {
+                toast.error("Error fetching list of products");
             }
         } catch (error) {
             toast.error("Error fetching list of products", error);
+            console.error(error);
         }
     }
 
@@ -49,41 +59,48 @@ const TableProduct = () => {
 
     return (
         <>
-            <table className="table table-light table-striped table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Mã giáo trình</th>
-                        <th scope="col">Tiêu đề</th>
-                        <th scope="col">Loại</th>
-                        <th scope="col">Giá</th>
-                        <th scope="col">Người bán</th>
-                        <th scope="col">Trạng thái</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {listProducts && listProducts.length > 0 &&
-                        listProducts.map((item, index) => {
-                            return (
-                                <tr key={`table-users-${index}`}>
-                                    <td>{index + 1}</td>
-                                    <td>{item.phone_number}</td>
-                                    <td>{item.address}</td>
-                                    <td>{item.gender ? "Nam" : "Nữ"}</td>
-                                    <td>{item.phone_number}</td>
-                                    <td>{item.active ? "Hoạt động" : "Cấm hoạt động"}</td>
-                                    <td>
-                                        <button className="btn btn-success" onClick={() => handleBtnView(item)} >View</button>
-                                    </td>
 
-                                </tr>
-                            )
-                        })
-                    }
-                    {listProducts && listProducts.length === 0 && <tr><td colSpan={'8'}>Not found data</td></tr>}
-                </tbody>
-            </table>
+            <TableContainer component={Paper} className="table-products">
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell className="tableCell">STT</TableCell>
+                            <TableCell className="tableCell">Mã giáo trình</TableCell>
+                            <TableCell className="tableCell">Tiêu đề</TableCell>
+                            <TableCell className="tableCell">Giá</TableCell>
+                            <TableCell className="tableCell">Trạng thái</TableCell>
+                            <TableCell className="tableCell">Số lượng</TableCell>
+                            <TableCell className="tableCell">Action</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {listProducts && listProducts.length > 0 &&
+                            listProducts.map((item, index) => {
+                                return (
+                                    <TableRow key={`table-products-${index}`}>
+                                        <TableCell className="tableCell">{index + 1}</TableCell>
+                                        <TableCell className="tableCell">{item.id}</TableCell>
+                                        <TableCell className="tableCell">
+                                            <div className="cellWrapper-products">
+                                                <img src={item.thumbnail ? `${process.env.REACT_APP_API_URL}api/v1/products/images/${item.thumbnail}` : "https://i.imgur.com/2zLfMh6.jpeg"} alt="User" className="image" />
+                                                {/* <img src={item.thumbnail ? item.thumbnail : "https://i.imgur.com/2zLfMh6.jpeg"} alt="User" className="image" /> */}
+                                                {item.name}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="tableCell">{item.price}</TableCell>
+                                        <TableCell className="tableCell">{item.status}</TableCell>
+                                        <TableCell className="tableCell">{item.quantity}</TableCell>
+                                        <TableCell className="tableCell">
+                                            <button className="btn btn-success btn-sm" onClick={() => handleBtnView(item)} >View</button>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })
+                        }
+                        {listProducts && listProducts.length === 0 && <TableRow><TableCell colSpan={'7'}>Not found data</TableCell></TableRow>}
+                    </TableBody>
+                </Table>
+            </TableContainer>
 
 
 
